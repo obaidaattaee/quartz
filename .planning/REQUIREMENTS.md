@@ -101,8 +101,8 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **ADMN-03**: Portfolio/case study CRUD with images, service category, and bilingual content
 - [ ] **ADMN-04**: Contact lead list with status tracking (new, read, handled) and filtering
 - [ ] **ADMN-05**: Testimonial management — add, edit, reorder, show/hide
-- [ ] **ADMN-06**: Service page content editing — structured fields for headings, descriptions, process steps
-- [ ] **ADMN-07**: Site settings — logo upload, primary/secondary color pickers, contact info, social links
+- [x] **ADMN-06**: Service page content editing — structured fields for headings, descriptions, process steps
+- [x] **ADMN-07**: Site settings — logo upload, primary/secondary color pickers, contact info, social links
 - [x] **ADMN-08**: Media library — upload, browse, and reuse images with thumbnail generation
 - [x] **ADMN-09**: Multi-role access — admin (everything) and editor (blog + portfolio only)
 - [ ] **ADMN-10**: Team member management — add, edit, reorder team members with photos and bios
@@ -199,8 +199,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ADMN-03 | Phase 3 | Complete |
 | ADMN-04 | Phase 3 | Pending |
 | ADMN-05 | Phase 3 | Pending |
-| ADMN-06 | Phase 3 | Pending |
-| ADMN-07 | Phase 3 | Pending |
+| ADMN-06 | Phase 3 | Complete |
+| ADMN-07 | Phase 3 | Complete |
 | ADMN-08 | Phase 3 | Complete |
 | ADMN-09 | Phase 3 | Complete |
 | ADMN-10 | Phase 3 | Pending |
