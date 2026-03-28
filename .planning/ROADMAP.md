@@ -72,7 +72,7 @@ Plans:
 **UI hint**: yes
 
 Plans:
-- [ ] 03-01-PLAN.md -- Backend foundation: migrations, models, services, middleware, routes, dashboard, sidebar (Wave 1)
+- [x] 03-01-PLAN.md -- Backend foundation: migrations, models, services, middleware, routes, dashboard, sidebar (Wave 1)
 - [ ] 03-02-PLAN.md -- Media library and shared admin components: Tiptap editor, bilingual tabs, data table (Wave 2)
 - [ ] 03-03-PLAN.md -- Blog post CRUD with Tiptap rich text and Portfolio CRUD with case studies (Wave 3)
 - [ ] 03-04-PLAN.md -- Contact lead management, testimonial CRUD with reorder, team member CRUD (Wave 3)
