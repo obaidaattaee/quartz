@@ -12,7 +12,9 @@ Visitors immediately understand what services are offered, see proof of quality 
 
 ### Validated
 
-(None yet — ship to validate)
+- [x] English/Arabic bilingual support with URL-based routing (/en/..., /ar/...) and full RTL layout — *Validated in Phase 01: Foundation & Design System*
+- [x] Dark/light mode toggle with smooth transitions — *Validated in Phase 01*
+- [x] Scroll reveal animations, hero motion graphics, hover interactions, and page transitions (scotchpos.com style) — *Validated in Phase 01 (animation system built; ScrollReveal usage deferred to Phase 02 pages)*
 
 ### Active
 
@@ -21,9 +23,7 @@ Visitors immediately understand what services are offered, see proof of quality 
 - [ ] Portfolio gallery with visual grid of past work, filterable by service type
 - [ ] Blog system with rich editor, categories/tags, SEO metadata, rich media embeds, and author profiles
 - [ ] Multi-channel contact — form, WhatsApp, phone, email all visible
-- [ ] English/Arabic bilingual support with URL-based routing (/en/..., /ar/...) and full RTL layout
-- [ ] Dark/light mode toggle with smooth transitions
-- [ ] Scroll reveal animations, hero motion graphics, hover interactions, and page transitions (scotchpos.com style)
+- [ ] Scroll reveal animations applied to page content sections (infrastructure built in Phase 01, usage in Phase 02+)
 - [ ] Admin panel — manage blog posts, case studies, contact leads, and all site content
 - [ ] Theme customization in admin — logos, primary/secondary colors, contact information
 - [ ] Multi-role authentication — admin and editor roles with different permissions
@@ -58,7 +58,7 @@ Visitors immediately understand what services are offered, see proof of quality 
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| URL-based i18n (/en/, /ar/) | Better SEO, shareable language-specific links, cleaner routing | — Pending |
+| URL-based i18n (/en/, /ar/) | Better SEO, shareable language-specific links, cleaner routing | Implemented Phase 01 |
 | Portfolio gallery over full case study pages | Quicker to populate, visual-first approach matches service business | — Pending |
 | Multi-role auth (admin + editor) | Content team needs access without full admin privileges | — Pending |
 | Theme customization in admin panel | Client can rebrand without developer involvement | — Pending |
@@ -81,4 +81,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-28 after initialization*
+*Last updated: 2026-03-28 after Phase 01 completion*
