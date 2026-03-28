@@ -34,9 +34,9 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 Plans:
 - [x] 01-01-PLAN.md -- Locale routing, design tokens, fonts, RTL, i18n infrastructure (Wave 1)
-- [ ] 01-02-PLAN.md -- Animation system, page transitions, component micro-interactions (Wave 2)
+- [x] 01-02-PLAN.md -- Animation system, page transitions, component micro-interactions (Wave 2)
 - [x] 01-03-PLAN.md -- PublicLayout, header, footer, breadcrumbs, 404 page (Wave 2)
-- [ ] 01-04-PLAN.md -- UAT gap closure: middleware lazy eval, CSS fixes, RTL Sheet, REQUIREMENTS tracking (Wave 1)
+- [x] 01-04-PLAN.md -- UAT gap closure: middleware lazy eval, CSS fixes, RTL Sheet, REQUIREMENTS tracking (Wave 1)
 
 ### Phase 2: Public Marketing Site
 **Goal**: Visitors land on a visually polished site, understand what services Quart offers, see proof of quality through testimonials and team credentials, and can reach out through multiple contact channels
