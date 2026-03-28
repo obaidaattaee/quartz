@@ -9,18 +9,18 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Foundation & Bilingual
 
-- [ ] **INTL-01**: URL-based language routing with /en/ and /ar/ prefixes on all public routes
-- [ ] **INTL-02**: Full RTL layout for Arabic using CSS logical properties (start/end, not left/right)
-- [ ] **INTL-03**: Language switcher in header that preserves current page when switching
-- [ ] **INTL-04**: Bidirectional text handling for mixed EN/AR content (brand names, technical terms)
-- [ ] **INTL-05**: Arabic typography system with proper fonts, line-height (1.6-1.8x), and no letter-spacing
-- [ ] **INTL-06**: All translatable content stored with bilingual fields (EN + AR)
+- [x] **INTL-01**: URL-based language routing with /en/ and /ar/ prefixes on all public routes
+- [x] **INTL-02**: Full RTL layout for Arabic using CSS logical properties (start/end, not left/right)
+- [x] **INTL-03**: Language switcher in header that preserves current page when switching
+- [x] **INTL-04**: Bidirectional text handling for mixed EN/AR content (brand names, technical terms)
+- [x] **INTL-05**: Arabic typography system with proper fonts, line-height (1.6-1.8x), and no letter-spacing
+- [x] **INTL-06**: All translatable content stored with bilingual fields (EN + AR)
 
 ### Design System & Visual Foundation
 
-- [ ] **DSGN-01**: Premium color palette with primary/secondary colors, applied via CSS custom properties
-- [ ] **DSGN-02**: Dark/light mode toggle with smooth transition and localStorage persistence
-- [ ] **DSGN-03**: Responsive layout system tested at all breakpoints (mobile, tablet, desktop)
+- [x] **DSGN-01**: Premium color palette with primary/secondary colors, applied via CSS custom properties
+- [x] **DSGN-02**: Dark/light mode toggle with smooth transition and localStorage persistence
+- [x] **DSGN-03**: Responsive layout system tested at all breakpoints (mobile, tablet, desktop)
 - [ ] **DSGN-04**: Consistent component library (buttons, cards, inputs, badges) with hover micro-interactions
 - [ ] **DSGN-05**: Animation system using Motion + GSAP for scroll reveals, staggered entrances, and hover effects
 - [ ] **DSGN-06**: Smooth page transitions between routes (Inertia + View Transitions / AnimatePresence)
@@ -155,15 +155,15 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| INTL-01 | Phase 1 | Pending |
-| INTL-02 | Phase 1 | Pending |
-| INTL-03 | Phase 1 | Pending |
-| INTL-04 | Phase 1 | Pending |
-| INTL-05 | Phase 1 | Pending |
-| INTL-06 | Phase 1 | Pending |
-| DSGN-01 | Phase 1 | Pending |
-| DSGN-02 | Phase 1 | Pending |
-| DSGN-03 | Phase 1 | Pending |
+| INTL-01 | Phase 1 | Complete |
+| INTL-02 | Phase 1 | Complete |
+| INTL-03 | Phase 1 | Complete |
+| INTL-04 | Phase 1 | Complete |
+| INTL-05 | Phase 1 | Complete |
+| INTL-06 | Phase 1 | Complete |
+| DSGN-01 | Phase 1 | Complete |
+| DSGN-02 | Phase 1 | Complete |
+| DSGN-03 | Phase 1 | Complete |
 | DSGN-04 | Phase 1 | Pending |
 | DSGN-05 | Phase 1 | Pending |
 | DSGN-06 | Phase 1 | Pending |
