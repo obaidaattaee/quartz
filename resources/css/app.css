@@ -173,7 +173,7 @@ html {
 html *,
 html *::before,
 html *::after {
-    transition: background-color 0.3s ease, color 0.15s ease, border-color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.15s ease, border-color 0.3s ease, backdrop-filter 0.3s ease;
 }
 
 /* View Transitions reduced motion (DSGN-07, Pitfall 5) */
