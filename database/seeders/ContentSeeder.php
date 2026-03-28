@@ -163,7 +163,7 @@ class ContentSeeder extends Seeder
     private function seedAdminUser(): void
     {
         User::updateOrCreate(
-            ['email' => 'admin@quart.sa'],
+            ['email' => 'admin@quart.com'],
             [
                 'name' => 'Admin',
                 'password' => Hash::make('password'),

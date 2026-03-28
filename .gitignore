@@ -26,3 +26,9 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+
+# Claude Code worktrees (temporary agent workspaces)
+.claude/worktrees/
+
+# Playwright MCP logs
+.playwright-mcp/
