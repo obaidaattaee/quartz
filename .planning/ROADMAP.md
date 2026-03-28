@@ -74,10 +74,10 @@ Plans:
 Plans:
 - [x] 03-01-PLAN.md -- Backend foundation: migrations, models, services, middleware, routes, dashboard, sidebar (Wave 1)
 - [x] 03-02-PLAN.md -- Media library and shared admin components: Tiptap editor, bilingual tabs, data table (Wave 2)
-- [ ] 03-03-PLAN.md -- Blog post CRUD with Tiptap rich text and Portfolio CRUD with case studies (Wave 3)
+- [x] 03-03-PLAN.md -- Blog post CRUD with Tiptap rich text and Portfolio CRUD with case studies (Wave 3)
 - [x] 03-04-PLAN.md -- Contact lead management, testimonial CRUD with reorder, team member CRUD (Wave 3)
-- [ ] 03-05-PLAN.md -- Service page structured editing, site settings with color picker, user management (Wave 3)
-- [ ] 03-06-PLAN.md -- Content seeders, DB-backed public pages transition, full verification checkpoint (Wave 4)
+- [x] 03-05-PLAN.md -- Service page structured editing, site settings with color picker, user management (Wave 3)
+- [x] 03-06-PLAN.md -- Content seeders, DB-backed public pages transition, full verification checkpoint (Wave 4)
 
 ### Phase 4: Blog, Portfolio & SEO
 **Goal**: The site has a content marketing engine with a full blog and portfolio gallery, and search engines can properly discover, index, and display all pages in both languages
