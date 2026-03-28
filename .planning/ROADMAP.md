@@ -48,13 +48,15 @@ Plans:
   3. Contact page shows a validated form (name, email, phone, service interest, message) with spam protection, an embedded map, and visible multi-channel contact info (WhatsApp, phone, email); submitting the form stores a lead and sends an email notification to admin
   4. About page presents the company story, team members with real photos/bios/roles, and certifications/badges
   5. Newsletter email capture is functional and stores submissions in the database; FAQ section with accordion is present with structured data markup
-**Plans**: TBD
+**Plans**: 5 plans
 **UI hint**: yes
 
 Plans:
-- [ ] 02-01: TBD
-- [ ] 02-02: TBD
-- [ ] 02-03: TBD
+- [ ] 02-01-PLAN.md -- Backend infrastructure, routes, translations, accordion install (Wave 1)
+- [ ] 02-02-PLAN.md -- Landing page with all 7 sections (Wave 2)
+- [ ] 02-03-PLAN.md -- Service detail pages and About/Team page (Wave 2)
+- [ ] 02-04-PLAN.md -- Contact page, FAQ page, newsletter footer wiring (Wave 2)
+- [ ] 02-05-PLAN.md -- Full visual and functional verification checkpoint (Wave 3)
 
 ### Phase 3: Admin Panel
 **Goal**: Non-technical admins and editors can manage all site content, monitor leads, and customize the site's visual identity without touching code
@@ -97,6 +99,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Design System | 2/4 | In Progress|  |
-| 2. Public Marketing Site | 0/3 | Not started | - |
+| 2. Public Marketing Site | 0/5 | Not started | - |
 | 3. Admin Panel | 0/2 | Not started | - |
 | 4. Blog, Portfolio & SEO | 0/2 | Not started | - |
