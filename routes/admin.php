@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MediaController;
+use App\Http\Controllers\Admin\ServicePageController;
+use App\Http\Controllers\Admin\SiteSettingController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
@@ -13,7 +16,16 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::post('media/upload', [MediaController::class, 'store'])->name('media.store');
     Route::delete('media/{media}', [MediaController::class, 'destroy'])->name('media.destroy');
 
-    // Placeholder route groups for future plans:
-    // Editor-accessible: blog, portfolio
-    // Admin-only: testimonials, services, team, contacts, users, settings
+    // Admin-only routes -- editors get 403
+    Route::middleware('role:admin')->group(function () {
+        // Service page management (edit-only, fixed set of 4 service pages)
+        Route::resource('services', ServicePageController::class)->only(['index', 'edit', 'update']);
+
+        // Site settings (branding, colors, contact, social)
+        Route::get('settings', [SiteSettingController::class, 'index'])->name('settings.index');
+        Route::put('settings', [SiteSettingController::class, 'update'])->name('settings.update');
+
+        // User management (CRUD)
+        Route::resource('users', UserController::class)->except(['show']);
+    });
 });
