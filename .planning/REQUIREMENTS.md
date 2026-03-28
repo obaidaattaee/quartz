@@ -40,10 +40,10 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Service Pages
 
 - [x] **SRVC-01**: Individual detail page for each service (software dev, automation, QA, cybersecurity)
-- [ ] **SRVC-02**: Problem-solution framing: client pain point → approach → deliverables
-- [ ] **SRVC-03**: Process overview with visual step-by-step flow
-- [ ] **SRVC-04**: Per-service CTA that pre-fills contact form with service type
-- [ ] **SRVC-05**: Scroll reveal animations on service page sections
+- [x] **SRVC-02**: Problem-solution framing: client pain point → approach → deliverables
+- [x] **SRVC-03**: Process overview with visual step-by-step flow
+- [x] **SRVC-04**: Per-service CTA that pre-fills contact form with service type
+- [x] **SRVC-05**: Scroll reveal animations on service page sections
 
 ### Portfolio & Case Studies
 
@@ -77,8 +77,8 @@ Requirements for initial release. Each maps to roadmap phases.
 ### About & Team
 
 - [x] **TEAM-01**: About page with company story and mission
-- [ ] **TEAM-02**: Team member section with real photos, names, roles, and bios
-- [ ] **TEAM-03**: Certifications and badges display
+- [x] **TEAM-02**: Team member section with real photos, names, roles, and bios
+- [x] **TEAM-03**: Certifications and badges display
 
 ### Navigation & Structure
 
@@ -180,10 +180,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | LAND-06 | Phase 2 | Complete |
 | LAND-07 | Phase 2 | Complete |
 | SRVC-01 | Phase 2 | Complete |
-| SRVC-02 | Phase 2 | Pending |
-| SRVC-03 | Phase 2 | Pending |
-| SRVC-04 | Phase 2 | Pending |
-| SRVC-05 | Phase 2 | Pending |
+| SRVC-02 | Phase 2 | Complete |
+| SRVC-03 | Phase 2 | Complete |
+| SRVC-04 | Phase 2 | Complete |
+| SRVC-05 | Phase 2 | Complete |
 | CONT-01 | Phase 2 | Complete |
 | CONT-02 | Phase 2 | Complete |
 | CONT-03 | Phase 2 | Pending |
@@ -192,8 +192,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CONT-06 | Phase 2 | Pending |
 | CONT-07 | Phase 2 | Complete |
 | TEAM-01 | Phase 2 | Complete |
-| TEAM-02 | Phase 2 | Pending |
-| TEAM-03 | Phase 2 | Pending |
+| TEAM-02 | Phase 2 | Complete |
+| TEAM-03 | Phase 2 | Complete |
 | ADMN-01 | Phase 3 | Pending |
 | ADMN-02 | Phase 3 | Pending |
 | ADMN-03 | Phase 3 | Pending |
