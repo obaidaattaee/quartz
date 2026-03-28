@@ -1,8 +1,7 @@
 import { Link } from '@inertiajs/react';
 import { Mail, MapPin, Phone } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import NewsletterForm from '@/components/newsletter-form';
 import { useLocale } from '@/hooks/use-locale';
 
 export default function SiteFooter() {
@@ -49,21 +48,7 @@ export default function SiteFooter() {
                             <p className="mb-2 text-sm font-medium">
                                 {t('footer.newsletter')}
                             </p>
-                            <form
-                                onSubmit={(e) => e.preventDefault()}
-                                className="flex gap-2"
-                            >
-                                <Input
-                                    type="email"
-                                    placeholder={t(
-                                        'footer.newsletterPlaceholder',
-                                    )}
-                                    className="h-9 text-sm"
-                                />
-                                <Button type="submit" size="sm">
-                                    {t('footer.subscribe')}
-                                </Button>
-                            </form>
+                            <NewsletterForm />
                         </div>
                     </div>
 

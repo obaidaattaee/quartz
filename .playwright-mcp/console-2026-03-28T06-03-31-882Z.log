@@ -35,3 +35,5 @@
 [ 3311268ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://[::1]:5175/resources/js/routes/appearance/index.ts?t=1774680694273:0
 [ 3328372ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://[::1]:5175/resources/js/routes/appearance/index.ts?t=1774680694273:0
 [ 3425429ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://[::1]:5175/resources/js/routes/appearance/index.ts?t=1774680694273:0
+[ 3432677ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://[::1]:5175/resources/js/routes/appearance/index.ts?t=1774680694273:0
+[ 3440671ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://[::1]:5175/resources/js/routes/appearance/index.ts?t=1774680694273:0

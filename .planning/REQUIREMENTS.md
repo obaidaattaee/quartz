@@ -68,10 +68,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [x] **CONT-01**: Contact form with validation (name, email, phone, service interest, message)
 - [x] **CONT-02**: Multi-channel contact info visible on contact page and footer (WhatsApp, phone, email)
-- [ ] **CONT-03**: Contact page with embedded map or location display
+- [x] **CONT-03**: Contact page with embedded map or location display
 - [x] **CONT-04**: Email notification sent to admin on form submission
 - [x] **CONT-05**: Spam protection on contact form (honeypot or rate limiting)
-- [ ] **CONT-06**: FAQ section with accordion and FAQ structured data (JSON-LD)
+- [x] **CONT-06**: FAQ section with accordion and FAQ structured data (JSON-LD)
 - [x] **CONT-07**: Newsletter email capture stored in database
 
 ### About & Team
@@ -186,10 +186,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SRVC-05 | Phase 2 | Complete |
 | CONT-01 | Phase 2 | Complete |
 | CONT-02 | Phase 2 | Complete |
-| CONT-03 | Phase 2 | Pending |
+| CONT-03 | Phase 2 | Complete |
 | CONT-04 | Phase 2 | Complete |
 | CONT-05 | Phase 2 | Complete |
-| CONT-06 | Phase 2 | Pending |
+| CONT-06 | Phase 2 | Complete |
 | CONT-07 | Phase 2 | Complete |
 | TEAM-01 | Phase 2 | Complete |
 | TEAM-02 | Phase 2 | Complete |
