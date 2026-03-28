@@ -155,6 +155,11 @@
     letter-spacing: 0;
 }
 
+/* RTL breadcrumb separator flip (NAV-02, Pitfall 1) */
+[dir="rtl"] [data-slot="breadcrumb-separator"] svg {
+    transform: rotate(180deg);
+}
+
 /* Bidirectional text isolation (INTL-04) */
 .bidi-isolate {
     unicode-bidi: isolate;
