@@ -1,3 +1,6 @@
+import '@fontsource-variable/instrument-sans';
+import '@fontsource-variable/cairo';
+
 import { createInertiaApp } from '@inertiajs/react';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { initializeTheme } from '@/hooks/use-appearance';
@@ -13,6 +16,8 @@ createInertiaApp({
         switch (true) {
             case name === 'welcome':
                 return null;
+            case name.startsWith('public/'):
+                return null; // PublicLayout will be wired in Plan 03
             case name.startsWith('auth/'):
                 return AuthLayout;
             case name.startsWith('settings/'):
@@ -26,7 +31,7 @@ createInertiaApp({
         return <TooltipProvider delayDuration={0}>{app}</TooltipProvider>;
     },
     progress: {
-        color: '#4B5563',
+        color: '#14B8A6',
     },
 });
 

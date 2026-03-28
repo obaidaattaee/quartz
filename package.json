@@ -29,6 +29,9 @@
         "typescript-eslint": "^8.23.0"
     },
     "dependencies": {
+        "@fontsource-variable/cairo": "^5.2.7",
+        "@fontsource-variable/instrument-sans": "^5.2.8",
+        "@gsap/react": "^2.1.2",
         "@headlessui/react": "^2.2.0",
         "@inertiajs/react": "^3.0.0",
         "@inertiajs/vite": "^3.0.0",
@@ -53,9 +56,11 @@
         "clsx": "^2.1.1",
         "concurrently": "^9.0.1",
         "globals": "^15.14.0",
+        "gsap": "^3.14.2",
         "input-otp": "^1.4.2",
         "laravel-vite-plugin": "^3.0.0",
         "lucide-react": "^0.475.0",
+        "motion": "^12.38.0",
         "react": "^19.2.0",
         "react-dom": "^19.2.0",
         "tailwind-merge": "^3.0.1",
