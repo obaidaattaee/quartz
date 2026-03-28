@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ContactLeadController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MediaController;
 use Illuminate\Support\Facades\Route;
@@ -13,7 +14,11 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::post('media/upload', [MediaController::class, 'store'])->name('media.store');
     Route::delete('media/{media}', [MediaController::class, 'destroy'])->name('media.destroy');
 
-    // Placeholder route groups for future plans:
-    // Editor-accessible: blog, portfolio
-    // Admin-only: testimonials, services, team, contacts, users, settings
+    // Admin-only routes
+    Route::middleware('role:admin')->group(function () {
+        // Contact leads management
+        Route::get('contacts', [ContactLeadController::class, 'index'])->name('contacts.index');
+        Route::get('contacts/{contact}', [ContactLeadController::class, 'show'])->name('contacts.show');
+        Route::patch('contacts/{contact}/status', [ContactLeadController::class, 'updateStatus'])->name('contacts.status');
+    });
 });
