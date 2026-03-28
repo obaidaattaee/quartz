@@ -29,13 +29,14 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Page transitions between routes animate smoothly, scroll reveal animations fire on scroll, and all animations respect prefers-reduced-motion
   4. Sticky header with navigation items is visible on desktop and collapses to hamburger menu on mobile; footer displays sitemap links, contact info, and social links; breadcrumbs appear on inner pages; a branded 404 page is shown for unknown routes
   5. All UI components (buttons, cards, inputs, badges) render consistently with hover micro-interactions in both LTR and RTL layouts across mobile, tablet, and desktop breakpoints
-**Plans**: 3 plans
+**Plans**: 4 plans
 **UI hint**: yes
 
 Plans:
 - [x] 01-01-PLAN.md -- Locale routing, design tokens, fonts, RTL, i18n infrastructure (Wave 1)
 - [ ] 01-02-PLAN.md -- Animation system, page transitions, component micro-interactions (Wave 2)
 - [x] 01-03-PLAN.md -- PublicLayout, header, footer, breadcrumbs, 404 page (Wave 2)
+- [ ] 01-04-PLAN.md -- UAT gap closure: middleware lazy eval, CSS fixes, RTL Sheet, REQUIREMENTS tracking (Wave 1)
 
 ### Phase 2: Public Marketing Site
 **Goal**: Visitors land on a visually polished site, understand what services Quart offers, see proof of quality through testimonials and team credentials, and can reach out through multiple contact channels
@@ -95,7 +96,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Design System | 2/3 | In Progress|  |
+| 1. Foundation & Design System | 2/4 | In Progress|  |
 | 2. Public Marketing Site | 0/3 | Not started | - |
 | 3. Admin Panel | 0/2 | Not started | - |
 | 4. Blog, Portfolio & SEO | 0/2 | Not started | - |
