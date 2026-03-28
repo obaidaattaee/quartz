@@ -34,7 +34,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 Plans:
 - [x] 01-01-PLAN.md -- Locale routing, design tokens, fonts, RTL, i18n infrastructure (Wave 1)
-- [ ] 01-02-PLAN.md -- Animation system, page transitions, component micro-interactions (Wave 2)
+- [x] 01-02-PLAN.md -- Animation system, page transitions, component micro-interactions (Wave 2)
 - [ ] 01-03-PLAN.md -- PublicLayout, header, footer, breadcrumbs, 404 page (Wave 2)
 
 ### Phase 2: Public Marketing Site

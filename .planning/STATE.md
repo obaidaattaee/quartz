@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 01-01-PLAN.md
-last_updated: "2026-03-28T04:53:41.838Z"
+stopped_at: Completed 01-02-PLAN.md
+last_updated: "2026-03-28T05:00:15.910Z"
 last_activity: 2026-03-28
 progress:
   total_phases: 4
   completed_phases: 0
   total_plans: 3
-  completed_plans: 1
+  completed_plans: 2
   percent: 0
 ---
 
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-03-28)
 ## Current Position
 
 Phase: 1 of 4 (Foundation & Design System)
-Plan: 1 of 3 in current phase
+Plan: 2 of 3 in current phase
 Status: Ready to execute
 Last activity: 2026-03-28
 
@@ -53,6 +53,7 @@ Progress: [..........] 0%
 
 *Updated after each plan completion*
 | Phase 01 P01 | 8min | 2 tasks | 13 files |
+| Phase 01 P02 | 3min | 2 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -64,6 +65,7 @@ Recent decisions affecting current work:
 - [Roadmap]: 4-phase coarse roadmap derived from 67 v1 requirements. Foundation first to avoid RTL retrofit. Public site before admin to validate data models. Blog/portfolio last because it depends on admin CMS.
 - [Phase 01]: Removed viewTransition defaults from createInertiaApp due to Inertia v3 type limitations -- viewTransition available per-Link/visit instead
 - [Phase 01]: Self-hosted fonts via @fontsource-variable instead of CDN (fonts.bunny.net) for reliability and performance
+- [Phase 01]: Used motion/react for declarative animation variants; ScrollReveal uses motion.create() for dynamic elements
 
 ### Pending Todos
 
@@ -77,6 +79,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-28T04:53:41.832Z
-Stopped at: Completed 01-01-PLAN.md
+Last session: 2026-03-28T05:00:15.904Z
+Stopped at: Completed 01-02-PLAN.md
 Resume file: None
