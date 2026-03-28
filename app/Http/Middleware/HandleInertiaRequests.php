@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\SettingsService;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -45,6 +46,7 @@ class HandleInertiaRequests extends Middleware
             'locale' => fn () => app()->getLocale(),
             'direction' => fn () => app()->getLocale() === 'ar' ? 'rtl' : 'ltr',
             'translations' => fn () => $this->loadTranslations(app()->getLocale()),
+            'siteSettings' => fn () => SettingsService::all(),
         ];
     }
 

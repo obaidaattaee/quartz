@@ -1,5 +1,17 @@
-import { Link } from '@inertiajs/react';
-import { BookOpen, FolderGit2, LayoutGrid } from 'lucide-react';
+import { Link, usePage } from '@inertiajs/react';
+import {
+    Briefcase,
+    FileText,
+    FolderOpen,
+    Image,
+    LayoutDashboard,
+    Mail,
+    MessageSquare,
+    Newspaper,
+    Settings,
+    Shield,
+    Users,
+} from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -13,38 +25,55 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard } from '@/routes';
 import type { NavItem } from '@/types';
 
-const mainNavItems: NavItem[] = [
+const dashboardItem: NavItem[] = [
     {
         title: 'Dashboard',
-        href: dashboard(),
-        icon: LayoutGrid,
+        href: '/admin',
+        icon: LayoutDashboard,
     },
 ];
 
-const footerNavItems: NavItem[] = [
+const contentNavItems: NavItem[] = [
+    { title: 'Blog Posts', href: '/admin/blog', icon: FileText },
+    { title: 'Portfolio', href: '/admin/portfolio', icon: FolderOpen },
+];
+
+const websiteNavItems: NavItem[] = [
+    { title: 'Services', href: '/admin/services', icon: Briefcase },
     {
-        title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
-        icon: FolderGit2,
+        title: 'Testimonials',
+        href: '/admin/testimonials',
+        icon: MessageSquare,
     },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
-        icon: BookOpen,
-    },
+    { title: 'Team Members', href: '/admin/team', icon: Users },
+];
+
+const communicationNavItems: NavItem[] = [
+    { title: 'Contact Leads', href: '/admin/contacts', icon: Mail },
+    { title: 'Newsletter', href: '/admin/newsletter', icon: Newspaper },
+];
+
+const systemNavItems: NavItem[] = [
+    { title: 'Site Settings', href: '/admin/settings', icon: Settings },
+    { title: 'Media Library', href: '/admin/media', icon: Image },
+    { title: 'Users & Roles', href: '/admin/users', icon: Shield },
 ];
 
 export function AppSidebar() {
+    const { auth } = usePage<{
+        auth: { user: { role?: string } };
+    }>().props;
+    const isAdmin = auth.user?.role === 'admin';
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href={dashboard()} prefetch>
+                            <Link href="/admin" prefetch>
                                 <AppLogo />
                             </Link>
                         </SidebarMenuButton>
@@ -53,11 +82,33 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent>
-                <NavMain items={mainNavItems} />
+                <NavMain items={dashboardItem} label="Admin" />
+                <NavMain items={contentNavItems} label="Content" />
+                {isAdmin && (
+                    <NavMain
+                        items={websiteNavItems}
+                        label="Website"
+                    />
+                )}
+                {isAdmin && (
+                    <NavMain
+                        items={communicationNavItems}
+                        label="Communication"
+                    />
+                )}
+                {isAdmin && (
+                    <NavMain
+                        items={systemNavItems}
+                        label="System"
+                    />
+                )}
             </SidebarContent>
 
             <SidebarFooter>
-                <NavFooter items={footerNavItems} className="mt-auto" />
+                <NavFooter
+                    items={[]}
+                    className="mt-auto"
+                />
                 <NavUser />
             </SidebarFooter>
         </Sidebar>

@@ -39,7 +39,7 @@ Route::prefix('{locale}')
 
 // Auth/admin routes remain WITHOUT locale prefix
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::inertia('dashboard', 'dashboard')->name('dashboard');
+    Route::redirect('dashboard', '/admin')->name('dashboard');
 });
 
 require __DIR__.'/settings.php';
