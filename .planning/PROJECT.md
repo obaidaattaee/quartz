@@ -14,16 +14,16 @@ Visitors immediately understand what services are offered, see proof of quality 
 
 - [x] English/Arabic bilingual support with URL-based routing (/en/..., /ar/...) and full RTL layout — *Validated in Phase 01: Foundation & Design System*
 - [x] Dark/light mode toggle with smooth transitions — *Validated in Phase 01*
-- [x] Scroll reveal animations, hero motion graphics, hover interactions, and page transitions (scotchpos.com style) — *Validated in Phase 01 (animation system built; ScrollReveal usage deferred to Phase 02 pages)*
+- [x] Scroll reveal animations, hero motion graphics, hover interactions, and page transitions (scotchpos.com style) — *Validated in Phase 01 + Phase 02*
+- [x] Landing page with hero animation, service overview sections, testimonials, and CTA — *Validated in Phase 02: Public Marketing Site*
+- [x] Individual service detail pages for each service (dev, automation, QA, cybersecurity) — *Validated in Phase 02*
+- [x] Multi-channel contact — form, WhatsApp, phone, email all visible — *Validated in Phase 02*
+- [x] Scroll reveal animations applied to page content sections — *Validated in Phase 02*
 
 ### Active
 
-- [ ] Landing page with hero animation, service overview sections, testimonials, and CTA
-- [ ] Individual service detail pages for each service (dev, automation, QA, cybersecurity)
 - [ ] Portfolio gallery with visual grid of past work, filterable by service type
 - [ ] Blog system with rich editor, categories/tags, SEO metadata, rich media embeds, and author profiles
-- [ ] Multi-channel contact — form, WhatsApp, phone, email all visible
-- [ ] Scroll reveal animations applied to page content sections (infrastructure built in Phase 01, usage in Phase 02+)
 - [ ] Admin panel — manage blog posts, case studies, contact leads, and all site content
 - [ ] Theme customization in admin — logos, primary/secondary colors, contact information
 - [ ] Multi-role authentication — admin and editor roles with different permissions
@@ -81,4 +81,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-28 after Phase 01 completion*
+*Last updated: 2026-03-28 after Phase 02 completion*
