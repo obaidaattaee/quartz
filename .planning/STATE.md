@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 03-02-PLAN.md
-last_updated: "2026-03-28T09:03:57.920Z"
+stopped_at: Completed 03-04-PLAN.md
+last_updated: "2026-03-28T09:15:01.636Z"
 last_activity: 2026-03-28
 progress:
   total_phases: 4
   completed_phases: 2
   total_plans: 15
-  completed_plans: 11
+  completed_plans: 12
   percent: 56
 ---
 
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-03-28)
 ## Current Position
 
 Phase: 03 (admin-panel) — EXECUTING
-Plan: 2 of 6
+Plan: 3 of 6
 Status: Ready to execute
 Last activity: 2026-03-28
 
@@ -58,6 +58,7 @@ Progress: [######....] 56%
 | Phase 02 P04 | 5min | 2 tasks | 6 files |
 | Phase 02 P05 | 3min | 2 tasks | 0 files |
 | Phase 03 P02 | 8min | 2 tasks | 19 files |
+| Phase 03 P04 | 7min | 2 tasks | 16 files |
 
 ## Accumulated Context
 
@@ -79,6 +80,8 @@ Recent decisions affecting current work:
 - [Phase 03]: Used fetch API for MediaLibraryModal JSON requests instead of Inertia router (modal context needs non-page JSON)
 - [Phase 03]: forceMount + CSS hidden on BilingualTabs to prevent Tiptap content loss on tab switch (Pitfall 1)
 - [Phase 03]: Tiptap v3 setContent uses emitUpdate:false option object instead of boolean second param
+- [Phase 03]: Sort order swap pattern for reorderable admin lists (find adjacent, swap values)
+- [Phase 03]: Contact leads read-only with status management (new/read/handled) -- no CRUD since they come from public form
 
 ### Pending Todos
 
@@ -92,6 +95,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-28T09:03:57.910Z
-Stopped at: Completed 03-02-PLAN.md
+Last session: 2026-03-28T09:15:01.629Z
+Stopped at: Completed 03-04-PLAN.md
 Resume file: None
