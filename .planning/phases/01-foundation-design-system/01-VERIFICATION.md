@@ -1,283 +1,330 @@
 ---
 phase: 01-foundation-design-system
-verified: 2026-03-28T09:00:00Z
+verified: 2026-03-28T11:00:00Z
 status: human_needed
-score: 19/19 must-haves verified (automated); TypeScript compilation unverifiable without node_modules
-re_verification: false
+score: 19/19 must-haves verified (automated)
+re_verification: true
+re_verification_context:
+  previous_status: human_needed
+  previous_score: "19/19 automated (10 items sent to human)"
+  uat_results:
+    total: 8
+    passed: 2
+    issues: 5
+    blocked: 1
+  gap_closure_plan: 01-04
+  gaps_closed:
+    - "/ar/ renders with Arabic translations, RTL direction, and Cairo font (middleware closures + font-arabic Blade class)"
+    - "Mobile Sheet opens from LEFT on Arabic locale (same middleware fix + end-4 logical property)"
+    - "Header backdrop-blur transition includes backdrop-filter in CSS global rule"
+    - "REQUIREMENTS.md accurately reflects DSGN-04 through DSGN-07 status"
+  gaps_remaining: []
+  accepted_deferrals:
+    - "ScrollReveal component is built but no page imports it — explicitly accepted as Phase 2 concern (pages will wrap sections with <ScrollReveal> as they are built)"
+  regressions: []
 human_verification:
-  - test: "TypeScript compilation passes"
-    expected: "npx tsc --noEmit produces zero errors after npm install"
-    why_human: "node_modules not installed in working environment; tsc binary unavailable"
-  - test: "Navigating to /en/ in browser renders English LTR layout"
-    expected: "Header shows English nav labels, html[dir=ltr], Instrument Sans font, teal primary color"
-    why_human: "No runnable dev server in verification environment"
-  - test: "Navigating to /ar/ in browser renders Arabic RTL layout"
-    expected: "html[dir=rtl] set server-side, Cairo font loads, line-height 1.7, header/footer text in Arabic, layout flips correctly"
-    why_human: "No runnable dev server in verification environment"
-  - test: "Language switcher in header toggles EN/AR and preserves current page URL"
-    expected: "Clicking the switcher on /en/about navigates to /ar/about and vice versa"
-    why_human: "Requires browser interaction with live routing"
-  - test: "Header transitions from transparent to frosted glass on scroll"
-    expected: "After scrolling past 50px, header gains backdrop-blur-lg and bg-background/80 classes"
-    why_human: "Requires browser scroll interaction"
-  - test: "Mobile hamburger menu opens from correct side per locale"
-    expected: "LTR: Sheet opens from right. RTL: Sheet opens from left."
-    why_human: "Requires browser at mobile viewport with live Inertia rendering"
-  - test: "Dark mode system preference is respected on initial load"
-    expected: "With OS in dark mode and no localStorage key set, page renders dark (navy-black background)"
-    why_human: "Requires browser environment with OS dark mode preference"
-  - test: "Scroll reveal animations fire for ScrollReveal-wrapped elements"
-    expected: "Elements fade in + translate-y 20px when 20% visible in viewport"
-    why_human: "Requires browser with Motion library loaded"
-  - test: "prefers-reduced-motion disables animations"
-    expected: "With OS reduced-motion enabled, ScrollReveal initial=false (no animation), view-transition animations suppressed"
-    why_human: "Requires OS accessibility setting + browser"
-  - test: "REQUIREMENTS.md tracking for DSGN-04/05/06/07 updated to reflect completion"
-    expected: "Checkboxes checked and status column shows Complete, not Pending"
-    why_human: "Documentation discrepancy found — code is implemented but tracking file not updated"
+  - test: "Navigating to /ar/ in browser shows Arabic content, Cairo font, and RTL layout"
+    expected: "Nav labels and footer in Arabic, Cairo font renders, html[dir=rtl], layout mirrors correctly (closes UAT Test 2)"
+    why_human: "Middleware closure fix cannot be confirmed without a live browser hitting the actual route"
+  - test: "Language switcher on /ar/ shows 'Switch to English' label (not 'Switch to Arabic')"
+    expected: "Switcher label is localized to show target-language label based on current locale"
+    why_human: "Requires browser with live Inertia props flowing through fixed middleware"
+  - test: "Mobile hamburger on /ar/ at mobile viewport opens Sheet from LEFT"
+    expected: "Sheet slides from left, close button appears at logical end (left side in RTL)"
+    why_human: "Requires browser at mobile viewport with correct locale props from fixed middleware"
+  - test: "Header transitions to frosted glass after scrolling past 50px"
+    expected: "backdrop-blur-lg activates with smooth transition of backdrop-filter (now in global CSS transition list)"
+    why_human: "Requires browser scroll + page content long enough to scroll 50px"
+  - test: "TypeScript compilation passes with zero errors after npm install"
+    expected: "npx tsc --noEmit exits with 0 across all new/modified files"
+    why_human: "node_modules not installed in verification environment"
 ---
 
-# Phase 1: Foundation & Design System Verification Report
+# Phase 01: Foundation & Design System — Re-Verification Report
 
 **Phase Goal:** Every page rendered in either English (LTR) or Arabic (RTL) looks correct, uses the same design tokens, and has working navigation with smooth transitions
-**Verified:** 2026-03-28
+**Verified:** 2026-03-28T11:00:00Z
 **Status:** human_needed
-**Re-verification:** No — initial verification
+**Re-verification:** Yes — after UAT gap closure via Plan 04
 
-## Goal Achievement
+## Re-Verification Context
 
-### Observable Truths
+The initial automated verification (2026-03-28T09:00:00Z) passed all 19 structural checks and flagged 10 items for human testing. Human UAT returned 2 passes, 5 issues, and 1 blocked test. A gap closure plan (01-04) was created and executed, targeting 4 of the 5 issues. The 5th issue (ScrollReveal orphaned) was explicitly accepted as a Phase 2 deferral.
 
-| # | Truth | Status | Evidence |
-|---|-------|--------|----------|
-| 1 | Navigating to /en/any-page renders in English LTR | ? HUMAN | Route exists: `Route::inertia('/', 'public/home')` under `{locale}` prefix with SetLocale. HTML `dir` set server-side. Functional but browser required. |
-| 2 | Navigating to /ar/any-page renders in Arabic RTL with Cairo font and 1.7 line-height | ? HUMAN | `dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}"` in Blade. CSS `[dir="rtl"] { font-family: var(--font-arabic) }` and `[dir="rtl"] body { line-height: 1.7 }` confirmed. Browser required. |
-| 3 | Navigating to / redirects to /en | ✓ VERIFIED | `Route::redirect('/', '/en')` in routes/web.php:7 |
-| 4 | Unsupported locale (e.g. /fr/) returns 404 | ✓ VERIFIED | `->where(['locale' => 'en|ar'])` constraint in routes/web.php:11 plus `abort(404)` in SetLocale.php:18 |
-| 5 | Primary accent color is teal across all components in both light and dark modes | ✓ VERIFIED | `:root { --primary: oklch(0.704 0.14 182.503) }` and `.dark { --primary: oklch(0.777 0.152 181.912) }` in app.css:74,110 |
-| 6 | Dark mode shows deep navy-black background; light mode shows near-white background | ✓ VERIFIED | `.dark { --background: oklch(0.13 0.01 240) }` (app.css:104), `:root { --background: oklch(0.985 0 0) }` (app.css:68), blade inline style syncs |
-| 7 | System preference decides initial dark/light mode | ✓ VERIFIED | `initializeTheme()` in use-appearance.tsx calls `window.matchMedia('(prefers-color-scheme: dark)')` and applies class before React hydrates |
-| 8 | All new CSS uses logical properties (start/end) not physical (left/right) | ✓ VERIFIED | No `ml-/mr-/pl-/pr-` found in site-header.tsx, site-footer.tsx, or public-layout.tsx. `ps-3` and `text-start` used in header. |
-| 9 | Translation function t() returns correct string for current locale | ✓ VERIFIED | `resources/js/lib/i18n.ts` exports `t()` with fallback-to-key behavior. `useLocale().t()` wires translations from Inertia shared props. |
-| 10 | Scroll reveal animations fire once when element is 20% visible | ✓ VERIFIED | `scroll-reveal.tsx` uses `viewport={{ once: true, amount: 0.2 }}` with `whileInView="visible"` (line 38) |
-| 11 | Stagger animation applies 0.1s delay between sibling items | ✓ VERIFIED | `staggerContainer.visible.transition.staggerChildren: 0.1` in animations.ts:26 |
-| 12 | All animations disabled when prefers-reduced-motion is set | ✓ VERIFIED | `useReducedMotion()` returns Motion's hook result; `initial={shouldReduceMotion ? false : 'hidden'}` in scroll-reveal.tsx:36,53. CSS rule also suppresses view-transition animations. |
-| 13 | Buttons have hover micro-interaction (subtle lift + glow) | ✓ VERIFIED | `hover:-translate-y-0.5 hover:shadow-md hover:shadow-primary/25` in button.tsx default variant (line 13) |
-| 14 | Cards have hover micro-interaction (subtle lift + border glow) | ✓ VERIFIED | `hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-0.5 transition-all duration-300` in card.tsx:10 |
-| 15 | Sticky header starts transparent, transitions to frosted glass on scroll | ✓ VERIFIED | `useScrollHeader()` drives `isScrolled`. When true: `border-border/50 bg-background/80 border-b backdrop-blur-lg` applied (site-header.tsx:56-58). Browser required for live confirmation. |
-| 16 | Language switcher toggles EN/AR and preserves current page URL | ✓ VERIFIED | `switchLocaleUrl` computed from `url.replace(^/${locale}(/|$), /${targetLocale}$1)` in use-locale.tsx:22-25. LanguageSwitcher renders `<Link href={switchLocaleUrl}>`. |
-| 17 | Footer shows 4-column grid with copyright + Privacy + Terms bottom bar | ✓ VERIFIED | site-footer.tsx: `grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4` (line 36). Bottom bar with copyright, privacy, terms at lines 131-152. |
-| 18 | 404 page shows branded design with navigation back to home | ✓ VERIFIED | errors/404.tsx renders translated 404 content with `<Button asChild><Link href={/${locale}}>` back link. bootstrap/app.php wires it via `NotFoundHttpException` handler. |
-| 19 | Mobile menu slides from correct side (right for LTR, left for RTL) | ✓ VERIFIED | `<SheetContent side={isRTL ? 'left' : 'right'}>` in site-header.tsx:138 |
-
-**Score:** 19/19 truths structurally verified (9 require browser confirmation)
+This re-verification confirms Plan 04 fixes are present in the codebase and no regressions occurred.
 
 ---
 
-### Required Artifacts
+## UAT Gap Closure Verification
 
-#### Plan 01 Artifacts
+### Gap 1: Arabic Locale — Wrong Language / Font / Direction
 
-| Artifact | Expected | Status | Details |
-|----------|----------|--------|---------|
-| `app/Http/Middleware/SetLocale.php` | Locale extraction from URL | ✓ VERIFIED | Contains `app()->setLocale($locale)`, `URL::defaults`, `abort(404)` for unsupported locales |
-| `resources/css/app.css` | Teal brand color tokens in oklch | ✓ VERIFIED | `--primary: oklch(0.704 0.14 182.503)` in :root, `--background: oklch(0.13 0.01 240)` in .dark |
-| `resources/js/hooks/use-locale.tsx` | React hook for locale, direction, translation | ✓ VERIFIED | Exports `useLocale()` returning locale, direction, isRTL, t, switchLocaleUrl |
-| `resources/js/lib/i18n.ts` | Translation helper function | ✓ VERIFIED | Exports `t(translations, key, replacements?)` with fallback-to-key |
-| `resources/js/types/locale.ts` | Locale and Direction type definitions | ✓ VERIFIED | Exports `Locale`, `Direction`, `LocaleProps` |
-| `resources/lang/en.json` | English UI translations (min 10 keys) | ✓ VERIFIED | 29 keys covering nav, footer, breadcrumb, theme, error strings |
-| `resources/lang/ar.json` | Arabic UI translations (min 10 keys) | ✓ VERIFIED | 29 keys, matching en.json keys with Arabic values |
+**UAT finding:** `/ar/` rendered English content, Instrument Sans font, and `locale: 'en'` in Inertia props. Root cause: `HandleInertiaRequests::share()` evaluated `app()->getLocale()` eagerly before `SetLocale` route middleware ran.
 
-#### Plan 02 Artifacts
+**Plan 04 fix:**
 
-| Artifact | Expected | Status | Details |
-|----------|----------|--------|---------|
-| `resources/js/lib/animations.ts` | Shared Motion animation variants | ✓ VERIFIED | Exports: fadeInUp, fadeIn, scaleIn, staggerContainer, staggerContainerFast, heroEntrance, defaultTransition, heroTransition, quickTransition |
-| `resources/js/components/scroll-reveal.tsx` | Reusable scroll-triggered reveal wrapper | ✓ VERIFIED | Default export `ScrollReveal`, supports default/hero/stagger variants, uses Motion whileInView |
-| `resources/js/hooks/use-reduced-motion.tsx` | Hook wrapping Motion useReducedMotion | ✓ VERIFIED | Exports `useReducedMotion(): boolean` wrapping Motion's hook |
+| Fix | Location | Status |
+|-----|----------|--------|
+| Closures for `locale`, `direction`, `translations` in `share()` | `app/Http/Middleware/HandleInertiaRequests.php:45-47` | ✓ VERIFIED |
+| Locale-conditional font class on `<body>` | `resources/views/app.blade.php:47` | ✓ VERIFIED |
 
-#### Plan 03 Artifacts
+Evidence:
+- Lines 45-47 of `HandleInertiaRequests.php`: `'locale' => fn () => app()->getLocale()`, `'direction' => fn () => app()->getLocale() === 'ar' ? 'rtl' : 'ltr'`, `'translations' => fn () => $this->loadTranslations(app()->getLocale())`
+- `app.blade.php` line 47: `<body class="{{ app()->getLocale() === 'ar' ? 'font-arabic' : 'font-sans' }} antialiased">`
+- `--font-arabic` defined in `app.css:16` as `'Cairo Variable', 'Instrument Sans Variable', ...`
+- Tailwind v4 `@theme` block auto-generates `font-arabic` utility from `--font-arabic` variable
+- Commit `a69d8a4` present in git log
 
-| Artifact | Expected | Status | Details |
-|----------|----------|--------|---------|
-| `resources/js/layouts/public-layout.tsx` | Public page layout wrapper | ✓ VERIFIED | Default export `PublicLayout`, 74 lines, wires SiteHeader + breadcrumbs + SiteFooter |
-| `resources/js/components/site-header.tsx` | Sticky header with nav, CTA, language switcher, theme toggle | ✓ VERIFIED | 190+ lines, Services dropdown, 3 nav items, Contact CTA, LanguageSwitcher, ThemeToggle, mobile Sheet |
-| `resources/js/components/site-footer.tsx` | 4-column footer | ✓ VERIFIED | 155 lines, 4-column grid, newsletter form, services/quick links/contact columns, bottom bar |
-| `resources/js/components/language-switcher.tsx` | EN/AR language toggle | ✓ VERIFIED | Exports `LanguageSwitcher`, uses `switchLocaleUrl` from `useLocale()` |
-| `resources/js/components/theme-toggle.tsx` | Dark/light/system mode toggle | ✓ VERIFIED | Exports `ThemeToggle`, cycles light/dark/system via `useAppearance()` |
-| `resources/js/hooks/use-scroll-header.tsx` | Scroll position detection hook | ✓ VERIFIED | Exports `useScrollHeader(threshold=50): boolean`, passive scroll listener |
-| `resources/js/pages/errors/404.tsx` | Branded 404 error page | ✓ VERIFIED | 32 lines, uses `useLocale().t()`, navigates back to `/${locale}` |
-| `resources/js/pages/public/home.tsx` | Minimal home page placeholder | ✓ VERIFIED | 28 lines, uses PublicLayout via `Home.layout` pattern |
+**Gap status: CLOSED (pending browser confirmation)**
 
 ---
 
-### Key Link Verification
+### Gap 2: Header Backdrop-Blur Not Transitioning
 
-#### Plan 01 Key Links
+**UAT finding:** Header `backdrop-filter` did not animate. Root cause: global CSS transition rule on `html *, html *::before, html *::after` listed only `background-color, color, border-color` — `backdrop-filter` was excluded, overriding Tailwind's `transition-all` without covering blur.
 
-| From | To | Via | Status | Details |
-|------|----|-----|--------|---------|
-| routes/web.php | SetLocale.php | middleware on locale route group | ✓ WIRED | `->middleware(SetLocale::class)` at routes/web.php:12 |
-| HandleInertiaRequests.php | use-locale.tsx | Inertia shared data (locale, direction, translations) | ✓ WIRED | `'locale' =>`, `'direction' =>`, `'translations' =>` in share() method; use-locale.tsx reads from `usePage().props` |
-| resources/views/app.blade.php | resources/css/app.css | dir attribute on html element | ✓ WIRED | `dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}"` on html tag (line 4); CSS `[dir="rtl"]` selectors respond |
+**Plan 04 fix:**
 
-#### Plan 02 Key Links
+| Fix | Location | Status |
+|-----|----------|--------|
+| `backdrop-filter 0.3s ease` added to global transition rule | `resources/css/app.css:176` | ✓ VERIFIED |
 
-| From | To | Via | Status | Details |
-|------|----|-----|--------|---------|
-| scroll-reveal.tsx | animations.ts | imports fadeInUp variant and defaultTransition | ✓ WIRED | `import { fadeInUp, staggerContainer, defaultTransition, heroEntrance, heroTransition } from '@/lib/animations'` at scroll-reveal.tsx:5-11 |
-| scroll-reveal.tsx | use-reduced-motion.tsx | imports useReducedMotion | ✓ WIRED | `import { useReducedMotion } from '@/hooks/use-reduced-motion'` at scroll-reveal.tsx:4 |
-| resources/css/app.css | View Transitions API | prefers-reduced-motion media query | ✓ WIRED | `@media (prefers-reduced-motion: reduce) { ::view-transition-group(*) ... animation: none !important }` at app.css:180-186 |
+Evidence: `app.css` line 176 reads: `transition: background-color 0.3s ease, color 0.15s ease, border-color 0.3s ease, backdrop-filter 0.3s ease;`
 
-#### Plan 03 Key Links
+The `useScrollHeader()` hook and `isScrolled`-conditional class logic in `site-header.tsx` were correct all along. The CSS fix unblocks the transition.
 
-| From | To | Via | Status | Details |
-|------|----|-----|--------|---------|
-| public-layout.tsx | site-header.tsx | imports and renders SiteHeader at top | ✓ WIRED | `import SiteHeader` at line 5; `<SiteHeader />` at line 27 |
-| public-layout.tsx | site-footer.tsx | imports and renders SiteFooter at bottom | ✓ WIRED | `import SiteFooter` at line 4; `<SiteFooter />` at line 71 |
-| app.tsx | public-layout.tsx | layout resolver returns PublicLayout for public/ pages | ✓ WIRED | `import PublicLayout from '@/layouts/public-layout'` at line 9; `case name.startsWith('public/')`: return PublicLayout` at line 22-23 |
-| site-header.tsx | use-scroll-header.tsx | scroll position for frosted glass transition | ✓ WIRED | `import { useScrollHeader }` at line 24; `const isScrolled = useScrollHeader()` at line 28; used in className at line 55-58 |
-| site-header.tsx | language-switcher.tsx | renders LanguageSwitcher in header right section | ✓ WIRED | `import LanguageSwitcher` at line 5; `<LanguageSwitcher />` at line 123 |
+**Gap status: CLOSED (pending browser confirmation)**
 
 ---
 
-### Data-Flow Trace (Level 4)
+### Gap 3: RTL Sheet Opens from Wrong Side
 
-Components rendering dynamic data from Inertia shared props:
+**UAT finding:** Mobile hamburger sheet opened from RIGHT on `/ar/`. Root cause: same middleware ordering bug as Gap 1 caused `isRTL` to always be `false`; secondary: Sheet close button used physical `right-4` instead of logical `end-4`.
 
-| Artifact | Data Variable | Source | Produces Real Data | Status |
-|----------|---------------|--------|--------------------|--------|
-| use-locale.tsx | translations | `props.translations` from Inertia | `HandleInertiaRequests::loadTranslations()` reads JSON from `lang_path("{locale}.json")` | ✓ FLOWING |
-| use-locale.tsx | locale | `props.locale` from Inertia | `$locale = app()->getLocale()` set by SetLocale middleware | ✓ FLOWING |
-| use-locale.tsx | direction | `props.direction` from Inertia | Derived from locale: `$locale === 'ar' ? 'rtl' : 'ltr'` | ✓ FLOWING |
-| site-header.tsx | isScrolled | `useScrollHeader()` → `window.scrollY` | Real DOM scroll event listener | ✓ FLOWING |
-| language-switcher.tsx | switchLocaleUrl | `useLocale().switchLocaleUrl` → regex replace on `usePage().url` | Real current page URL | ✓ FLOWING |
+**Plan 04 fix:**
 
----
+| Fix | Location | Status |
+|-----|----------|--------|
+| Middleware closure fix (resolves `isRTL` data) | `HandleInertiaRequests.php:45-47` | ✓ VERIFIED (same as Gap 1) |
+| Sheet close button: `right-4` replaced with `end-4` | `resources/js/components/ui/sheet.tsx:73` | ✓ VERIFIED |
 
-### Behavioral Spot-Checks
+Evidence: `sheet.tsx` line 73 contains `end-4` (not `right-4`) in `SheetPrimitive.Close` className. The `SiteHeader` side-switching logic `side={isRTL ? 'left' : 'right'}` was correct all along and now receives `isRTL=true` for `/ar/` requests.
 
-Step 7b: SKIPPED — no node_modules installed, no dev server running. PHP vendor exists but artisan commands require Composer setup in this environment.
-
-Route structure verified via file inspection:
-- `Route::redirect('/', '/en')` — root redirect
-- `Route::prefix('{locale}')->where(['locale' => 'en|ar'])->middleware(SetLocale::class)` — locale group
-- `NotFoundHttpException` handler → `Inertia::render('errors/404')` — 404 wired
+**Gap status: CLOSED (pending browser confirmation)**
 
 ---
 
-### Requirements Coverage
+### Gap 4: ScrollReveal Not Used by Any Page (Accepted Deferral)
 
-| Requirement | Source Plan | Description | Status | Evidence |
-|-------------|------------|-------------|--------|---------|
-| INTL-01 | 01-01 | URL-based language routing with /en/ and /ar/ prefixes | ✓ SATISFIED | SetLocale.php + routes/web.php locale prefix group |
-| INTL-02 | 01-01 | Full RTL layout using CSS logical properties | ✓ SATISFIED | `dir` attribute server-side on html; `[dir="rtl"]` CSS rules; no physical left/right in new components |
-| INTL-03 | 01-01 | Language switcher preserves current page | ✓ SATISFIED | `switchLocaleUrl` regex-replaces locale prefix in current URL |
-| INTL-04 | 01-01 | Bidirectional text handling for mixed EN/AR content | ✓ SATISFIED | `.bidi-isolate { unicode-bidi: isolate }` utility class; `dir="ltr"` on phone number span in footer |
-| INTL-05 | 01-01 | Arabic typography with proper fonts, line-height, no letter-spacing | ✓ SATISFIED | `[dir="rtl"] { font-family: var(--font-arabic) }` and `[dir="rtl"] body { line-height: 1.7; letter-spacing: 0 }` |
-| INTL-06 | 01-01 | Translatable content with bilingual fields | ✓ SATISFIED | `HandleInertiaRequests::loadTranslations()` shares JSON translations; `t()` function and `useLocale()` hook available |
-| DSGN-01 | 01-01 | Premium color palette via CSS custom properties | ✓ SATISFIED | Full oklch teal token set in :root and .dark blocks |
-| DSGN-02 | 01-01 | Dark/light mode with smooth transition + localStorage | ✓ SATISFIED | CSS `transition: background-color 0.3s ease` on html; `useAppearance()` persists via localStorage + cookie |
-| DSGN-03 | 01-01 | Responsive layout at all breakpoints | ✓ SATISFIED | `sm:px-6 lg:px-8`, `md:grid-cols-2 lg:grid-cols-4`, `hidden lg:flex` breakpoints in header/footer |
-| DSGN-04 | 01-02 | Consistent component library with hover micro-interactions | ✓ SATISFIED | Button: hover lift+glow; Card: hover lift+shadow; Badge: brand variant; Input: teal focus ring |
-| DSGN-05 | 01-02 | Animation system: scroll reveals, stagger, hover effects | ✓ SATISFIED | `animations.ts` with 9 exports; `ScrollReveal` with whileInView + 20% viewport trigger |
-| DSGN-06 | 01-02 | Smooth page transitions (View Transitions) | PARTIAL | View Transition CSS crossfade (0.3s) is in place. Global `viewTransition: true` in createInertiaApp removed due to TS type incompatibility (documented deviation). Per-Link viewTransition still available. |
-| DSGN-07 | 01-02 | prefers-reduced-motion support | ✓ SATISFIED | `useReducedMotion()` hook; ScrollReveal passes `false` to initial prop; CSS `@media (prefers-reduced-motion: reduce)` disables view-transition animations |
-| DSGN-08 | 01-03 | Sticky header with 4-6 nav items + mobile hamburger | ✓ SATISFIED | site-header.tsx: Services dropdown + 3 nav items + Contact CTA + Language + Theme + hamburger Sheet |
-| NAV-01 | 01-03 | Footer with sitemap, contact, social, legal | ✓ SATISFIED | 4-column footer; bottom bar with copyright, Privacy, Terms |
-| NAV-02 | 01-03 | Breadcrumbs on inner pages | ✓ SATISFIED | PublicLayout renders breadcrumbs conditionally; `rtl:[&>svg]:rotate-180` in breadcrumb.tsx + CSS fallback |
-| NAV-03 | 01-03 | Custom branded 404 page with back navigation | ✓ SATISFIED | errors/404.tsx + NotFoundHttpException handler in bootstrap/app.php |
+**UAT finding:** No scroll-reveal elements in DOM. Root cause: `scroll-reveal.tsx`, `animations.ts`, and `use-reduced-motion.tsx` are fully implemented but no page imports `<ScrollReveal>`.
 
-**Requirements Coverage:** 16/17 fully satisfied, 1 partial (DSGN-06 — intentional documented deviation)
+**Plan 04 decision:** Explicitly accepted as Phase 2 concern. Plan 04 did not address this.
 
-**REQUIREMENTS.md tracking discrepancy:** DSGN-04, DSGN-05, DSGN-06, DSGN-07 still show `[ ]` (unchecked) and "Pending" status in REQUIREMENTS.md, despite being implemented and claimed completed in 01-02-SUMMARY.md. The REQUIREMENTS.md tracking file was not updated after Plan 02 completed.
+**Verification:**
+- `scroll-reveal.tsx` — present, substantive (55 lines, full implementation), confirmed not imported by any file (grep for `import.*scroll-reveal` returns 0 matches)
+- `animations.ts` — present, substantive (9 variants), imported only by `scroll-reveal.tsx`
+
+**Assessment against Phase 1 goal:** The goal requires "smooth transitions" — referring to route-level page transitions (View Transitions API) and UI micro-interactions. Scroll reveal animations on content sections are a Phase 2 concern (LAND-*, SRVC-*, PORT-* requirements). The animation infrastructure being built but not yet consumed by pages does not block Phase 1.
+
+**Gap status: ACCEPTED DEFERRAL — not a Phase 1 blocker**
 
 ---
 
-### Anti-Patterns Found
+### Gap 5: REQUIREMENTS.md Tracking Not Updated
 
-| File | Line | Pattern | Severity | Impact |
-|------|------|---------|----------|--------|
-| site-footer.tsx | 53 | `onSubmit={(e) => e.preventDefault()}` on newsletter form | ℹ️ Info | Intentional documented stub per Plan 03 decision; Phase 2 CONT-07 will wire to backend. Not a blocker for Phase 1 goal. |
-| site-footer.tsx | 120 | `dir="ltr"` hardcoded on phone number | ℹ️ Info | Correct usage — phone numbers are always LTR regardless of page direction. Not a bug. |
+**UAT finding:** DSGN-04/05/06/07 still showed "Pending" in tracking file despite Plan 02 completing them.
 
-No blocker anti-patterns found. The newsletter form stub is explicitly documented and scoped to Phase 2.
+**Plan 04 fix:**
 
----
+| Requirement | Old Status | New Status |
+|-------------|-----------|------------|
+| DSGN-04 | Pending | Complete |
+| DSGN-05 | Pending | Complete |
+| DSGN-06 | Pending | Partial |
+| DSGN-07 | Pending | Complete |
 
-### Human Verification Required
+Evidence: `.planning/REQUIREMENTS.md` lines 24-27 and 167-170 confirm `[x] DSGN-04`, `[x] DSGN-05`, `[~] DSGN-06`, `[x] DSGN-07` with matching Complete/Partial status in traceability table. Commit `29a8959` present in git log.
 
-#### 1. TypeScript Compilation
-
-**Test:** After `npm install`, run `npx tsc --noEmit` from project root
-**Expected:** Zero type errors across all new files (use-locale.tsx, i18n.ts, locale.ts, animations.ts, scroll-reveal.tsx, use-reduced-motion.tsx, use-scroll-header.tsx, site-header.tsx, site-footer.tsx, language-switcher.tsx, theme-toggle.tsx, public-layout.tsx, 404.tsx, home.tsx)
-**Why human:** `node_modules` not installed in verification environment
-
-#### 2. English/Arabic Page Rendering
-
-**Test:** Start dev server (`npm run dev` + `php artisan serve`), visit `/en/` and `/ar/`
-**Expected:** `/en/` shows English labels (Home, Services, etc.), LTR layout, Instrument Sans font, teal buttons. `/ar/` shows Arabic labels (الرئيسية, الخدمات, etc.), RTL layout, Cairo font, 1.7 line-height.
-**Why human:** Requires live browser with Inertia + Vite serving assets
-
-#### 3. Header Frosted Glass on Scroll
-
-**Test:** Visit `/en/` in browser, scroll down past 50px
-**Expected:** Header transitions from transparent to `backdrop-blur-lg` frosted glass with subtle bottom border
-**Why human:** Requires browser scroll event
-
-#### 4. Language Switcher URL Preservation
-
-**Test:** Navigate to `/en/about` (once that page exists), click language switcher
-**Expected:** Navigates to `/ar/about` preserving the path segment
-**Why human:** Requires live routing + browser navigation
-
-#### 5. Dark Mode System Preference on Fresh Load
-
-**Test:** Clear localStorage, set OS to dark mode, visit site
-**Expected:** Page loads dark (navy-black background oklch(0.13 0.01 240)) without flash
-**Why human:** Requires OS preference + browser + clear storage state
-
-#### 6. Mobile RTL Sheet Direction
-
-**Test:** Set browser to `/ar/` on mobile viewport (<1024px), tap hamburger icon
-**Expected:** Sheet slides in from the LEFT side (not right) because isRTL=true
-**Why human:** Requires mobile viewport + browser interaction
-
-#### 7. ScrollReveal Animations
-
-**Test:** Visit a page using `<ScrollReveal>` wrapper, observe element entering viewport
-**Expected:** Element starts hidden (opacity:0, y:20) and animates to visible (opacity:1, y:0) once
-**Why human:** Requires Motion library loaded in browser + scroll interaction
-
-#### 8. REQUIREMENTS.md Tracking Update
-
-**Test:** Update REQUIREMENTS.md to check off DSGN-04, DSGN-05, DSGN-06, DSGN-07 and change status to Complete
-**Expected:** All 17 phase 1 requirements show Complete in tracking table
-**Why human:** Documentation update task, not code verification
+**Gap status: CLOSED**
 
 ---
 
-### Noted Deviation: DSGN-06 Global View Transitions
+## Observable Truths (Full Re-Verification)
 
-**What the plan specified:** `defaults: { viewTransition: true }` in `createInertiaApp()` for global page transitions.
+| # | Truth | Previous Status | Current Status | Notes |
+|---|-------|----------------|----------------|-------|
+| 1 | /en/any-page renders English LTR | ? HUMAN | ? HUMAN | No change — browser required |
+| 2 | /ar/any-page renders Arabic RTL with Cairo font | ? HUMAN | ? HUMAN | Infrastructure fixed; browser still required |
+| 3 | / redirects to /en | ✓ VERIFIED | ✓ VERIFIED | No regression |
+| 4 | Unsupported locale returns 404 | ✓ VERIFIED | ✓ VERIFIED | No regression |
+| 5 | Primary accent is teal in light and dark modes | ✓ VERIFIED | ✓ VERIFIED | No regression |
+| 6 | Dark mode shows navy-black; light mode near-white | ✓ VERIFIED | ✓ VERIFIED | No regression |
+| 7 | System preference decides initial dark/light mode | ✓ VERIFIED | ✓ VERIFIED | No regression |
+| 8 | All new CSS uses logical properties (start/end) | ✓ VERIFIED | ✓ VERIFIED | `end-4` fix reinforces this |
+| 9 | t() returns correct string for current locale | ✓ VERIFIED | ✓ VERIFIED | Closures ensure locale is correct when t() runs |
+| 10 | Scroll reveal fires once when 20% visible | ✓ VERIFIED | ✓ VERIFIED (infra only) | Component verified; no page uses it — accepted deferral |
+| 11 | Stagger: 0.1s delay between siblings | ✓ VERIFIED | ✓ VERIFIED | No regression |
+| 12 | Animations disabled for prefers-reduced-motion | ✓ VERIFIED | ✓ VERIFIED | No regression |
+| 13 | Buttons: hover lift + glow | ✓ VERIFIED | ✓ VERIFIED | No regression |
+| 14 | Cards: hover lift + border glow | ✓ VERIFIED | ✓ VERIFIED | No regression |
+| 15 | Header: transparent → frosted glass on scroll | ✓ VERIFIED | ✓ VERIFIED | CSS backdrop-filter fix closes transition gap |
+| 16 | Language switcher preserves URL when toggling | ✓ VERIFIED | ✓ VERIFIED | Middleware fix ensures correct locale in switchLocaleUrl |
+| 17 | Footer: 4-column grid + copyright/Privacy/Terms | ✓ VERIFIED | ✓ VERIFIED | No regression |
+| 18 | 404 page: branded design + home navigation | ✓ VERIFIED | ✓ VERIFIED | No regression |
+| 19 | Mobile menu slides from correct side per locale | ✓ VERIFIED | ✓ VERIFIED | Middleware + end-4 fix closes this |
 
-**What was implemented:** The `defaults` block was intentionally removed. The Inertia v3 TypeScript types do not expose `viewTransition` in `InertiaAppConfig`, causing a TS2769 compile error. The View Transitions CSS (crossfade at 0.3s, reduced-motion support) is in place. Per-Link and per-`router.visit()` `viewTransition` options remain available.
-
-**Impact on goal:** Minimal. The CSS infrastructure for transitions is wired. Global auto-transitions will not fire without the config key, but individual navigations can opt in. This is a framework type limitation, not a missing implementation.
+**Score:** 19/19 truths have structural evidence (5 still require browser confirmation)
 
 ---
 
-### Gaps Summary
+## Required Artifacts (Regression Check)
 
-No blocking gaps found. All 19 observable truths have structural evidence in the codebase. All 18 artifacts from the three plan must_haves are present, substantive, and wired. All key links connect. Data flows from middleware through Inertia props to components.
+All 21 tracked artifacts confirmed present. No regressions introduced by Plan 04.
 
-Two items are deferred to human verification:
-1. TypeScript compilation (no node_modules in environment)
-2. Browser-level behavior (no dev server running)
-
-One documentation discrepancy: REQUIREMENTS.md tracking for DSGN-04/05/06/07 not updated to "Complete" after Plan 02 executed.
+| Artifact | Status | Note |
+|----------|--------|------|
+| `app/Http/Middleware/SetLocale.php` | ✓ VERIFIED | Unchanged |
+| `app/Http/Middleware/HandleInertiaRequests.php` | ✓ VERIFIED | Closures in share() |
+| `resources/css/app.css` | ✓ VERIFIED | backdrop-filter in global transition |
+| `resources/views/app.blade.php` | ✓ VERIFIED | font-arabic/font-sans conditional |
+| `resources/js/hooks/use-locale.tsx` | ✓ VERIFIED | Unchanged |
+| `resources/js/lib/i18n.ts` | ✓ VERIFIED | Unchanged |
+| `resources/js/types/locale.ts` | ✓ VERIFIED | Unchanged |
+| `resources/lang/en.json` | ✓ VERIFIED | Unchanged |
+| `resources/lang/ar.json` | ✓ VERIFIED | Unchanged |
+| `resources/js/lib/animations.ts` | ✓ VERIFIED | Unchanged |
+| `resources/js/components/scroll-reveal.tsx` | ✓ VERIFIED | Orphaned — accepted deferral |
+| `resources/js/hooks/use-reduced-motion.tsx` | ✓ VERIFIED | Unchanged |
+| `resources/js/layouts/public-layout.tsx` | ✓ VERIFIED | Unchanged |
+| `resources/js/components/site-header.tsx` | ✓ VERIFIED | Unchanged |
+| `resources/js/components/site-footer.tsx` | ✓ VERIFIED | Unchanged |
+| `resources/js/components/language-switcher.tsx` | ✓ VERIFIED | Unchanged |
+| `resources/js/components/theme-toggle.tsx` | ✓ VERIFIED | Unchanged |
+| `resources/js/hooks/use-scroll-header.tsx` | ✓ VERIFIED | Unchanged |
+| `resources/js/components/ui/sheet.tsx` | ✓ VERIFIED | end-4 close button |
+| `resources/js/pages/errors/404.tsx` | ✓ VERIFIED | Unchanged |
+| `resources/js/pages/public/home.tsx` | ✓ VERIFIED | Unchanged |
+| `.planning/REQUIREMENTS.md` | ✓ VERIFIED | All 17 IDs tracked correctly |
 
 ---
 
-_Verified: 2026-03-28_
+## Key Link Verification (Regression Check)
+
+| From | To | Via | Status |
+|------|----|-----|--------|
+| `HandleInertiaRequests.php` | `use-locale.tsx` | Closure-based lazy props (locale, direction, translations) | ✓ WIRED |
+| `routes/web.php` | `SetLocale.php` | `->middleware(SetLocale::class)` on locale prefix group | ✓ WIRED |
+| `app.blade.php` | `app.css` | `font-arabic` Tailwind utility from `@theme --font-arabic` | ✓ WIRED |
+| `public-layout.tsx` | `site-header.tsx` | Import + `<SiteHeader />` | ✓ WIRED |
+| `site-header.tsx` | `use-scroll-header.tsx` | `const isScrolled = useScrollHeader()` | ✓ WIRED |
+| `app.tsx` | `public-layout.tsx` | `case name.startsWith('public/')` layout resolver | ✓ WIRED |
+| `site-header.tsx` | `language-switcher.tsx` | Import + `<LanguageSwitcher />` in header | ✓ WIRED |
+
+---
+
+## Data-Flow Trace (Re-Verification)
+
+| Data | Full Flow | Status |
+|------|-----------|--------|
+| locale | `SetLocale::handle()` sets `app()->getLocale()` → `share() fn()=>` reads at render time → Inertia props → `usePage().props.locale` → `useLocale().locale` | ✓ FLOWING |
+| direction | Closure in `share()` derives from locale: `fn () => app()->getLocale() === 'ar' ? 'rtl' : 'ltr'` → `useLocale().isRTL` → `SiteHeader side={isRTL ? 'left' : 'right'}` | ✓ FLOWING |
+| translations | `fn () => $this->loadTranslations(app()->getLocale())` reads `lang/{locale}.json` → `useLocale().t()` | ✓ FLOWING |
+| font class | Blade `app()->getLocale()` (runs in response phase, after SetLocale) → `font-arabic`/`font-sans` on `<body>` | ✓ FLOWING |
+| isScrolled | `window.scrollY` passive listener → `useScrollHeader()` state → `SiteHeader` conditional classes with `backdrop-filter` transition | ✓ FLOWING |
+
+---
+
+## Requirements Coverage (Final)
+
+| Requirement | Description | Status | Evidence |
+|-------------|-------------|--------|---------|
+| INTL-01 | URL-based routing `/en/` + `/ar/` | ✓ SATISFIED | `Route::prefix('{locale}')`, `SetLocale.php` |
+| INTL-02 | Full RTL with logical properties | ✓ SATISFIED | `end-4` in sheet, `ps-3`, `[dir="rtl"]` CSS, no physical left/right |
+| INTL-03 | Language switcher preserves URL | ✓ SATISFIED | `switchLocaleUrl` regex-replaces locale prefix |
+| INTL-04 | Bidirectional text handling | ✓ SATISFIED | `.bidi-isolate` utility, `dir="ltr"` on phone span |
+| INTL-05 | Arabic typography system | ✓ SATISFIED | `font-arabic` class + Cairo Variable, `line-height: 1.7`, `letter-spacing: 0` |
+| INTL-06 | Translatable content with bilingual fields | ✓ SATISFIED | `t()`, JSON translation files, `useLocale()` |
+| DSGN-01 | Premium color palette via CSS custom properties | ✓ SATISFIED | oklch teal tokens in `:root` and `.dark` |
+| DSGN-02 | Dark/light mode with smooth transition + localStorage | ✓ SATISFIED | CSS `transition: background-color 0.3s ease`, `useAppearance()` |
+| DSGN-03 | Responsive layout all breakpoints | ✓ SATISFIED | `sm:px-6 lg:px-8`, `md:grid-cols-2 lg:grid-cols-4` |
+| DSGN-04 | Component library with hover micro-interactions | ✓ SATISFIED | Button lift+glow, Card lift+shadow, Badge brand variant |
+| DSGN-05 | Animation system: scroll reveals, stagger, hover | ✓ SATISFIED | `animations.ts` (9 variants), `ScrollReveal`, `useReducedMotion` |
+| DSGN-06 | Smooth page transitions | PARTIAL | CSS View Transition crossfade (0.3s) present; `viewTransition: true` removed from `createInertiaApp` defaults (Inertia v3 TS type limitation — documented deviation) |
+| DSGN-07 | prefers-reduced-motion support | ✓ SATISFIED | `useReducedMotion()` hook + `ScrollReveal` + CSS `@media` rule |
+| DSGN-08 | Sticky header with nav + mobile hamburger | ✓ SATISFIED | Services dropdown, 3 nav items, CTA, Language, Theme, Sheet |
+| NAV-01 | Footer with sitemap, contact, social, legal | ✓ SATISFIED | 4-column grid, bottom bar with copyright/Privacy/Terms |
+| NAV-02 | Breadcrumbs on inner pages | ✓ SATISFIED | `PublicLayout` conditional breadcrumbs, RTL chevron flip |
+| NAV-03 | Custom branded 404 page | ✓ SATISFIED | `errors/404.tsx` + `NotFoundHttpException` handler |
+
+**Coverage: 16/17 fully satisfied, 1 partial (DSGN-06 — intentional documented deviation)**
+
+---
+
+## Anti-Patterns (Plan 04 Changed Files)
+
+No new anti-patterns introduced by Plan 04 changes. All 4 modified files are clean:
+
+- `HandleInertiaRequests.php` — closures are the documented Inertia lazy-eval pattern, not stubs
+- `app.blade.php` — locale conditional is correct; Blade renders after SetLocale executes
+- `app.css` — adding `backdrop-filter` to transition list is intentional and correct
+- `sheet.tsx` — `end-4` is the correct logical property replacement for `right-4`
+
+Pre-existing noted item (unchanged):
+- `site-footer.tsx:53` — newsletter form `onSubmit` stub — ℹ️ Info, Phase 2 CONT-07 concern, explicitly documented
+
+---
+
+## Human Verification Required
+
+### 1. Arabic Page Rendering End-to-End
+
+**Test:** Start dev server (`npm run dev` + `php artisan serve`), visit `/ar/`
+**Expected:** Nav labels in Arabic (الرئيسية, الخدمات, تواصل معنا), Cairo font visually distinct from Instrument Sans, `html[dir=rtl]` confirmed in DevTools, layout mirrors correctly
+**Why human:** Middleware closure fix requires live HTTP request through full middleware stack to confirm deferred evaluation works as intended
+
+### 2. Language Switcher Label Localization
+
+**Test:** Visit `/ar/` and check the language switcher label
+**Expected:** Switcher shows "Switch to English" (or equivalent), not "Switch to Arabic"
+**Why human:** Label is translated via `useLocale().t()` which requires correct `translations` prop from fixed middleware
+
+### 3. Mobile RTL Sheet Direction
+
+**Test:** Visit `/ar/` at mobile viewport (<1024px), tap hamburger
+**Expected:** Sheet slides from LEFT, close button appears at logical end (left side in RTL)
+**Why human:** Requires browser with mobile viewport + correct locale props from fixed middleware
+
+### 4. Header Frosted Glass Transition
+
+**Test:** On a page with sufficient content to scroll (Phase 2 home page), scroll past 50px on `/en/` or `/ar/`
+**Expected:** Header `backdrop-filter` transitions smoothly to `backdrop-blur-lg`
+**Why human:** Requires browser scroll; current home page stub may still lack sufficient height to trigger 50px threshold
+
+### 5. TypeScript Compilation Clean
+
+**Test:** `npm install` then `npx tsc --noEmit`
+**Expected:** Zero errors across all Phase 1 files and Plan 04 modified files
+**Why human:** `node_modules` not available in verification environment
+
+---
+
+## Summary
+
+Phase 01 gap closure via Plan 04 is fully verified in the codebase. All 4 infrastructure bugs identified during UAT have code-level fixes confirmed:
+
+1. `HandleInertiaRequests::share()` uses closures — locale/direction/translations now evaluate after `SetLocale` route middleware runs. This resolves Arabic locale rendering, translation delivery, RTL direction prop, and Sheet side-switching (UAT Tests 2 and 6).
+2. `app.blade.php` body tag applies `font-arabic` class on Arabic locale — Cairo Variable font now correctly applied at the HTML level (UAT Test 2 secondary issue).
+3. `app.css` global transition rule includes `backdrop-filter 0.3s ease` — header blur will animate smoothly once pages have sufficient scrollable content (UAT Test 3).
+4. `sheet.tsx` close button uses `end-4` — RTL-safe logical positioning (UAT Test 6 secondary issue).
+
+REQUIREMENTS.md is fully up to date with all 17 Phase 1 requirements tracked at correct status.
+
+The ScrollReveal orphan is an accepted deferral with explicit rationale — the animation infrastructure exists and is verified; page-level usage will be added in Phase 2 as content sections are built.
+
+5 browser-level confirmations remain needed — the functional consequences of the 4 infrastructure fixes cannot be confirmed without a live HTTP request stack and browser.
+
+---
+
+_Verified: 2026-03-28T11:00:00Z_
 _Verifier: Claude (gsd-verifier)_
+_Re-verification after: UAT gaps diagnosed + Plan 04 gap closure executed_
