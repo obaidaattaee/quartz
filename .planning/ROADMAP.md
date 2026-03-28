@@ -68,12 +68,16 @@ Plans:
   3. Admin can view contact leads with status tracking (new/read/handled) and filtering; can manage testimonials (add, edit, reorder, show/hide); can edit service page content through structured fields; can manage team members with photos and bios
   4. Admin can upload a logo, pick primary/secondary brand colors, update contact info and social links through site settings; a media library allows uploading, browsing, and reusing images with thumbnail generation
   5. Editor role users can only access blog and portfolio management; admin role users have access to everything; unauthorized sections are not accessible
-**Plans**: TBD
+**Plans**: 6 plans
 **UI hint**: yes
 
 Plans:
-- [ ] 03-01: TBD
-- [ ] 03-02: TBD
+- [ ] 03-01-PLAN.md -- Backend foundation: migrations, models, services, middleware, routes, dashboard, sidebar (Wave 1)
+- [ ] 03-02-PLAN.md -- Media library and shared admin components: Tiptap editor, bilingual tabs, data table (Wave 2)
+- [ ] 03-03-PLAN.md -- Blog post CRUD with Tiptap rich text and Portfolio CRUD with case studies (Wave 3)
+- [ ] 03-04-PLAN.md -- Contact lead management, testimonial CRUD with reorder, team member CRUD (Wave 3)
+- [ ] 03-05-PLAN.md -- Service page structured editing, site settings with color picker, user management (Wave 3)
+- [ ] 03-06-PLAN.md -- Content seeders, DB-backed public pages transition, full verification checkpoint (Wave 4)
 
 ### Phase 4: Blog, Portfolio & SEO
 **Goal**: The site has a content marketing engine with a full blog and portfolio gallery, and search engines can properly discover, index, and display all pages in both languages
@@ -98,7 +102,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Design System | 2/4 | In Progress|  |
-| 2. Public Marketing Site | 0/5 | Not started | - |
-| 3. Admin Panel | 0/2 | Not started | - |
+| 1. Foundation & Design System | 4/4 | Complete |  |
+| 2. Public Marketing Site | 5/5 | Complete | - |
+| 3. Admin Panel | 0/6 | Not started | - |
 | 4. Blog, Portfolio & SEO | 0/2 | Not started | - |
