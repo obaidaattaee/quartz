@@ -52,7 +52,7 @@ Plans:
 **UI hint**: yes
 
 Plans:
-- [ ] 02-01-PLAN.md -- Backend infrastructure, routes, translations, accordion install (Wave 1)
+- [x] 02-01-PLAN.md -- Backend infrastructure, routes, translations, accordion install (Wave 1)
 - [ ] 02-02-PLAN.md -- Landing page with all 7 sections (Wave 2)
 - [ ] 02-03-PLAN.md -- Service detail pages and About/Team page (Wave 2)
 - [ ] 02-04-PLAN.md -- Contact page, FAQ page, newsletter footer wiring (Wave 2)
