@@ -21,10 +21,10 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **DSGN-01**: Premium color palette with primary/secondary colors, applied via CSS custom properties
 - [x] **DSGN-02**: Dark/light mode toggle with smooth transition and localStorage persistence
 - [x] **DSGN-03**: Responsive layout system tested at all breakpoints (mobile, tablet, desktop)
-- [ ] **DSGN-04**: Consistent component library (buttons, cards, inputs, badges) with hover micro-interactions
-- [ ] **DSGN-05**: Animation system using Motion + GSAP for scroll reveals, staggered entrances, and hover effects
-- [ ] **DSGN-06**: Smooth page transitions between routes (Inertia + View Transitions / AnimatePresence)
-- [ ] **DSGN-07**: prefers-reduced-motion support — disable animations for users who opt out
+- [x] **DSGN-04**: Consistent component library (buttons, cards, inputs, badges) with hover micro-interactions
+- [x] **DSGN-05**: Animation system using Motion + GSAP for scroll reveals, staggered entrances, and hover effects
+- [~] **DSGN-06**: Smooth page transitions between routes (Inertia + View Transitions / AnimatePresence)
+- [x] **DSGN-07**: prefers-reduced-motion support — disable animations for users who opt out
 - [x] **DSGN-08**: Sticky header navigation with 4-6 items and mobile hamburger menu
 
 ### Landing Page
@@ -164,10 +164,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DSGN-01 | Phase 1 | Complete |
 | DSGN-02 | Phase 1 | Complete |
 | DSGN-03 | Phase 1 | Complete |
-| DSGN-04 | Phase 1 | Pending |
-| DSGN-05 | Phase 1 | Pending |
-| DSGN-06 | Phase 1 | Pending |
-| DSGN-07 | Phase 1 | Pending |
+| DSGN-04 | Phase 1 | Complete |
+| DSGN-05 | Phase 1 | Complete |
+| DSGN-06 | Phase 1 | Partial |
+| DSGN-07 | Phase 1 | Complete |
 | DSGN-08 | Phase 1 | Complete |
 | NAV-01 | Phase 1 | Complete |
 | NAV-02 | Phase 1 | Complete |
