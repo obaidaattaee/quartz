@@ -5,8 +5,11 @@ use App\Http\Controllers\Admin\ContactLeadController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\PortfolioItemController;
+use App\Http\Controllers\Admin\ServicePageController;
+use App\Http\Controllers\Admin\SiteSettingController;
 use App\Http\Controllers\Admin\TeamMemberController;
 use App\Http\Controllers\Admin\TestimonialController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
@@ -24,7 +27,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     // Portfolio items -- accessible to editors and admins
     Route::resource('portfolio', PortfolioItemController::class);
 
-    // Admin-only routes
+    // Admin-only routes -- editors get 403
     Route::middleware('role:admin')->group(function () {
         // Contact leads management
         Route::get('contacts', [ContactLeadController::class, 'index'])->name('contacts.index');
@@ -38,5 +41,15 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
         // Team members CRUD with reorder
         Route::resource('team', TeamMemberController::class);
         Route::post('team/{teamMember}/reorder', [TeamMemberController::class, 'reorder'])->name('team.reorder');
+
+        // Service page management (edit-only, fixed set of 4 service pages)
+        Route::resource('services', ServicePageController::class)->only(['index', 'edit', 'update']);
+
+        // Site settings (branding, colors, contact, social)
+        Route::get('settings', [SiteSettingController::class, 'index'])->name('settings.index');
+        Route::put('settings', [SiteSettingController::class, 'update'])->name('settings.update');
+
+        // User management (CRUD)
+        Route::resource('users', UserController::class)->except(['show']);
     });
 });
