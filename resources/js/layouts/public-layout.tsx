@@ -1,5 +1,6 @@
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import type { ReactNode } from 'react';
+import { useEffect } from 'react';
 
 import SiteFooter from '@/components/site-footer';
 import SiteHeader from '@/components/site-header';
@@ -21,6 +22,35 @@ type Props = {
 
 export default function PublicLayout({ children, breadcrumbs = [] }: Props) {
     const { locale, t } = useLocale();
+    const { siteSettings } = usePage<{
+        siteSettings: Record<string, string>;
+    }>().props;
+
+    // Apply site settings color overrides via CSS custom properties
+    useEffect(() => {
+        if (siteSettings?.primary_color) {
+            document.documentElement.style.setProperty(
+                '--site-primary-color',
+                siteSettings.primary_color,
+            );
+        }
+
+        if (siteSettings?.secondary_color) {
+            document.documentElement.style.setProperty(
+                '--site-secondary-color',
+                siteSettings.secondary_color,
+            );
+        }
+
+        return () => {
+            document.documentElement.style.removeProperty(
+                '--site-primary-color',
+            );
+            document.documentElement.style.removeProperty(
+                '--site-secondary-color',
+            );
+        };
+    }, [siteSettings]);
 
     return (
         <div className="flex min-h-screen flex-col">

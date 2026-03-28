@@ -8,8 +8,22 @@ import {
 import { useLocale } from '@/hooks/use-locale';
 import { fadeInUp } from '@/lib/animations';
 
+type TeamMember = {
+    id: number;
+    name_en: string;
+    name_ar: string;
+    role_en: string;
+    role_ar: string;
+    bio_en: string;
+    bio_ar: string;
+    photo?: {
+        id: number;
+        url: string;
+    } | null;
+};
+
 type Props = {
-    index: number;
+    member: TeamMember;
 };
 
 function getInitials(name: string): string {
@@ -26,22 +40,32 @@ function getInitials(name: string): string {
     return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
 }
 
-export default function TeamCard({ index }: Props) {
-    const { t } = useLocale();
+export default function TeamCard({ member }: Props) {
+    const { locale } = useLocale();
 
-    const name = t(`about.team.${index}.name`);
-    const role = t(`about.team.${index}.role`);
-    const bio = t(`about.team.${index}.bio`);
+    const name =
+        locale === 'ar' ? member.name_ar : member.name_en;
+    const role =
+        locale === 'ar' ? member.role_ar : member.role_en;
+    const bio =
+        locale === 'ar' ? member.bio_ar : member.bio_en;
     const initials = getInitials(name);
 
     return (
         <motion.div variants={fadeInUp}>
             <Card className="group transition-all duration-300 hover:shadow-lg">
                 <CardHeader className="items-center pb-0">
-                    {/* Placeholder avatar with initials */}
-                    <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 text-xl font-bold text-primary transition-transform duration-300 group-hover:scale-105">
-                        {initials}
-                    </div>
+                    {member.photo?.url ? (
+                        <img
+                            src={member.photo.url}
+                            alt={name}
+                            className="h-20 w-20 rounded-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
+                    ) : (
+                        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 text-xl font-bold text-primary transition-transform duration-300 group-hover:scale-105">
+                            {initials}
+                        </div>
+                    )}
                     <h3 className="mt-3 text-center text-lg font-semibold">
                         {name}
                     </h3>

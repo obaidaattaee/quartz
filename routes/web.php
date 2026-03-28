@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\AboutController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\FaqController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Route;
 
@@ -13,17 +17,18 @@ Route::prefix('{locale}')
     ->where(['locale' => 'en|ar'])
     ->middleware(SetLocale::class)
     ->group(function () {
-        Route::inertia('/', 'public/home')->name('home');
+        Route::get('/', [HomeController::class, 'index'])->name('home');
 
-        // Service pages (static Inertia render)
-        Route::inertia('/services/development', 'public/services/development')->name('services.development');
-        Route::inertia('/services/automation', 'public/services/automation')->name('services.automation');
-        Route::inertia('/services/qa', 'public/services/qa')->name('services.qa');
-        Route::inertia('/services/cybersecurity', 'public/services/cybersecurity')->name('services.cybersecurity');
+        // Service pages (database-backed via controller)
+        Route::get('/services/{slug}', [ServiceController::class, 'show'])
+            ->where('slug', 'development|automation|qa|cybersecurity')
+            ->name('services.show');
 
-        // Static pages
-        Route::inertia('/about', 'public/about')->name('about');
-        Route::inertia('/faq', 'public/faq')->name('faq');
+        // About (database-backed team members)
+        Route::get('/about', [AboutController::class, 'index'])->name('about');
+
+        // FAQ (translations-based for v1)
+        Route::get('/faq', [FaqController::class, 'index'])->name('faq');
 
         // Contact (GET: show form via Inertia, POST: submit via controller)
         Route::inertia('/contact', 'public/contact')->name('contact.show');

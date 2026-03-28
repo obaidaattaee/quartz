@@ -1,4 +1,4 @@
-import { Head } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import { Award } from 'lucide-react';
 import { motion } from 'motion/react';
 import type { ReactNode } from 'react';
@@ -9,11 +9,31 @@ import { useLocale } from '@/hooks/use-locale';
 import { fadeInUp } from '@/lib/animations';
 import PublicLayout from '@/layouts/public-layout';
 
-const TEAM_COUNT = 4;
 const CERTIFICATION_COUNT = 6;
+
+type TeamMember = {
+    id: number;
+    name_en: string;
+    name_ar: string;
+    role_en: string;
+    role_ar: string;
+    bio_en: string;
+    bio_ar: string;
+    sort_order: number;
+    photo?: {
+        id: number;
+        url: string;
+    } | null;
+};
+
+type AboutProps = {
+    teamMembers: TeamMember[];
+};
 
 export default function About() {
     const { t } = useLocale();
+    const { teamMembers } = usePage<{ teamMembers: TeamMember[] }>()
+        .props as AboutProps;
 
     return (
         <>
@@ -47,7 +67,7 @@ export default function About() {
                 </div>
             </section>
 
-            {/* Team section */}
+            {/* Team section (database-backed) */}
             <section className="bg-muted/30 py-16 md:py-24">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <ScrollReveal>
@@ -63,12 +83,12 @@ export default function About() {
                         as="div"
                         className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4"
                     >
-                        {Array.from(
-                            { length: TEAM_COUNT },
-                            (_, i) => (
-                                <TeamCard key={i} index={i} />
-                            ),
-                        )}
+                        {teamMembers.map((member) => (
+                            <TeamCard
+                                key={member.id}
+                                member={member}
+                            />
+                        ))}
                     </ScrollReveal>
                 </div>
             </section>

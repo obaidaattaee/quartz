@@ -1,4 +1,4 @@
-import { Head } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import { Code2, Lock, ShieldCheck, Zap } from 'lucide-react';
 
 import ClientLogos from '@/components/client-logos';
@@ -12,8 +12,28 @@ import TestimonialCard from '@/components/testimonial-card';
 import { useLocale } from '@/hooks/use-locale';
 import PublicLayout from '@/layouts/public-layout';
 
+type Testimonial = {
+    id: number;
+    quote_en: string;
+    quote_ar: string;
+    author_name_en: string;
+    author_name_ar: string;
+    author_title_en: string;
+    author_title_ar: string;
+    company_en: string;
+    company_ar: string;
+    is_visible: boolean;
+    sort_order: number;
+};
+
+type HomeProps = {
+    testimonials: Testimonial[];
+};
+
 export default function Home() {
     const { locale, t } = useLocale();
+    const { testimonials } = usePage<{ testimonials: Testimonial[] }>()
+        .props as HomeProps;
 
     return (
         <>
@@ -73,7 +93,7 @@ export default function Home() {
             {/* 4. Statistics */}
             <StatisticsSection />
 
-            {/* 5. Testimonials */}
+            {/* 5. Testimonials (database-backed) */}
             <section className="py-16 md:py-24">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <ScrollReveal>
@@ -87,9 +107,12 @@ export default function Home() {
                         as="div"
                         className="grid grid-cols-1 gap-6 md:grid-cols-3"
                     >
-                        <TestimonialCard index={0} />
-                        <TestimonialCard index={1} />
-                        <TestimonialCard index={2} />
+                        {testimonials.map((testimonial) => (
+                            <TestimonialCard
+                                key={testimonial.id}
+                                testimonial={testimonial}
+                            />
+                        ))}
                     </ScrollReveal>
                 </div>
             </section>

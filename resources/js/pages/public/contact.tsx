@@ -1,4 +1,4 @@
-import { Head } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import {
     ExternalLink,
     Mail,
@@ -16,19 +16,28 @@ import type { BreadcrumbItem } from '@/types';
 
 export default function Contact() {
     const { locale, t } = useLocale();
+    const { siteSettings } = usePage<{
+        siteSettings: Record<string, string>;
+    }>().props;
+
+    const email = siteSettings?.contact_email || t('contact.info.email');
+    const phone = siteSettings?.contact_phone || t('contact.info.phone');
+    const whatsapp = siteSettings?.contact_whatsapp || phone;
+    const address =
+        siteSettings?.contact_address || t('contact.info.address');
 
     return (
         <>
             <Head title={t('contact.title')} />
 
             {/* Hero section */}
-            <section className="bg-primary/5 dark:bg-primary/10 relative py-20 md:py-28">
+            <section className="relative bg-primary/5 py-20 dark:bg-primary/10 md:py-28">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <ScrollReveal variant="hero">
                         <h1 className="text-3xl font-bold md:text-5xl">
                             {t('contact.title')}
                         </h1>
-                        <p className="text-muted-foreground mt-4 max-w-2xl text-lg">
+                        <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
                             {t('contact.subtitle')}
                         </p>
                     </ScrollReveal>
@@ -54,47 +63,47 @@ export default function Contact() {
                                         <h2 className="text-xl font-semibold">
                                             {t('contact.info.title')}
                                         </h2>
-                                        <p className="text-muted-foreground mt-2">
-                                            {t('contact.info.description')}
+                                        <p className="mt-2 text-muted-foreground">
+                                            {t(
+                                                'contact.info.description',
+                                            )}
                                         </p>
                                     </div>
 
                                     {/* Multi-channel contact (D-11, CONT-02) */}
                                     <div className="space-y-4">
                                         <a
-                                            href="mailto:info@quart.com"
-                                            className="text-muted-foreground hover:text-foreground flex items-center gap-3 transition-colors"
+                                            href={`mailto:${email}`}
+                                            className="flex items-center gap-3 text-muted-foreground transition-colors hover:text-foreground"
                                         >
-                                            <Mail className="text-primary size-5" />
-                                            <span>
-                                                {t('contact.info.email')}
-                                            </span>
+                                            <Mail className="size-5 text-primary" />
+                                            <span>{email}</span>
                                         </a>
                                         <a
-                                            href="tel:+966XXXXXXXX"
-                                            className="text-muted-foreground hover:text-foreground flex items-center gap-3 transition-colors"
+                                            href={`tel:${phone.replace(/\s/g, '')}`}
+                                            className="flex items-center gap-3 text-muted-foreground transition-colors hover:text-foreground"
                                         >
-                                            <Phone className="text-primary size-5" />
+                                            <Phone className="size-5 text-primary" />
                                             <span dir="ltr">
-                                                {t('contact.info.phone')}
+                                                {phone}
                                             </span>
                                         </a>
                                         <a
-                                            href="https://wa.me/966XXXXXXXX"
+                                            href={`https://wa.me/${whatsapp.replace(/[\s+]/g, '')}`}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="text-muted-foreground hover:text-foreground flex items-center gap-3 transition-colors"
+                                            className="flex items-center gap-3 text-muted-foreground transition-colors hover:text-foreground"
                                         >
-                                            <MessageCircle className="text-primary size-5" />
+                                            <MessageCircle className="size-5 text-primary" />
                                             <span>
-                                                {t('contact.info.whatsapp')}
+                                                {t(
+                                                    'contact.info.whatsapp',
+                                                )}
                                             </span>
                                         </a>
-                                        <div className="text-muted-foreground flex items-start gap-3">
-                                            <MapPin className="text-primary mt-0.5 size-5" />
-                                            <span>
-                                                {t('contact.info.address')}
-                                            </span>
+                                        <div className="flex items-start gap-3 text-muted-foreground">
+                                            <MapPin className="mt-0.5 size-5 text-primary" />
+                                            <span>{address}</span>
                                         </div>
                                     </div>
 
@@ -110,16 +119,20 @@ export default function Contact() {
                                                 allowFullScreen
                                                 loading="lazy"
                                                 referrerPolicy="no-referrer-when-downgrade"
-                                                title={t('contact.map.title')}
+                                                title={t(
+                                                    'contact.map.title',
+                                                )}
                                             />
                                         </div>
                                         <a
                                             href="https://www.google.com/maps/place/Riyadh,+Saudi+Arabia"
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="text-primary mt-2 inline-flex items-center gap-1 text-sm hover:underline"
+                                            className="mt-2 inline-flex items-center gap-1 text-sm text-primary hover:underline"
                                         >
-                                            {t('contact.map.viewOnGoogle')}
+                                            {t(
+                                                'contact.map.viewOnGoogle',
+                                            )}
                                             <ExternalLink className="size-3" />
                                         </a>
                                     </div>

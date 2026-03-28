@@ -10,14 +10,42 @@ import {
 import { useLocale } from '@/hooks/use-locale';
 import { fadeInUp } from '@/lib/animations';
 
-type Props = {
-    index: number;
+type Testimonial = {
+    id: number;
+    quote_en: string;
+    quote_ar: string;
+    author_name_en: string;
+    author_name_ar: string;
+    author_title_en: string;
+    author_title_ar: string;
+    company_en: string;
+    company_ar: string;
 };
 
-export default function TestimonialCard({ index }: Props) {
-    const { t } = useLocale();
+type Props = {
+    testimonial: Testimonial;
+};
 
-    const name = t(`testimonials.${index}.name`);
+export default function TestimonialCard({ testimonial }: Props) {
+    const { locale } = useLocale();
+
+    const quote =
+        locale === 'ar'
+            ? testimonial.quote_ar
+            : testimonial.quote_en;
+    const name =
+        locale === 'ar'
+            ? testimonial.author_name_ar
+            : testimonial.author_name_en;
+    const role =
+        locale === 'ar'
+            ? testimonial.author_title_ar
+            : testimonial.author_title_en;
+    const company =
+        locale === 'ar'
+            ? testimonial.company_ar
+            : testimonial.company_en;
+
     const initials = name
         .split(' ')
         .map((word) => word[0])
@@ -32,7 +60,7 @@ export default function TestimonialCard({ index }: Props) {
                 </CardHeader>
                 <CardContent className="flex-1">
                     <p className="text-lg italic text-foreground">
-                        {t(`testimonials.${index}.quote`)}
+                        {quote}
                     </p>
                 </CardContent>
                 <CardFooter>
@@ -45,8 +73,7 @@ export default function TestimonialCard({ index }: Props) {
                                 {name}
                             </p>
                             <p className="text-sm text-muted-foreground">
-                                {t(`testimonials.${index}.role`)},{' '}
-                                {t(`testimonials.${index}.company`)}
+                                {role}, {company}
                             </p>
                         </div>
                     </div>

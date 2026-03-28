@@ -1,4 +1,4 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import {
     Check,
     Code2,
@@ -13,17 +13,46 @@ import ScrollReveal from '@/components/scroll-reveal';
 import { Button } from '@/components/ui/button';
 import { useLocale } from '@/hooks/use-locale';
 import PublicLayout from '@/layouts/public-layout';
+import type { ServicePageData } from '@/types/service';
 
 const PROCESS_ICONS = [Search, Layers, Code2, Rocket];
-const DELIVERABLE_COUNT = 5;
 
 export default function Development() {
     const { locale, t } = useLocale();
-    const slug = 'development';
+    const { service } = usePage<{
+        service: ServicePageData;
+    }>().props;
+
+    const title =
+        locale === 'ar' ? service.title_ar : service.title_en;
+    const subtitle =
+        locale === 'ar'
+            ? service.subtitle_ar
+            : service.subtitle_en;
+    const problem =
+        locale === 'ar'
+            ? service.problem_ar
+            : service.problem_en;
+    const approach =
+        locale === 'ar'
+            ? service.approach_ar
+            : service.approach_en;
+    const processSteps =
+        locale === 'ar'
+            ? service.process_steps_ar
+            : service.process_steps_en;
+    const deliverables =
+        locale === 'ar'
+            ? service.deliverables_ar
+            : service.deliverables_en;
+    const ctaText =
+        locale === 'ar'
+            ? service.cta_text_ar
+            : service.cta_text_en;
 
     return (
         <>
-            <Head title={t('services.development.hero.title')} />
+            <Head title={title} />
 
             {/* Hero banner */}
             <section className="relative bg-primary/5 py-20 dark:bg-primary/10 md:py-28">
@@ -34,12 +63,10 @@ export default function Development() {
                             className="mb-4 text-primary"
                         />
                         <h1 className="text-3xl font-bold md:text-5xl">
-                            {t('services.development.hero.title')}
+                            {title}
                         </h1>
                         <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
-                            {t(
-                                'services.development.hero.subtitle',
-                            )}
+                            {subtitle}
                         </p>
                     </ScrollReveal>
                 </div>
@@ -55,9 +82,7 @@ export default function Development() {
                             )}
                         </h2>
                         <p className="mt-4 max-w-3xl text-lg text-muted-foreground">
-                            {t(
-                                'services.development.problem.description',
-                            )}
+                            {problem}
                         </p>
                     </ScrollReveal>
                 </div>
@@ -73,13 +98,11 @@ export default function Development() {
                             )}
                         </h2>
                         <p className="mt-4 max-w-3xl text-lg text-muted-foreground">
-                            {t(
-                                'services.development.approach.description',
-                            )}
+                            {approach}
                         </p>
                     </ScrollReveal>
                     <ProcessSteps
-                        serviceSlug={slug}
+                        steps={processSteps}
                         icons={PROCESS_ICONS}
                     />
                 </div>
@@ -95,18 +118,15 @@ export default function Development() {
                             )}
                         </h2>
                         <ul className="mt-6 space-y-3">
-                            {Array.from(
-                                { length: DELIVERABLE_COUNT },
-                                (_, i) => (
+                            {deliverables.map(
+                                (item, i) => (
                                     <li
                                         key={i}
                                         className="flex items-start gap-3"
                                     >
                                         <Check className="mt-0.5 size-5 shrink-0 text-primary" />
                                         <span className="text-muted-foreground">
-                                            {t(
-                                                `services.development.deliverables.${i}`,
-                                            )}
+                                            {item}
                                         </span>
                                     </li>
                                 ),
@@ -131,7 +151,7 @@ export default function Development() {
                                 <Link
                                     href={`/${locale}/contact?service=development`}
                                 >
-                                    {t('services.development.cta')}
+                                    {ctaText}
                                 </Link>
                             </Button>
                         </div>

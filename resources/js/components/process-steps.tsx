@@ -2,19 +2,15 @@ import type { LucideIcon } from 'lucide-react';
 import { motion } from 'motion/react';
 
 import ScrollReveal from '@/components/scroll-reveal';
-import { useLocale } from '@/hooks/use-locale';
 import { fadeInUp } from '@/lib/animations';
+import type { ProcessStep } from '@/types/service';
 
 type Props = {
-    serviceSlug: string;
+    steps: ProcessStep[];
     icons: LucideIcon[];
 };
 
-export default function ProcessSteps({ serviceSlug, icons }: Props) {
-    const { t } = useLocale();
-
-    const steps = [1, 2, 3, 4];
-
+export default function ProcessSteps({ steps, icons }: Props) {
     return (
         <ScrollReveal
             variant="stagger"
@@ -26,7 +22,7 @@ export default function ProcessSteps({ serviceSlug, icons }: Props) {
 
                 return (
                     <motion.div
-                        key={step}
+                        key={index}
                         variants={fadeInUp}
                         className="relative flex flex-col items-center rounded-lg bg-background p-6 text-center shadow-sm"
                     >
@@ -37,7 +33,7 @@ export default function ProcessSteps({ serviceSlug, icons }: Props) {
 
                         {/* Step number badge */}
                         <div className="relative z-10 flex h-10 w-10 items-center justify-center rounded-full bg-primary text-lg font-bold text-primary-foreground">
-                            {step}
+                            {index + 1}
                         </div>
 
                         {/* Icon */}
@@ -47,16 +43,12 @@ export default function ProcessSteps({ serviceSlug, icons }: Props) {
 
                         {/* Title */}
                         <h3 className="mt-3 text-lg font-semibold">
-                            {t(
-                                `services.${serviceSlug}.step${step}.title`,
-                            )}
+                            {step.title}
                         </h3>
 
                         {/* Description */}
                         <p className="mt-2 text-sm text-muted-foreground">
-                            {t(
-                                `services.${serviceSlug}.step${step}.description`,
-                            )}
+                            {step.description}
                         </p>
                     </motion.div>
                 );
