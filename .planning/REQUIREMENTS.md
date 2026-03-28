@@ -25,7 +25,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **DSGN-05**: Animation system using Motion + GSAP for scroll reveals, staggered entrances, and hover effects
 - [ ] **DSGN-06**: Smooth page transitions between routes (Inertia + View Transitions / AnimatePresence)
 - [ ] **DSGN-07**: prefers-reduced-motion support — disable animations for users who opt out
-- [ ] **DSGN-08**: Sticky header navigation with 4-6 items and mobile hamburger menu
+- [x] **DSGN-08**: Sticky header navigation with 4-6 items and mobile hamburger menu
 
 ### Landing Page
 
@@ -82,9 +82,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Navigation & Structure
 
-- [ ] **NAV-01**: Footer with sitemap links, contact info, social links, and legal
-- [ ] **NAV-02**: Breadcrumbs on inner pages (services, blog, portfolio)
-- [ ] **NAV-03**: Custom branded 404 error page with navigation back to key pages
+- [x] **NAV-01**: Footer with sitemap links, contact info, social links, and legal
+- [x] **NAV-02**: Breadcrumbs on inner pages (services, blog, portfolio)
+- [x] **NAV-03**: Custom branded 404 error page with navigation back to key pages
 
 ### SEO
 
@@ -168,10 +168,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DSGN-05 | Phase 1 | Pending |
 | DSGN-06 | Phase 1 | Pending |
 | DSGN-07 | Phase 1 | Pending |
-| DSGN-08 | Phase 1 | Pending |
-| NAV-01 | Phase 1 | Pending |
-| NAV-02 | Phase 1 | Pending |
-| NAV-03 | Phase 1 | Pending |
+| DSGN-08 | Phase 1 | Complete |
+| NAV-01 | Phase 1 | Complete |
+| NAV-02 | Phase 1 | Complete |
+| NAV-03 | Phase 1 | Complete |
 | LAND-01 | Phase 2 | Pending |
 | LAND-02 | Phase 2 | Pending |
 | LAND-03 | Phase 2 | Pending |
