@@ -97,8 +97,8 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Admin Panel
 
 - [x] **ADMN-01**: Admin dashboard with key metrics (recent leads, post count, portfolio count)
-- [ ] **ADMN-02**: Blog post CRUD with rich text editor (Tiptap), bilingual fields, image upload, and preview
-- [ ] **ADMN-03**: Portfolio/case study CRUD with images, service category, and bilingual content
+- [x] **ADMN-02**: Blog post CRUD with rich text editor (Tiptap), bilingual fields, image upload, and preview
+- [x] **ADMN-03**: Portfolio/case study CRUD with images, service category, and bilingual content
 - [ ] **ADMN-04**: Contact lead list with status tracking (new, read, handled) and filtering
 - [ ] **ADMN-05**: Testimonial management — add, edit, reorder, show/hide
 - [ ] **ADMN-06**: Service page content editing — structured fields for headings, descriptions, process steps
@@ -195,8 +195,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | TEAM-02 | Phase 2 | Complete |
 | TEAM-03 | Phase 2 | Complete |
 | ADMN-01 | Phase 3 | Complete |
-| ADMN-02 | Phase 3 | Pending |
-| ADMN-03 | Phase 3 | Pending |
+| ADMN-02 | Phase 3 | Complete |
+| ADMN-03 | Phase 3 | Complete |
 | ADMN-04 | Phase 3 | Pending |
 | ADMN-05 | Phase 3 | Pending |
 | ADMN-06 | Phase 3 | Pending |
