@@ -39,20 +39,23 @@ export default function PublicLayout({ children, breadcrumbs = [] }: Props) {
                                 </BreadcrumbLink>
                             </BreadcrumbItem>
                             {breadcrumbs.map((item, index) => (
-                                <BreadcrumbItem key={index}>
+                                <span key={index} className="contents">
                                     <BreadcrumbSeparator />
-                                    {index === breadcrumbs.length - 1 ? (
-                                        <BreadcrumbPage>
-                                            {item.title}
-                                        </BreadcrumbPage>
-                                    ) : (
-                                        <BreadcrumbLink asChild>
-                                            <Link href={item.href}>
+                                    <BreadcrumbItem>
+                                        {index ===
+                                        breadcrumbs.length - 1 ? (
+                                            <BreadcrumbPage>
                                                 {item.title}
-                                            </Link>
-                                        </BreadcrumbLink>
-                                    )}
-                                </BreadcrumbItem>
+                                            </BreadcrumbPage>
+                                        ) : (
+                                            <BreadcrumbLink asChild>
+                                                <Link href={item.href}>
+                                                    {item.title}
+                                                </Link>
+                                            </BreadcrumbLink>
+                                        )}
+                                    </BreadcrumbItem>
+                                </span>
                             ))}
                         </BreadcrumbList>
                     </Breadcrumb>
