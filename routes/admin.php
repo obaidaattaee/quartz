@@ -1,9 +1,12 @@
 <?php
 
 use App\Http\Controllers\Admin\BlogPostController;
+use App\Http\Controllers\Admin\ContactLeadController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\PortfolioItemController;
+use App\Http\Controllers\Admin\TeamMemberController;
+use App\Http\Controllers\Admin\TestimonialController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
@@ -21,6 +24,19 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     // Portfolio items -- accessible to editors and admins
     Route::resource('portfolio', PortfolioItemController::class);
 
-    // Placeholder route groups for future plans:
-    // Admin-only: testimonials, services, team, contacts, users, settings
+    // Admin-only routes
+    Route::middleware('role:admin')->group(function () {
+        // Contact leads management
+        Route::get('contacts', [ContactLeadController::class, 'index'])->name('contacts.index');
+        Route::get('contacts/{contact}', [ContactLeadController::class, 'show'])->name('contacts.show');
+        Route::patch('contacts/{contact}/status', [ContactLeadController::class, 'updateStatus'])->name('contacts.status');
+
+        // Testimonials CRUD with reorder
+        Route::resource('testimonials', TestimonialController::class);
+        Route::post('testimonials/{testimonial}/reorder', [TestimonialController::class, 'reorder'])->name('testimonials.reorder');
+
+        // Team members CRUD with reorder
+        Route::resource('team', TeamMemberController::class);
+        Route::post('team/{teamMember}/reorder', [TeamMemberController::class, 'reorder'])->name('team.reorder');
+    });
 });
