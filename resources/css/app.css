@@ -170,3 +170,19 @@ html *::before,
 html *::after {
     transition: background-color 0.3s ease, color 0.15s ease, border-color 0.3s ease;
 }
+
+/* View Transitions reduced motion (DSGN-07, Pitfall 5) */
+@media (prefers-reduced-motion: reduce) {
+    ::view-transition-group(*),
+    ::view-transition-old(*),
+    ::view-transition-new(*) {
+        animation: none !important;
+    }
+}
+
+/* View Transition crossfade customization (D-05: ~0.3s) */
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation-duration: 0.3s;
+    animation-timing-function: ease;
+}
