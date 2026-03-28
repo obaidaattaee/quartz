@@ -1,0 +1,20 @@
+import { useEffect, useState } from 'react';
+
+export function useScrollHeader(threshold = 50): boolean {
+    const [isScrolled, setIsScrolled] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > threshold);
+        };
+
+        // Check on mount in case page loads scrolled
+        handleScroll();
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [threshold]);
+
+    return isScrolled;
+}

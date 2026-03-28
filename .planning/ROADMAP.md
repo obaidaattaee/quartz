@@ -34,8 +34,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 Plans:
 - [x] 01-01-PLAN.md -- Locale routing, design tokens, fonts, RTL, i18n infrastructure (Wave 1)
-- [x] 01-02-PLAN.md -- Animation system, page transitions, component micro-interactions (Wave 2)
-- [ ] 01-03-PLAN.md -- PublicLayout, header, footer, breadcrumbs, 404 page (Wave 2)
+- [ ] 01-02-PLAN.md -- Animation system, page transitions, component micro-interactions (Wave 2)
+- [x] 01-03-PLAN.md -- PublicLayout, header, footer, breadcrumbs, 404 page (Wave 2)
 
 ### Phase 2: Public Marketing Site
 **Goal**: Visitors land on a visually polished site, understand what services Quart offers, see proof of quality through testimonials and team credentials, and can reach out through multiple contact channels
@@ -95,7 +95,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Design System | 0/3 | Not started | - |
+| 1. Foundation & Design System | 2/3 | In Progress|  |
 | 2. Public Marketing Site | 0/3 | Not started | - |
 | 3. Admin Panel | 0/2 | Not started | - |
 | 4. Blog, Portfolio & SEO | 0/2 | Not started | - |
