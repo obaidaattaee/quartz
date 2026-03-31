@@ -5,9 +5,14 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\RssFeedController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\SitemapController;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Route;
+
+// Sitemap (no locale prefix)
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
 // Root redirect to default locale
 Route::redirect('/', '/en');
@@ -40,6 +45,9 @@ Route::prefix('{locale}')
         Route::post('/newsletter', [NewsletterController::class, 'store'])
             ->middleware('throttle:newsletter')
             ->name('newsletter.store');
+
+        // RSS Feed
+        Route::get('/feed.xml', [RssFeedController::class, 'show'])->name('feed');
     });
 
 // Auth/admin routes remain WITHOUT locale prefix
