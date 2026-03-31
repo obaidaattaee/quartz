@@ -1,5 +1,5 @@
 import { Head, Link, useForm } from '@inertiajs/react';
-import { Plus, X } from 'lucide-react';
+import { ChevronDown, Plus, X } from 'lucide-react';
 import { useState } from 'react';
 
 import BilingualTabs from '@/components/admin/bilingual-tabs';
@@ -30,6 +30,11 @@ function slugify(text: string): string {
 
 export default function PortfolioCreate() {
     const [selectedImage, setSelectedImage] = useState<MediaItem | null>(null);
+    const [beforeImage, setBeforeImage] = useState<MediaItem | null>(null);
+    const [afterImage, setAfterImage] = useState<MediaItem | null>(null);
+    const [selectedOgImage, setSelectedOgImage] =
+        useState<MediaItem | null>(null);
+    const [seoExpanded, setSeoExpanded] = useState(false);
 
     const { data, setData, post, processing, errors } = useForm({
         title_en: '',
@@ -44,6 +49,13 @@ export default function PortfolioCreate() {
         client_name: '',
         results_metrics: [] as { label: string; value: string }[],
         status: 'draft',
+        before_image_id: null as number | null,
+        after_image_id: null as number | null,
+        meta_title_en: '',
+        meta_title_ar: '',
+        meta_description_en: '',
+        meta_description_ar: '',
+        og_image_id: null as number | null,
     });
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -186,6 +198,37 @@ export default function PortfolioCreate() {
                             }}
                         />
                         <InputError message={errors.featured_image_id} />
+                    </div>
+
+                    <div className="grid gap-4 sm:grid-cols-2">
+                        <div className="space-y-2">
+                            <ImagePickerField
+                                label="Before Image"
+                                value={beforeImage}
+                                onChange={(media) => {
+                                    setBeforeImage(media);
+                                    setData(
+                                        'before_image_id',
+                                        media?.id ?? null,
+                                    );
+                                }}
+                            />
+                            <InputError message={errors.before_image_id} />
+                        </div>
+                        <div className="space-y-2">
+                            <ImagePickerField
+                                label="After Image"
+                                value={afterImage}
+                                onChange={(media) => {
+                                    setAfterImage(media);
+                                    setData(
+                                        'after_image_id',
+                                        media?.id ?? null,
+                                    );
+                                }}
+                            />
+                            <InputError message={errors.after_image_id} />
+                        </div>
                     </div>
 
                     <BilingualTabs errors={errors}>
@@ -403,6 +446,172 @@ export default function PortfolioCreate() {
                             </div>
                         ))}
                         <InputError message={errors.results_metrics} />
+                    </div>
+
+                    <div className="rounded-lg border">
+                        <button
+                            type="button"
+                            onClick={() => setSeoExpanded(!seoExpanded)}
+                            className="flex w-full items-center justify-between px-4 py-3 text-left"
+                        >
+                            <span className="text-sm font-medium">
+                                SEO Settings
+                            </span>
+                            <ChevronDown
+                                className={`text-muted-foreground h-4 w-4 transition-transform ${
+                                    seoExpanded ? 'rotate-180' : ''
+                                }`}
+                            />
+                        </button>
+
+                        {seoExpanded && (
+                            <div className="space-y-4 border-t px-4 py-4">
+                                <div className="grid gap-4 sm:grid-cols-2">
+                                    <div className="space-y-2">
+                                        <Label htmlFor="meta_title_en">
+                                            Meta Title (English)
+                                        </Label>
+                                        <Input
+                                            id="meta_title_en"
+                                            value={data.meta_title_en}
+                                            onChange={(e) =>
+                                                setData(
+                                                    'meta_title_en',
+                                                    e.target.value,
+                                                )
+                                            }
+                                            maxLength={70}
+                                            placeholder="Leave empty to use item title"
+                                        />
+                                        <div className="flex items-center justify-between">
+                                            <InputError
+                                                message={
+                                                    errors.meta_title_en
+                                                }
+                                            />
+                                            <span className="text-muted-foreground text-xs">
+                                                {data.meta_title_en.length}
+                                                /70
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="meta_title_ar">
+                                            Meta Title (Arabic)
+                                        </Label>
+                                        <Input
+                                            id="meta_title_ar"
+                                            value={data.meta_title_ar}
+                                            onChange={(e) =>
+                                                setData(
+                                                    'meta_title_ar',
+                                                    e.target.value,
+                                                )
+                                            }
+                                            maxLength={70}
+                                            placeholder="Leave empty to use item title"
+                                            dir="rtl"
+                                        />
+                                        <div className="flex items-center justify-between">
+                                            <InputError
+                                                message={
+                                                    errors.meta_title_ar
+                                                }
+                                            />
+                                            <span className="text-muted-foreground text-xs">
+                                                {data.meta_title_ar.length}
+                                                /70
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="grid gap-4 sm:grid-cols-2">
+                                    <div className="space-y-2">
+                                        <Label htmlFor="meta_description_en">
+                                            Meta Description (English)
+                                        </Label>
+                                        <Textarea
+                                            id="meta_description_en"
+                                            value={data.meta_description_en}
+                                            onChange={(e) =>
+                                                setData(
+                                                    'meta_description_en',
+                                                    e.target.value,
+                                                )
+                                            }
+                                            maxLength={160}
+                                            placeholder="Leave empty to use description"
+                                            rows={3}
+                                        />
+                                        <div className="flex items-center justify-between">
+                                            <InputError
+                                                message={
+                                                    errors.meta_description_en
+                                                }
+                                            />
+                                            <span className="text-muted-foreground text-xs">
+                                                {
+                                                    data.meta_description_en
+                                                        .length
+                                                }
+                                                /160
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="meta_description_ar">
+                                            Meta Description (Arabic)
+                                        </Label>
+                                        <Textarea
+                                            id="meta_description_ar"
+                                            value={data.meta_description_ar}
+                                            onChange={(e) =>
+                                                setData(
+                                                    'meta_description_ar',
+                                                    e.target.value,
+                                                )
+                                            }
+                                            maxLength={160}
+                                            placeholder="Leave empty to use description"
+                                            rows={3}
+                                            dir="rtl"
+                                        />
+                                        <div className="flex items-center justify-between">
+                                            <InputError
+                                                message={
+                                                    errors.meta_description_ar
+                                                }
+                                            />
+                                            <span className="text-muted-foreground text-xs">
+                                                {
+                                                    data.meta_description_ar
+                                                        .length
+                                                }
+                                                /160
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <ImagePickerField
+                                        label="OG Image"
+                                        value={selectedOgImage}
+                                        onChange={(media) => {
+                                            setSelectedOgImage(media);
+                                            setData(
+                                                'og_image_id',
+                                                media?.id ?? null,
+                                            );
+                                        }}
+                                    />
+                                    <InputError
+                                        message={errors.og_image_id}
+                                    />
+                                </div>
+                            </div>
+                        )}
                     </div>
 
                     <div className="flex items-center gap-3">
