@@ -5,6 +5,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Route;
@@ -35,6 +36,10 @@ Route::prefix('{locale}')
         Route::post('/contact', [ContactController::class, 'store'])
             ->middleware('throttle:contact')
             ->name('contact.store');
+
+        // Portfolio (public)
+        Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio.index');
+        Route::get('/portfolio/{slug}', [PortfolioController::class, 'show'])->name('portfolio.show');
 
         // Newsletter
         Route::post('/newsletter', [NewsletterController::class, 'store'])
