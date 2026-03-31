@@ -96,7 +96,7 @@ Plans:
 - [x] 04-01-PLAN.md -- Backend foundation: migrations, models, SEO service, types, Blade template (Wave 1)
 - [ ] 04-02-PLAN.md -- Public blog pages: listing, detail, category/tag/author archives (Wave 2)
 - [ ] 04-03-PLAN.md -- Public portfolio pages: gallery grid, case study detail (Wave 2)
-- [ ] 04-04-PLAN.md -- Admin extensions: category CRUD, SEO fields, SEO settings (Wave 2)
+- [x] 04-04-PLAN.md -- Admin extensions: category CRUD, SEO fields, SEO settings (Wave 2)
 - [ ] 04-05-PLAN.md -- SEO completion: RSS feed, XML sitemap, JSON-LD, canonical/hreflang wiring (Wave 3)
 - [ ] 04-06-PLAN.md -- Seed data and full verification checkpoint (Wave 4)
 

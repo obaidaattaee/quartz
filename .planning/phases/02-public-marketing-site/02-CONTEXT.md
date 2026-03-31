@@ -39,7 +39,7 @@ Landing page with animated hero, service overview, testimonials, statistics, and
 - **D-15:** Section order on landing page: Hero → Service Overview Cards → Client Logo Bar → Statistics Counters → Testimonials → Old Way vs New Way Comparison → Bottom CTA. All sections wrapped in ScrollReveal.
 - **D-16:** Statistics section: 4 animated counters (Years of Experience, Projects Completed, Clients Served, Team Members). Count-up animation triggers on scroll using requestAnimationFrame — no external counter library.
 - **D-17:** Testimonials: 3-4 static testimonials in a horizontal card layout (not a carousel/slider). Each card: quote text, client name, company name, optional avatar. Data from translation JSON.
-- **D-18:** Old Way vs New Way: side-by-side card comparison (two columns). Left card: pain points with the old approach. Right card: benefits of Quart's approach. ScrollReveal entrance. Not interactive (no slider/toggle) — simpler, works in RTL.
+- **D-18:** Old Way vs New Way: side-by-side card comparison (two columns). Left card: pain points with the old approach. Right card: benefits of Quartz's approach. ScrollReveal entrance. Not interactive (no slider/toggle) — simpler, works in RTL.
 - **D-19:** Client logo bar: horizontal flex row of grayscale logos that colorize on hover. 6-8 placeholder logos for now (real logos added via admin in Phase 3).
 
 ### About & Team Page

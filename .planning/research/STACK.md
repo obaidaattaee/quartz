@@ -1,6 +1,6 @@
 # Technology Stack
 
-**Project:** Quart - Professional Bilingual Services Website
+**Project:** Quartz - Professional Bilingual Services Website
 **Researched:** 2026-03-28
 **Overall Confidence:** HIGH
 

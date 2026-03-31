@@ -281,14 +281,14 @@ export function useCounter(target: number, duration: number = 2000) {
     "services.development.approach": "...",
     "services.development.step1.title": "Discovery",
     "services.development.step1.description": "...",
-    "testimonials.0.quote": "Quart transformed our...",
+    "testimonials.0.quote": "Quartz transformed our...",
     "testimonials.0.name": "Ahmed Al-Rashid",
     "testimonials.0.company": "TechCorp",
     "stats.years": "Years Experience",
     "stats.projects": "Projects Completed",
     "contact.form.name": "Full Name",
     "contact.form.email": "Email Address",
-    "faq.0.question": "What services does Quart offer?",
+    "faq.0.question": "What services does Quartz offer?",
     "faq.0.answer": "We provide software development..."
 }
 ```

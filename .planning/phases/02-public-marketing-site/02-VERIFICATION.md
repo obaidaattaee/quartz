@@ -49,7 +49,7 @@ human_verification:
 
 # Phase 02: Public Marketing Site Verification Report
 
-**Phase Goal:** Visitors land on a visually polished site, understand what services Quart offers, see proof of quality through testimonials and team credentials, and can reach out through multiple contact channels
+**Phase Goal:** Visitors land on a visually polished site, understand what services Quartz offers, see proof of quality through testimonials and team credentials, and can reach out through multiple contact channels
 **Verified:** 2026-03-28
 **Status:** GAPS FOUND
 **Re-verification:** No — initial verification

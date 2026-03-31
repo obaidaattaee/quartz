@@ -56,7 +56,7 @@ Locale routing (EN/AR with URL prefixes), full RTL support, design tokens and co
 - `.planning/REQUIREMENTS.md` — NAV-01 through NAV-03: Footer structure, breadcrumbs, 404 page
 
 ### Existing Codebase
-- `resources/css/app.css` — Current theme variables (oklch colors, CSS custom properties) that need to be replaced with Quart brand colors
+- `resources/css/app.css` — Current theme variables (oklch colors, CSS custom properties) that need to be replaced with Quartz brand colors
 - `resources/js/hooks/use-appearance.tsx` — Existing dark/light mode toggle hook
 - `resources/js/components/ui/` — Radix UI component primitives already installed (button, card, input, badge, breadcrumb, etc.)
 - `resources/js/layouts/app-layout.tsx` — Current sidebar-based layout (admin); public site needs a new header-based layout
@@ -72,14 +72,14 @@ Locale routing (EN/AR with URL prefixes), full RTL support, design tokens and co
 ## Existing Code Insights
 
 ### Reusable Assets
-- Radix UI components (button, card, input, badge, breadcrumb, dialog, dropdown-menu, sheet, navigation-menu) — already installed, can be themed with Quart brand colors
+- Radix UI components (button, card, input, badge, breadcrumb, dialog, dropdown-menu, sheet, navigation-menu) — already installed, can be themed with Quartz brand colors
 - `useAppearance` hook — handles dark/light mode toggle with localStorage persistence
 - `useMobile` hook — detects mobile viewport
 - `cn()` utility in `resources/js/lib/utils` — Tailwind class merging with clsx
 - Breadcrumb component exists in `resources/js/components/ui/breadcrumb.tsx`
 
 ### Established Patterns
-- CSS custom properties via oklch in `app.css` — extend this for Quart brand tokens (teal primary, dark backgrounds)
+- CSS custom properties via oklch in `app.css` — extend this for Quartz brand tokens (teal primary, dark backgrounds)
 - `.dark` class variant for dark mode — already configured in Tailwind
 - Component composition with Radix UI primitives — follow same pattern for new components
 - Path alias `@/*` maps to `resources/js/*` — use consistently
@@ -97,7 +97,7 @@ Locale routing (EN/AR with URL prefixes), full RTL support, design tokens and co
 ## Specific Ideas
 
 - Dark premium aesthetic inspired by scotchpos.com — but with subtle, refined animations rather than heavy parallax
-- Teal/emerald as accent color gives Quart a distinctive identity in the tech agency space
+- Teal/emerald as accent color gives Quartz a distinctive identity in the tech agency space
 - Cairo font chosen for Arabic — has "personality" and distinctive character, works well for an agency brand
 - Header transparent-to-frosted-glass transition matches the premium feel
 - Both language modes (EN/AR) should feel equally premium — Arabic is not a "translated afterthought"

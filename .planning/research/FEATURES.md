@@ -82,7 +82,7 @@ Features visitors expect from a professional tech services company website. Miss
 
 ## Differentiators
 
-Features that set Quart apart from competitors. Not expected, but valued -- these create competitive advantage.
+Features that set Quartz apart from competitors. Not expected, but valued -- these create competitive advantage.
 
 ### Premium Visual Experience
 

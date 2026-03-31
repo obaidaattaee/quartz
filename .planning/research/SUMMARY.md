@@ -1,6 +1,6 @@
 # Research Summary
 
-**Project:** Quart — Professional Bilingual Services Website
+**Project:** Quartz — Professional Bilingual Services Website
 **Synthesized:** 2026-03-28
 **Overall Confidence:** HIGH
 
@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-Quart is a professional tech-services marketing site (software development, automation, QA, cybersecurity) built on an already-configured Laravel 13 + Inertia.js 3 + React 19 + TypeScript + Tailwind CSS 4 stack. The architectural challenge is not the tech stack itself — that foundation is solid and modern — but rather the deep bilingual (EN/AR) requirement. Arabic RTL support is not a UI overlay; it is a foundational architectural concern that touches every layout component, every animation, every data model, and every SEO output. Research is unanimous: retrofitting RTL after the fact requires rewriting virtually every component. The single most important decision is to build every component with CSS logical properties (`ps-4`, `text-start`, `ms-4`) and a `useDirection()` hook from the very first line of code.
+Quartz is a professional tech-services marketing site (software development, automation, QA, cybersecurity) built on an already-configured Laravel 13 + Inertia.js 3 + React 19 + TypeScript + Tailwind CSS 4 stack. The architectural challenge is not the tech stack itself — that foundation is solid and modern — but rather the deep bilingual (EN/AR) requirement. Arabic RTL support is not a UI overlay; it is a foundational architectural concern that touches every layout component, every animation, every data model, and every SEO output. Research is unanimous: retrofitting RTL after the fact requires rewriting virtually every component. The single most important decision is to build every component with CSS logical properties (`ps-4`, `text-start`, `ms-4`) and a `useDirection()` hook from the very first line of code.
 
 The recommended approach is a single Laravel monolith with three zones (public marketing site, admin CMS, auth) all served through Inertia. No separate API, no Filament, no separate SPA. The public site lives at `/{locale}/...` routes (URL-based i18n is the only SEO-correct approach), the admin at `/admin/...`. Content is stored in JSON translatable columns via `spatie/laravel-translatable`. Animations use Motion (formerly Framer Motion) for component-level interactions and `AnimatePresence` for page transitions, with GSAP + ScrollTrigger for scroll-pinned timeline sequences. Inertia v3's built-in View Transitions API handles the cross-page morph layer.
 
@@ -57,7 +57,7 @@ The key risks are: (1) RTL treated as an afterthought causing a component-level 
 - URL-based bilingual routing (`/en/`, `/ar/`) with full RTL layout for Arabic
 - Language switcher (persistent, visible, preserves current page)
 
-**Differentiators (set Quart apart):**
+**Differentiators (set Quartz apart):**
 - Scroll-triggered reveal animations and hero motion graphics (scotchpos.com style)
 - Smooth page transitions (Inertia View Transitions + AnimatePresence)
 - Hover micro-interactions on all interactive elements

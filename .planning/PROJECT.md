@@ -1,8 +1,8 @@
-# Quart
+# Quartz
 
 ## What This Is
 
-A professional bilingual (English/Arabic) business website for Quart, a company offering software development, automation, QA, and cybersecurity services. Built on the existing Laravel + Inertia.js + React stack, featuring a premium animated UI inspired by scotchpos.com, with a full-featured blog, portfolio gallery, service pages, and a custom admin panel for complete content and theme management.
+A professional bilingual (English/Arabic) business website for Quartz, a company offering software development, automation, QA, and cybersecurity services. Built on the existing Laravel + Inertia.js + React stack, featuring a premium animated UI inspired by scotchpos.com, with a full-featured blog, portfolio gallery, service pages, and a custom admin panel for complete content and theme management.
 
 ## Core Value
 
