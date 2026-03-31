@@ -62,7 +62,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **BLOG-06**: Related posts section (2-3 posts by category/tag relevance)
 - [ ] **BLOG-07**: Reading time estimate displayed near title
 - [ ] **BLOG-08**: Social sharing buttons (LinkedIn, Twitter/X, WhatsApp)
-- [ ] **BLOG-09**: RSS feed auto-generated from published posts
+- [x] **BLOG-09**: RSS feed auto-generated from published posts
 
 ### Contact & Lead Generation
 
@@ -89,10 +89,10 @@ Requirements for initial release. Each maps to roadmap phases.
 ### SEO
 
 - [ ] **SEO-01**: Admin-editable meta titles and descriptions per page
-- [ ] **SEO-02**: Open Graph and social sharing meta tags on all pages
-- [ ] **SEO-03**: Auto-generated XML sitemap including all public routes, blog posts, and portfolio items
-- [ ] **SEO-04**: JSON-LD structured data (Organization, Service, Article, LocalBusiness, FAQ schemas)
-- [ ] **SEO-05**: Canonical URLs and hreflang tags linking EN/AR versions of each page
+- [x] **SEO-02**: Open Graph and social sharing meta tags on all pages
+- [x] **SEO-03**: Auto-generated XML sitemap including all public routes, blog posts, and portfolio items
+- [x] **SEO-04**: JSON-LD structured data (Organization, Service, Article, LocalBusiness, FAQ schemas)
+- [x] **SEO-05**: Canonical URLs and hreflang tags linking EN/AR versions of each page
 
 ### Admin Panel
 
@@ -212,16 +212,16 @@ Which phases cover which requirements. Updated during roadmap creation.
 | BLOG-06 | Phase 4 | Pending |
 | BLOG-07 | Phase 4 | Pending |
 | BLOG-08 | Phase 4 | Pending |
-| BLOG-09 | Phase 4 | Pending |
+| BLOG-09 | Phase 4 | Complete |
 | PORT-01 | Phase 4 | Pending |
 | PORT-02 | Phase 4 | Pending |
 | PORT-03 | Phase 4 | Pending |
 | PORT-04 | Phase 4 | Pending |
 | SEO-01 | Phase 4 | Pending |
-| SEO-02 | Phase 4 | Pending |
-| SEO-03 | Phase 4 | Pending |
-| SEO-04 | Phase 4 | Pending |
-| SEO-05 | Phase 4 | Pending |
+| SEO-02 | Phase 4 | Complete |
+| SEO-03 | Phase 4 | Complete |
+| SEO-04 | Phase 4 | Complete |
+| SEO-05 | Phase 4 | Complete |
 
 **Coverage:**
 - v1 requirements: 67 total
