@@ -12,10 +12,10 @@ Quart is a bilingual (EN/AR) professional services website that must convey trus
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation & Design System** - Locale routing, RTL support, design tokens, animation primitives, and shared layout components
-- [ ] **Phase 2: Public Marketing Site** - Landing page, service pages, contact system, about/team, and all visitor-facing content
-- [ ] **Phase 3: Admin Panel** - Dashboard, content CRUD, lead management, media library, site settings, and role-based access
-- [ ] **Phase 4: Blog, Portfolio & SEO** - Blog system, portfolio gallery, structured data, sitemaps, and SEO optimization
+- [x] **Phase 1: Foundation & Design System** - Locale routing, RTL support, design tokens, animation primitives, and shared layout components
+- [x] **Phase 2: Public Marketing Site** - Landing page, service pages, contact system, about/team, and all visitor-facing content
+- [x] **Phase 3: Admin Panel** - Dashboard, content CRUD, lead management, media library, site settings, and role-based access
+- [x] **Phase 4: Blog, Portfolio & SEO** - Blog system, portfolio gallery, structured data, sitemaps, and SEO optimization
 
 ## Phase Details
 
@@ -89,11 +89,16 @@ Plans:
   3. Portfolio gallery displays a visual grid with hover previews filterable by service type; case study detail pages show problem-approach-results narrative with before/after visuals and animated result metrics
   4. Every public page has admin-editable meta titles and descriptions, Open Graph tags, and canonical URLs; hreflang tags link EN/AR versions of each page; an auto-generated XML sitemap includes all public routes, blog posts, and portfolio items
   5. JSON-LD structured data is present on relevant pages (Organization, Service, Article, LocalBusiness, FAQ schemas) and validates without errors in Google's Rich Results Test
-**Plans**: TBD
+**Plans**: 6 plans
+**UI hint**: yes
 
 Plans:
-- [ ] 04-01: TBD
-- [ ] 04-02: TBD
+- [x] 04-01-PLAN.md -- Database schema, SEO infrastructure, SeoService, TypeScript types, reading time helpers (Wave 1)
+- [x] 04-02-PLAN.md -- Public blog pages: listing, detail, category/tag/author archives (Wave 2)
+- [x] 04-03-PLAN.md -- Public portfolio pages: gallery with filters, case study detail (Wave 2)
+- [x] 04-04-PLAN.md -- Admin category CRUD, SEO settings, extended blog/portfolio forms (Wave 3)
+- [x] 04-05-PLAN.md -- RSS feed, XML sitemap, JSON-LD structured data, SEO wiring (Wave 3)
+- [x] 04-06-PLAN.md -- Verification seeder and full Phase 4 verification checkpoint (Wave 4)
 
 ## Progress
 
@@ -104,5 +109,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 |-------|----------------|--------|-----------|
 | 1. Foundation & Design System | 4/4 | Complete |  |
 | 2. Public Marketing Site | 5/5 | Complete | - |
-| 3. Admin Panel | 0/6 | Not started | - |
-| 4. Blog, Portfolio & SEO | 0/2 | Not started | - |
+| 3. Admin Panel | 6/6 | Complete | - |
+| 4. Blog, Portfolio & SEO | 6/6 | Complete | 2026-03-31 |
