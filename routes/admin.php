@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ContactLeadController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MediaController;
+use App\Http\Controllers\Admin\NewsletterController;
 use App\Http\Controllers\Admin\PortfolioItemController;
 use App\Http\Controllers\Admin\SeoSettingController;
 use App\Http\Controllers\Admin\ServicePageController;
@@ -38,6 +39,10 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
 
     // Admin-only routes -- editors get 403
     Route::middleware('role:admin')->group(function () {
+        // Newsletter subscribers (read-only + delete)
+        Route::get('newsletter', [NewsletterController::class, 'index'])->name('newsletter.index');
+        Route::delete('newsletter/{subscriber}', [NewsletterController::class, 'destroy'])->name('newsletter.destroy');
+
         // Contact leads management
         Route::get('contacts', [ContactLeadController::class, 'index'])->name('contacts.index');
         Route::get('contacts/{contact}', [ContactLeadController::class, 'show'])->name('contacts.show');
