@@ -1,4 +1,5 @@
 import { Head, Link, useForm } from '@inertiajs/react';
+import { ChevronDown, X } from 'lucide-react';
 import { useState } from 'react';
 
 import BilingualTabs from '@/components/admin/bilingual-tabs';
@@ -16,7 +17,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import type { MediaItem } from '@/types';
+import type { AdminCategory, MediaItem } from '@/types';
 
 function slugify(text: string): string {
     return text
@@ -27,8 +28,16 @@ function slugify(text: string): string {
         .replace(/-+/g, '-');
 }
 
-export default function BlogCreate() {
+type Props = {
+    allCategories: AdminCategory[];
+};
+
+export default function BlogCreate({ allCategories }: Props) {
     const [selectedImage, setSelectedImage] = useState<MediaItem | null>(null);
+    const [selectedOgImage, setSelectedOgImage] =
+        useState<MediaItem | null>(null);
+    const [tagInput, setTagInput] = useState('');
+    const [seoExpanded, setSeoExpanded] = useState(false);
 
     const { data, setData, post, processing, errors } = useForm({
         title_en: '',
@@ -40,11 +49,51 @@ export default function BlogCreate() {
         content_ar: '',
         featured_image_id: null as number | null,
         status: 'draft',
+        category_ids: [] as number[],
+        tags: [] as string[],
+        meta_title_en: '',
+        meta_title_ar: '',
+        meta_description_en: '',
+        meta_description_ar: '',
+        og_image_id: null as number | null,
     });
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         post('/admin/blog');
+    };
+
+    const toggleCategory = (id: number) => {
+        const ids = data.category_ids.includes(id)
+            ? data.category_ids.filter((cid) => cid !== id)
+            : [...data.category_ids, id];
+        setData('category_ids', ids);
+    };
+
+    const addTag = () => {
+        const trimmed = tagInput.trim();
+
+        if (
+            trimmed &&
+            !data.tags.includes(trimmed)
+        ) {
+            setData('tags', [...data.tags, trimmed]);
+            setTagInput('');
+        }
+    };
+
+    const removeTag = (tag: string) => {
+        setData(
+            'tags',
+            data.tags.filter((t) => t !== tag),
+        );
+    };
+
+    const handleTagKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter' || e.key === ',') {
+            e.preventDefault();
+            addTag();
+        }
     };
 
     return (
@@ -245,6 +294,235 @@ export default function BlogCreate() {
                             )
                         }
                     </BilingualTabs>
+
+                    {allCategories.length > 0 && (
+                        <div className="space-y-3">
+                            <Label>Categories</Label>
+                            <div className="flex flex-wrap gap-3">
+                                {allCategories.map((cat) => (
+                                    <label
+                                        key={cat.id}
+                                        className="flex cursor-pointer items-center gap-2"
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            checked={data.category_ids.includes(
+                                                cat.id,
+                                            )}
+                                            onChange={() =>
+                                                toggleCategory(cat.id)
+                                            }
+                                            className="rounded border-gray-300"
+                                        />
+                                        <span className="text-sm">
+                                            {cat.name_en}
+                                        </span>
+                                    </label>
+                                ))}
+                            </div>
+                            <InputError message={errors.category_ids} />
+                        </div>
+                    )}
+
+                    <div className="space-y-3">
+                        <Label>Tags</Label>
+                        <div className="flex items-center gap-2">
+                            <Input
+                                value={tagInput}
+                                onChange={(e) => setTagInput(e.target.value)}
+                                onKeyDown={handleTagKeyDown}
+                                onBlur={addTag}
+                                placeholder="Type a tag and press Enter"
+                                className="flex-1"
+                            />
+                        </div>
+                        {data.tags.length > 0 && (
+                            <div className="flex flex-wrap gap-2">
+                                {data.tags.map((tag) => (
+                                    <span
+                                        key={tag}
+                                        className="bg-secondary text-secondary-foreground inline-flex items-center gap-1 rounded-full px-3 py-1 text-sm"
+                                    >
+                                        {tag}
+                                        <button
+                                            type="button"
+                                            onClick={() => removeTag(tag)}
+                                            className="hover:text-destructive"
+                                        >
+                                            <X className="h-3 w-3" />
+                                        </button>
+                                    </span>
+                                ))}
+                            </div>
+                        )}
+                        <InputError message={errors.tags} />
+                    </div>
+
+                    <div className="rounded-lg border">
+                        <button
+                            type="button"
+                            onClick={() => setSeoExpanded(!seoExpanded)}
+                            className="flex w-full items-center justify-between px-4 py-3 text-left"
+                        >
+                            <span className="text-sm font-medium">
+                                SEO Settings
+                            </span>
+                            <ChevronDown
+                                className={`text-muted-foreground h-4 w-4 transition-transform ${
+                                    seoExpanded ? 'rotate-180' : ''
+                                }`}
+                            />
+                        </button>
+
+                        {seoExpanded && (
+                            <div className="space-y-4 border-t px-4 py-4">
+                                <div className="grid gap-4 sm:grid-cols-2">
+                                    <div className="space-y-2">
+                                        <Label htmlFor="meta_title_en">
+                                            Meta Title (English)
+                                        </Label>
+                                        <Input
+                                            id="meta_title_en"
+                                            value={data.meta_title_en}
+                                            onChange={(e) =>
+                                                setData(
+                                                    'meta_title_en',
+                                                    e.target.value,
+                                                )
+                                            }
+                                            maxLength={70}
+                                            placeholder="Leave empty to use post title"
+                                        />
+                                        <div className="flex items-center justify-between">
+                                            <InputError
+                                                message={
+                                                    errors.meta_title_en
+                                                }
+                                            />
+                                            <span className="text-muted-foreground text-xs">
+                                                {data.meta_title_en.length}
+                                                /70
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="meta_title_ar">
+                                            Meta Title (Arabic)
+                                        </Label>
+                                        <Input
+                                            id="meta_title_ar"
+                                            value={data.meta_title_ar}
+                                            onChange={(e) =>
+                                                setData(
+                                                    'meta_title_ar',
+                                                    e.target.value,
+                                                )
+                                            }
+                                            maxLength={70}
+                                            placeholder="Leave empty to use post title"
+                                            dir="rtl"
+                                        />
+                                        <div className="flex items-center justify-between">
+                                            <InputError
+                                                message={
+                                                    errors.meta_title_ar
+                                                }
+                                            />
+                                            <span className="text-muted-foreground text-xs">
+                                                {data.meta_title_ar.length}
+                                                /70
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="grid gap-4 sm:grid-cols-2">
+                                    <div className="space-y-2">
+                                        <Label htmlFor="meta_description_en">
+                                            Meta Description (English)
+                                        </Label>
+                                        <Textarea
+                                            id="meta_description_en"
+                                            value={data.meta_description_en}
+                                            onChange={(e) =>
+                                                setData(
+                                                    'meta_description_en',
+                                                    e.target.value,
+                                                )
+                                            }
+                                            maxLength={160}
+                                            placeholder="Leave empty to use excerpt"
+                                            rows={3}
+                                        />
+                                        <div className="flex items-center justify-between">
+                                            <InputError
+                                                message={
+                                                    errors.meta_description_en
+                                                }
+                                            />
+                                            <span className="text-muted-foreground text-xs">
+                                                {
+                                                    data.meta_description_en
+                                                        .length
+                                                }
+                                                /160
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="meta_description_ar">
+                                            Meta Description (Arabic)
+                                        </Label>
+                                        <Textarea
+                                            id="meta_description_ar"
+                                            value={data.meta_description_ar}
+                                            onChange={(e) =>
+                                                setData(
+                                                    'meta_description_ar',
+                                                    e.target.value,
+                                                )
+                                            }
+                                            maxLength={160}
+                                            placeholder="Leave empty to use excerpt"
+                                            rows={3}
+                                            dir="rtl"
+                                        />
+                                        <div className="flex items-center justify-between">
+                                            <InputError
+                                                message={
+                                                    errors.meta_description_ar
+                                                }
+                                            />
+                                            <span className="text-muted-foreground text-xs">
+                                                {
+                                                    data.meta_description_ar
+                                                        .length
+                                                }
+                                                /160
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <ImagePickerField
+                                        label="OG Image"
+                                        value={selectedOgImage}
+                                        onChange={(media) => {
+                                            setSelectedOgImage(media);
+                                            setData(
+                                                'og_image_id',
+                                                media?.id ?? null,
+                                            );
+                                        }}
+                                    />
+                                    <InputError
+                                        message={errors.og_image_id}
+                                    />
+                                </div>
+                            </div>
+                        )}
+                    </div>
 
                     <div className="flex items-center gap-3">
                         <Button type="submit" disabled={processing}>

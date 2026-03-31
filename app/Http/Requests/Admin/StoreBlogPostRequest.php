@@ -31,6 +31,15 @@ class StoreBlogPostRequest extends FormRequest
             'content_ar' => ['required', 'string'],
             'featured_image_id' => ['nullable', 'integer', 'exists:media,id'],
             'status' => ['required', 'in:draft,published'],
+            'category_ids' => ['nullable', 'array'],
+            'category_ids.*' => ['exists:categories,id'],
+            'tags' => ['nullable', 'array'],
+            'tags.*' => ['string', 'max:100'],
+            'meta_title_en' => ['nullable', 'string', 'max:70'],
+            'meta_title_ar' => ['nullable', 'string', 'max:70'],
+            'meta_description_en' => ['nullable', 'string', 'max:160'],
+            'meta_description_ar' => ['nullable', 'string', 'max:160'],
+            'og_image_id' => ['nullable', 'integer', 'exists:media,id'],
         ];
     }
 
