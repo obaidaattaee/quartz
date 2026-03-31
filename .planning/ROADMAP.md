@@ -89,11 +89,16 @@ Plans:
   3. Portfolio gallery displays a visual grid with hover previews filterable by service type; case study detail pages show problem-approach-results narrative with before/after visuals and animated result metrics
   4. Every public page has admin-editable meta titles and descriptions, Open Graph tags, and canonical URLs; hreflang tags link EN/AR versions of each page; an auto-generated XML sitemap includes all public routes, blog posts, and portfolio items
   5. JSON-LD structured data is present on relevant pages (Organization, Service, Article, LocalBusiness, FAQ schemas) and validates without errors in Google's Rich Results Test
-**Plans**: TBD
+**Plans**: 6 plans
+**UI hint**: yes
 
 Plans:
-- [ ] 04-01: TBD
-- [ ] 04-02: TBD
+- [ ] 04-01-PLAN.md -- Backend foundation: migrations, models, SEO service, types, Blade template (Wave 1)
+- [ ] 04-02-PLAN.md -- Public blog pages: listing, detail, category/tag/author archives (Wave 2)
+- [ ] 04-03-PLAN.md -- Public portfolio pages: gallery grid, case study detail (Wave 2)
+- [ ] 04-04-PLAN.md -- Admin extensions: category CRUD, SEO fields, SEO settings (Wave 2)
+- [ ] 04-05-PLAN.md -- SEO completion: RSS feed, XML sitemap, JSON-LD, canonical/hreflang wiring (Wave 3)
+- [ ] 04-06-PLAN.md -- Seed data and full verification checkpoint (Wave 4)
 
 ## Progress
 
@@ -104,5 +109,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 |-------|----------------|--------|-----------|
 | 1. Foundation & Design System | 4/4 | Complete |  |
 | 2. Public Marketing Site | 5/5 | Complete | - |
-| 3. Admin Panel | 0/6 | Not started | - |
-| 4. Blog, Portfolio & SEO | 0/2 | Not started | - |
+| 3. Admin Panel | 6/6 | Complete | - |
+| 4. Blog, Portfolio & SEO | 0/6 | Not started | - |
