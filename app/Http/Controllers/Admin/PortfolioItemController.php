@@ -53,7 +53,7 @@ class PortfolioItemController extends Controller
      */
     public function edit(PortfolioItem $portfolio): Response
     {
-        $portfolio->load('featuredImage');
+        $portfolio->load(['featuredImage', 'ogImage', 'beforeImage', 'afterImage']);
 
         return Inertia::render('admin/portfolio/edit', [
             'item' => $portfolio,
