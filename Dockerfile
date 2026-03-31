@@ -31,11 +31,14 @@ RUN apk add --no-cache \
     intl \
     bcmath \
     opcache \
-    pcntl \
-    && apk add --no-cache $PHPIZE_DEPS \
+    pcntl
+
+# Install Redis extension (separate step so failures are visible)
+RUN apk add --no-cache $PHPIZE_DEPS \
     && pecl install redis \
     && docker-php-ext-enable redis \
-    && apk del --no-cache autoconf dpkg-dev dpkg file g++ gcc libc-dev make re2c 2>/dev/null || true
+    && apk del autoconf dpkg-dev dpkg file g++ gcc libc-dev make re2c 2>/dev/null; \
+    rm -rf /tmp/pear
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
