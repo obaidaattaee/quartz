@@ -1,8 +1,10 @@
-import { Head, Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import type { ReactNode } from 'react';
 
 import JsonLd from '@/components/json-ld';
 import ScrollReveal from '@/components/scroll-reveal';
+import SeoHead from '@/components/seo-head';
+import type { SeoData } from '@/components/seo-head';
 import {
     Accordion,
     AccordionContent,
@@ -19,6 +21,7 @@ const faqIndices = Array.from({ length: FAQ_COUNT }, (_, i) => i);
 
 export default function FAQ() {
     const { locale, t } = useLocale();
+    const { seo } = usePage<{ seo: SeoData }>().props;
 
     const faqSchema = {
         '@context': 'https://schema.org',
@@ -35,7 +38,7 @@ export default function FAQ() {
 
     return (
         <>
-            <Head title={t('faq.title')} />
+            <SeoHead seo={seo} />
             <JsonLd data={faqSchema} />
 
             {/* Hero section */}

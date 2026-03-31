@@ -4,103 +4,83 @@ namespace App\Services;
 
 use App\Models\BlogPost;
 use App\Models\PortfolioItem;
-use App\Models\SeoMetadata;
-use Illuminate\Support\Str;
 
 class SeoService
 {
     /**
-     * Resolve SEO data for a blog post.
+     * Generate SEO metadata for a blog post.
      *
-     * Usage: Inertia::render(...)->withViewData(['seo' => SeoService::forBlogPost($post, $locale)])
-     *
-     * @return array{title: string, description: ?string, image: ?string, url: string, type: string, canonical: string, hreflang: array<string, string>}
+     * @return array<string, mixed>
      */
     public static function forBlogPost(BlogPost $post, string $locale): array
     {
-        $title = $locale === 'ar'
-            ? ($post->meta_title_ar ?: $post->title_ar)
-            : ($post->meta_title_en ?: $post->title_en);
-
-        $description = $locale === 'ar'
-            ? ($post->meta_description_ar ?: $post->excerpt_ar)
-            : ($post->meta_description_en ?: $post->excerpt_en);
+        $title = $locale === 'ar' ? $post->title_ar : $post->title_en;
+        $description = $locale === 'ar' ? $post->excerpt_ar : $post->excerpt_en;
+        $url = url("/{$locale}/blog/{$post->slug}");
+        $altLocale = $locale === 'en' ? 'ar' : 'en';
 
         return [
             'title' => $title,
-            'description' => Str::limit(strip_tags($description ?? ''), 160),
-            'image' => $post->ogImage?->url ?? $post->featuredImage?->url,
-            'url' => url("/{$locale}/blog/{$post->slug}"),
+            'description' => $description,
+            'image' => $post->featuredImage ? asset($post->featuredImage->url) : null,
+            'url' => $url,
             'type' => 'article',
-            'canonical' => url("/en/blog/{$post->slug}"),
+            'canonical' => $url,
             'hreflang' => [
-                'en' => url("/en/blog/{$post->slug}"),
-                'ar' => url("/ar/blog/{$post->slug}"),
+                $locale => $url,
+                $altLocale => url("/{$altLocale}/blog/{$post->slug}"),
             ],
         ];
     }
 
     /**
-     * Resolve SEO data for a portfolio item.
+     * Generate SEO metadata for a portfolio item.
      *
-     * Usage: Inertia::render(...)->withViewData(['seo' => SeoService::forPortfolioItem($item, $locale)])
-     *
-     * @return array{title: string, description: ?string, image: ?string, url: string, type: string, canonical: string, hreflang: array<string, string>}
+     * @return array<string, mixed>
      */
     public static function forPortfolioItem(PortfolioItem $item, string $locale): array
     {
-        $title = $locale === 'ar'
-            ? ($item->meta_title_ar ?: $item->title_ar)
-            : ($item->meta_title_en ?: $item->title_en);
-
-        $description = $locale === 'ar'
-            ? ($item->meta_description_ar ?: $item->description_ar)
-            : ($item->meta_description_en ?: $item->description_en);
+        $title = $locale === 'ar' ? $item->title_ar : $item->title_en;
+        $description = $locale === 'ar' ? $item->description_ar : $item->description_en;
+        $url = url("/{$locale}/portfolio/{$item->slug}");
+        $altLocale = $locale === 'en' ? 'ar' : 'en';
 
         return [
             'title' => $title,
-            'description' => Str::limit(strip_tags($description ?? ''), 160),
-            'image' => $item->ogImage?->url ?? $item->featuredImage?->url,
-            'url' => url("/{$locale}/portfolio/{$item->slug}"),
+            'description' => $description,
+            'image' => $item->featuredImage ? asset($item->featuredImage->url) : null,
+            'url' => $url,
             'type' => 'website',
-            'canonical' => url("/en/portfolio/{$item->slug}"),
+            'canonical' => $url,
             'hreflang' => [
-                'en' => url("/en/portfolio/{$item->slug}"),
-                'ar' => url("/ar/portfolio/{$item->slug}"),
+                $locale => $url,
+                $altLocale => url("/{$altLocale}/portfolio/{$item->slug}"),
             ],
         ];
     }
 
     /**
-     * Resolve SEO data for a static page.
+     * Generate SEO metadata for a static page.
      *
-     * Usage: Inertia::render(...)->withViewData(['seo' => SeoService::forStaticPage('home', $locale, 'Home', "/{$locale}")])
-     *
-     * @return array{title: string, description: ?string, image: ?string, url: string, type: string, canonical: string, hreflang: array<string, string>}
+     * @return array<string, mixed>
      */
     public static function forStaticPage(string $pageKey, string $locale, ?string $fallbackTitle = null, ?string $path = null): array
     {
-        $seo = SeoMetadata::where('page_key', $pageKey)->first();
-        $resolvedPath = $path ?? "/{$locale}";
-
-        $title = null;
-        $description = null;
-
-        if ($seo) {
-            $title = $locale === 'ar' ? $seo->meta_title_ar : $seo->meta_title_en;
-            $description = $locale === 'ar' ? $seo->meta_description_ar : $seo->meta_description_en;
-        }
+        $title = $fallbackTitle ?? config('app.name').' - '.ucfirst(str_replace('.', ' ', $pageKey));
+        $url = $path ? url($path) : url("/{$locale}");
+        $altLocale = $locale === 'en' ? 'ar' : 'en';
+        $altPath = $path ? str_replace("/{$locale}", "/{$altLocale}", $path) : "/{$altLocale}";
 
         return [
-            'title' => $title ?? $fallbackTitle ?? config('app.name'),
-            'description' => $description ? Str::limit(strip_tags($description), 160) : null,
-            'image' => $seo?->ogImage?->url,
-            'url' => url($resolvedPath),
+            'title' => $title,
+            'description' => config('app.name').' - '.$title,
+            'image' => null,
+            'url' => $url,
             'type' => 'website',
-            'canonical' => url(str_replace("/{$locale}", '/en', $resolvedPath)),
+            'canonical' => $url,
             'hreflang' => [
-                'en' => url(str_replace("/{$locale}", '/en', $resolvedPath)),
-                'ar' => url(str_replace("/{$locale}", '/ar', $resolvedPath)),
+                $locale => $url,
+                $altLocale => url($altPath),
             ],
         ];
     }

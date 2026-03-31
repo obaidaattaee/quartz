@@ -6,10 +6,14 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsletterController;
-use App\Http\Controllers\PortfolioController;
+use App\Http\Controllers\RssFeedController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\SitemapController;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Route;
+
+// Sitemap (no locale prefix)
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
 // Root redirect to default locale
 Route::redirect('/', '/en');
@@ -32,8 +36,8 @@ Route::prefix('{locale}')
         // FAQ (translations-based for v1)
         Route::get('/faq', [FaqController::class, 'index'])->name('faq');
 
-        // Contact (GET: show form via Inertia, POST: submit via controller)
-        Route::inertia('/contact', 'public/contact')->name('contact.show');
+        // Contact (GET: show form via controller with SEO, POST: submit via controller)
+        Route::get('/contact', [ContactController::class, 'show'])->name('contact.show');
         Route::post('/contact', [ContactController::class, 'store'])
             ->middleware('throttle:contact')
             ->name('contact.store');
@@ -47,12 +51,8 @@ Route::prefix('{locale}')
             ->middleware('throttle:newsletter')
             ->name('newsletter.store');
 
-        // Blog (public)
-        Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
-        Route::get('/blog/category/{slug}', [BlogController::class, 'category'])->name('blog.category');
-        Route::get('/blog/tag/{slug}', [BlogController::class, 'tag'])->name('blog.tag');
-        Route::get('/blog/author/{id}', [BlogController::class, 'author'])->name('blog.author');
-        Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
+        // RSS Feed
+        Route::get('/feed.xml', [RssFeedController::class, 'show'])->name('feed');
     });
 
 // Auth/admin routes remain WITHOUT locale prefix

@@ -1,4 +1,4 @@
-import { Head, Link, usePage } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import {
     Check,
     Code2,
@@ -8,8 +8,11 @@ import {
 } from 'lucide-react';
 import type { ReactNode } from 'react';
 
+import JsonLd from '@/components/json-ld';
 import ProcessSteps from '@/components/process-steps';
 import ScrollReveal from '@/components/scroll-reveal';
+import SeoHead from '@/components/seo-head';
+import type { SeoData } from '@/components/seo-head';
 import { Button } from '@/components/ui/button';
 import { useLocale } from '@/hooks/use-locale';
 import PublicLayout from '@/layouts/public-layout';
@@ -19,8 +22,9 @@ const PROCESS_ICONS = [Search, Layers, Code2, Rocket];
 
 export default function Development() {
     const { locale, t } = useLocale();
-    const { service } = usePage<{
+    const { service, seo } = usePage<{
         service: ServicePageData;
+        seo: SeoData;
     }>().props;
 
     const title =
@@ -50,9 +54,22 @@ export default function Development() {
             ? service.cta_text_ar
             : service.cta_text_en;
 
+    const serviceSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'Service',
+        name: title,
+        description: subtitle,
+        provider: {
+            '@type': 'Organization',
+            name: 'Quart',
+        },
+        serviceType: title,
+    };
+
     return (
         <>
-            <Head title={title} />
+            <SeoHead seo={seo} />
+            <JsonLd data={serviceSchema} />
 
             {/* Hero banner */}
             <section className="relative bg-primary/5 py-20 dark:bg-primary/10 md:py-28">

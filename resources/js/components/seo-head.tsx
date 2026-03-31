@@ -10,57 +10,67 @@ export type SeoData = {
     hreflang?: Record<string, string>;
 };
 
-type Props = {
-    seo: SeoData;
-};
-
-export default function SeoHead({ seo }: Props) {
+export default function SeoHead({ seo }: { seo: SeoData }) {
     return (
         <Head>
             <title>{seo.title}</title>
             {seo.description && (
                 <meta
-                    head-key="description"
                     name="description"
                     content={seo.description}
                 />
             )}
-            <meta
-                head-key="og:title"
-                property="og:title"
-                content={seo.title}
-            />
+
+            {/* Open Graph */}
+            <meta property="og:title" content={seo.title} />
             {seo.description && (
                 <meta
-                    head-key="og:description"
                     property="og:description"
                     content={seo.description}
                 />
             )}
-            {seo.image && (
-                <meta
-                    head-key="og:image"
-                    property="og:image"
-                    content={seo.image}
-                />
-            )}
+            <meta property="og:url" content={seo.url} />
             <meta
-                head-key="og:url"
-                property="og:url"
-                content={seo.url}
-            />
-            <meta
-                head-key="og:type"
                 property="og:type"
                 content={seo.type ?? 'website'}
             />
-            {seo.canonical && (
-                <link
-                    head-key="canonical"
-                    rel="canonical"
-                    href={seo.canonical}
+            {seo.image && (
+                <meta property="og:image" content={seo.image} />
+            )}
+
+            {/* Twitter Card */}
+            <meta
+                name="twitter:card"
+                content="summary_large_image"
+            />
+            <meta name="twitter:title" content={seo.title} />
+            {seo.description && (
+                <meta
+                    name="twitter:description"
+                    content={seo.description}
                 />
             )}
+            {seo.image && (
+                <meta name="twitter:image" content={seo.image} />
+            )}
+
+            {/* Canonical */}
+            {seo.canonical && (
+                <link rel="canonical" href={seo.canonical} />
+            )}
+
+            {/* Hreflang */}
+            {seo.hreflang &&
+                Object.entries(seo.hreflang).map(
+                    ([lang, href]) => (
+                        <link
+                            key={lang}
+                            rel="alternate"
+                            hrefLang={lang}
+                            href={href}
+                        />
+                    ),
+                )}
         </Head>
     );
 }

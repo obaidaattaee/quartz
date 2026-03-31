@@ -59,6 +59,27 @@
             @endisset
         @endisset
 
+        @isset($seo)
+            <meta property="og:title" content="{{ $seo['title'] ?? config('app.name') }}" />
+            @if(!empty($seo['description']))
+                <meta property="og:description" content="{{ $seo['description'] }}" />
+                <meta name="description" content="{{ $seo['description'] }}" />
+            @endif
+            <meta property="og:url" content="{{ $seo['url'] ?? request()->url() }}" />
+            <meta property="og:type" content="{{ $seo['type'] ?? 'website' }}" />
+            @if(!empty($seo['image']))
+                <meta property="og:image" content="{{ $seo['image'] }}" />
+            @endif
+            @if(!empty($seo['canonical']))
+                <link rel="canonical" href="{{ $seo['canonical'] }}" />
+            @endif
+            @if(!empty($seo['hreflang']))
+                @foreach($seo['hreflang'] as $lang => $href)
+                    <link rel="alternate" hreflang="{{ $lang }}" href="{{ $href }}" />
+                @endforeach
+            @endif
+        @endisset
+
         @viteReactRefresh
         @vite(['resources/css/app.css', 'resources/js/app.tsx', "resources/js/pages/{$page['component']}.tsx"])
         <x-inertia::head>

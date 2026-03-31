@@ -9,6 +9,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class PortfolioItem extends Model
 {
     /**
+     * Scope a query to only include published items.
+     */
+    public function scopePublished(Builder $query): Builder
+    {
+        return $query->where('status', 'published');
+    }
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
