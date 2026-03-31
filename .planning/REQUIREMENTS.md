@@ -47,10 +47,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Portfolio & Case Studies
 
-- [ ] **PORT-01**: Visual portfolio grid with hover previews and filtering by service type
-- [ ] **PORT-02**: Case study detail pages with problem → approach → results and metrics
-- [ ] **PORT-03**: Before/after visuals or image comparison layouts
-- [ ] **PORT-04**: Results metrics display with animated counters
+- [x] **PORT-01**: Visual portfolio grid with hover previews and filtering by service type
+- [x] **PORT-02**: Case study detail pages with problem → approach → results and metrics
+- [x] **PORT-03**: Before/after visuals or image comparison layouts
+- [x] **PORT-04**: Results metrics display with animated counters
 
 ### Blog System
 
@@ -213,10 +213,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | BLOG-07 | Phase 4 | Pending |
 | BLOG-08 | Phase 4 | Pending |
 | BLOG-09 | Phase 4 | Pending |
-| PORT-01 | Phase 4 | Pending |
-| PORT-02 | Phase 4 | Pending |
-| PORT-03 | Phase 4 | Pending |
-| PORT-04 | Phase 4 | Pending |
+| PORT-01 | Phase 4 | Complete |
+| PORT-02 | Phase 4 | Complete |
+| PORT-03 | Phase 4 | Complete |
+| PORT-04 | Phase 4 | Complete |
 | SEO-01 | Phase 4 | Pending |
 | SEO-02 | Phase 4 | Pending |
 | SEO-03 | Phase 4 | Pending |
