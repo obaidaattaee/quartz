@@ -1,12 +1,4 @@
-# Stage 1: Build frontend assets
-FROM node:20-alpine AS frontend
-WORKDIR /app
-COPY package.json package-lock.json* ./
-RUN npm ci
-COPY . .
-RUN npm run build
-
-# Stage 2: PHP application
+# Single-stage build: PHP + Node (Wayfinder plugin needs PHP during Vite build)
 FROM php:8.4-fpm-alpine
 
 # Install system dependencies
@@ -23,7 +15,11 @@ RUN apk add --no-cache \
     icu-dev \
     oniguruma-dev \
     sqlite-dev \
+    libxml2-dev \
+    linux-headers \
     mysql-client \
+    nodejs \
+    npm \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install \
     pdo_mysql \
@@ -46,15 +42,21 @@ WORKDIR /var/www/html
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist
 
+# Copy package files for npm caching
+COPY package.json package-lock.json* ./
+RUN npm ci
+
 # Copy application code
 COPY . .
 
-# Copy built frontend assets from stage 1
-COPY --from=frontend /app/public/build public/build
+# Finish composer install (autoloader needs full codebase)
+RUN composer dump-autoload --optimize
 
-# Finish composer install
-RUN composer dump-autoload --optimize \
-    && php artisan storage:link 2>/dev/null || true
+# Build frontend assets (Wayfinder needs PHP available)
+RUN npm run build
+
+# Remove node_modules after build (saves ~200MB in image)
+RUN rm -rf node_modules
 
 # Copy config files
 COPY docker/nginx.conf /etc/nginx/http.d/default.conf
@@ -68,6 +70,9 @@ RUN mkdir -p /var/www/html/storage/logs \
     /var/www/html/storage/framework/views \
     /var/www/html/bootstrap/cache \
     /run/nginx
+
+# Storage link
+RUN php artisan storage:link 2>/dev/null || true
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
