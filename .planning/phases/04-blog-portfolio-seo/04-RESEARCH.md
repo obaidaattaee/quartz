@@ -594,7 +594,7 @@ const articleSchema = {
     },
     publisher: {
         '@type': 'Organization',
-        name: 'Quart',
+        name: 'Quartz',
     },
 };
 ```
@@ -605,7 +605,7 @@ const articleSchema = {
 const organizationSchema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'Quart',
+    name: 'Quartz',
     url: url('/'),
     logo: siteSettings.logo_url,
     sameAs: [
