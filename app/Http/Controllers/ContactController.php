@@ -13,7 +13,7 @@ class ContactController extends Controller
     {
         $contact = Contact::create($request->validated());
 
-        Mail::to(config('mail.admin_address', 'admin@quart.com'))
+        Mail::to(config('mail.admin_address', 'admin@quartz.com'))
             ->send(new ContactSubmitted($contact));
 
         return back()->with('success', true);

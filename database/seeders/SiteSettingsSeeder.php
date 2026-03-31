@@ -13,11 +13,11 @@ class SiteSettingsSeeder extends Seeder
     public function run(): void
     {
         SettingsService::setMany([
-            'site_name' => 'Quart',
+            'site_name' => 'Quartz',
             'primary_color' => '#14B8A6',
             'secondary_color' => '#0F172A',
             'contact_phone' => '+966 50 XXX XXXX',
-            'contact_email' => 'info@quart.sa',
+            'contact_email' => 'info@quartz.sa',
             'contact_whatsapp' => '+966 50 XXX XXXX',
             'contact_address' => 'Riyadh, Saudi Arabia',
             'social_linkedin' => 'https://linkedin.com/company/quart',

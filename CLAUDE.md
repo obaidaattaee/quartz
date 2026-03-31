@@ -1,9 +1,9 @@
 <!-- GSD:project-start source:PROJECT.md -->
 ## Project
 
-**Quart**
+**Quartz**
 
-A professional bilingual (English/Arabic) business website for Quart, a company offering software development, automation, QA, and cybersecurity services. Built on the existing Laravel + Inertia.js + React stack, featuring a premium animated UI inspired by scotchpos.com, with a full-featured blog, portfolio gallery, service pages, and a custom admin panel for complete content and theme management.
+A professional bilingual (English/Arabic) business website for Quartz, a company offering software development, automation, QA, and cybersecurity services. Built on the existing Laravel + Inertia.js + React stack, featuring a premium animated UI inspired by scotchpos.com, with a full-featured blog, portfolio gallery, service pages, and a custom admin panel for complete content and theme management.
 
 **Core Value:** Visitors immediately understand what services are offered, see proof of quality through case studies and testimonials, and can easily get in touch — in a visually polished, professional experience that builds trust.
 

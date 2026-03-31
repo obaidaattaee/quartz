@@ -39,7 +39,7 @@ export default function SiteFooter() {
                             href={`/${locale}`}
                             className="text-xl font-bold tracking-tight text-foreground"
                         >
-                            Quart
+                            Quartz
                         </Link>
                         <p className="text-muted-foreground text-sm">
                             {t('footer.tagline')}
@@ -98,7 +98,7 @@ export default function SiteFooter() {
                         <ul className="flex flex-col gap-3">
                             <li className="text-muted-foreground flex items-center gap-2 text-sm">
                                 <Mail className="size-4 shrink-0" />
-                                <span>info@quart.com</span>
+                                <span>info@quartz.com</span>
                             </li>
                             <li className="text-muted-foreground flex items-center gap-2 text-sm">
                                 <Phone className="size-4 shrink-0" />
@@ -117,7 +117,7 @@ export default function SiteFooter() {
             <div className="border-border/50 border-t">
                 <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 py-4 sm:flex-row sm:px-6 lg:px-8">
                     <p className="text-muted-foreground text-xs">
-                        &copy; {currentYear} Quart. {t('footer.copyright')}
+                        &copy; {currentYear} Quartz. {t('footer.copyright')}
                     </p>
                     <div className="flex gap-4">
                         <Link

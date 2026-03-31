@@ -63,7 +63,7 @@ export default function SiteHeader() {
                     href={`/${locale}`}
                     className="text-xl font-bold tracking-tight text-foreground"
                 >
-                    Quart
+                    Quartz
                 </Link>
 
                 {/* Desktop Navigation */}
@@ -138,7 +138,7 @@ export default function SiteHeader() {
                         <SheetContent side={isRTL ? 'left' : 'right'}>
                             <SheetHeader>
                                 <SheetTitle className="text-start text-lg font-bold">
-                                    Quart
+                                    Quartz
                                 </SheetTitle>
                             </SheetHeader>
                             <nav className="flex flex-col gap-4 p-4">
