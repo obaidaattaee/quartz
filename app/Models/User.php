@@ -7,7 +7,6 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -34,6 +33,22 @@ class User extends Authenticatable
             'role' => 'string',
             'social_links' => 'array',
         ];
+    }
+
+    /**
+     * Get the blog posts authored by this user.
+     */
+    public function blogPosts(): HasMany
+    {
+        return $this->hasMany(BlogPost::class, 'author_id');
+    }
+
+    /**
+     * Get the avatar media.
+     */
+    public function avatarMedia(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Media::class, 'avatar_media_id');
     }
 
     /**

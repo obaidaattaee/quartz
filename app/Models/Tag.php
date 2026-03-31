@@ -19,7 +19,7 @@ class Tag extends Model
     ];
 
     /**
-     * Get the blog posts that have this tag.
+     * Get the blog posts for this tag.
      */
     public function posts(): BelongsToMany
     {

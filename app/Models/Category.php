@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -21,7 +20,19 @@ class Category extends Model
     ];
 
     /**
-     * Get the blog posts that belong to this category.
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'sort_order' => 'integer',
+        ];
+    }
+
+    /**
+     * Get the blog posts for this category.
      */
     public function posts(): BelongsToMany
     {
@@ -29,9 +40,9 @@ class Category extends Model
     }
 
     /**
-     * Scope a query to order categories by sort_order.
+     * Scope a query to order by sort_order.
      */
-    public function scopeOrdered(Builder $query): Builder
+    public function scopeOrdered($query)
     {
         return $query->orderBy('sort_order');
     }

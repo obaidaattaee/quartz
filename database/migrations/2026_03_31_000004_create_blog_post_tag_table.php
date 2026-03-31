@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('blog_post_tag', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('blog_post_id')->constrained('blog_posts')->cascadeOnDelete();
-            $table->foreignId('tag_id')->constrained('tags')->cascadeOnDelete();
+            $table->foreignId('blog_post_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('tag_id')->constrained()->cascadeOnDelete();
             $table->unique(['blog_post_id', 'tag_id']);
         });
     }

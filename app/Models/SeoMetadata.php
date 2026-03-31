@@ -22,7 +22,7 @@ class SeoMetadata extends Model
     ];
 
     /**
-     * Get the OG image for this SEO metadata entry.
+     * Get the OG image.
      */
     public function ogImage(): BelongsTo
     {

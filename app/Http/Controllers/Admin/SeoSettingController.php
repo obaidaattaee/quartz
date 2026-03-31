@@ -6,74 +6,60 @@ use App\Http\Controllers\Controller;
 use App\Models\SeoMetadata;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Inertia\Response;
 
 class SeoSettingController extends Controller
 {
     /**
-     * Static page keys with human-readable labels.
+     * The static page keys that can have SEO metadata.
      */
-    private const PAGE_KEYS = [
-        ['key' => 'home', 'label' => 'Home'],
-        ['key' => 'about', 'label' => 'About'],
-        ['key' => 'contact', 'label' => 'Contact'],
-        ['key' => 'faq', 'label' => 'FAQ'],
-        ['key' => 'services.development', 'label' => 'Services: Development'],
-        ['key' => 'services.automation', 'label' => 'Services: Automation'],
-        ['key' => 'services.qa', 'label' => 'Services: QA'],
-        ['key' => 'services.cybersecurity', 'label' => 'Services: Cybersecurity'],
-        ['key' => 'blog', 'label' => 'Blog'],
-        ['key' => 'portfolio', 'label' => 'Portfolio'],
+    private array $pageKeys = [
+        'home',
+        'about',
+        'contact',
+        'faq',
+        'blog',
+        'portfolio',
+        'services-development',
+        'services-automation',
+        'services-qa',
+        'services-cybersecurity',
     ];
 
     /**
-     * Display SEO settings for all static pages.
+     * Display the SEO settings page.
      */
-    public function index(): Response
+    public function index()
     {
-        $seoData = SeoMetadata::with('ogImage')
-            ->get()
-            ->keyBy('page_key');
+        $seoSettings = SeoMetadata::whereIn('page_key', $this->pageKeys)->get();
 
         return Inertia::render('admin/seo/index', [
-            'seoData' => $seoData,
-            'pageKeys' => self::PAGE_KEYS,
+            'seoSettings' => $seoSettings,
+            'pageKeys' => $this->pageKeys,
         ]);
     }
 
     /**
-     * Update SEO settings for all static pages.
+     * Update SEO metadata for a specific page.
      */
     public function update(Request $request)
     {
         $validated = $request->validate([
-            'pages' => ['required', 'array'],
-            'pages.*.meta_title_en' => ['nullable', 'string', 'max:70'],
-            'pages.*.meta_title_ar' => ['nullable', 'string', 'max:70'],
-            'pages.*.meta_description_en' => ['nullable', 'string', 'max:160'],
-            'pages.*.meta_description_ar' => ['nullable', 'string', 'max:160'],
-            'pages.*.og_image_id' => ['nullable', 'integer', 'exists:media,id'],
+            'page_key' => 'required|string|in:' . implode(',', $this->pageKeys),
+            'meta_title_en' => 'nullable|string|max:70',
+            'meta_title_ar' => 'nullable|string|max:70',
+            'meta_description_en' => 'nullable|string|max:160',
+            'meta_description_ar' => 'nullable|string|max:160',
+            'og_image_id' => 'nullable|integer|exists:media,id',
         ]);
 
-        $validPageKeys = array_column(self::PAGE_KEYS, 'key');
+        $pageKey = $validated['page_key'];
+        unset($validated['page_key']);
 
-        foreach ($validated['pages'] as $pageKey => $data) {
-            if (! in_array($pageKey, $validPageKeys)) {
-                continue;
-            }
+        SeoMetadata::updateOrCreate(
+            ['page_key' => $pageKey],
+            $validated
+        );
 
-            SeoMetadata::updateOrCreate(
-                ['page_key' => $pageKey],
-                [
-                    'meta_title_en' => $data['meta_title_en'] ?? null,
-                    'meta_title_ar' => $data['meta_title_ar'] ?? null,
-                    'meta_description_en' => $data['meta_description_en'] ?? null,
-                    'meta_description_ar' => $data['meta_description_ar'] ?? null,
-                    'og_image_id' => $data['og_image_id'] ?? null,
-                ]
-            );
-        }
-
-        return redirect()->route('admin.seo.index')->with('success', 'SEO settings updated.');
+        return redirect()->back()->with('success', 'SEO settings updated.');
     }
 }

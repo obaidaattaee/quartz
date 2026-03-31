@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('blog_post_category', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('blog_post_id')->constrained('blog_posts')->cascadeOnDelete();
-            $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();
+            $table->foreignId('blog_post_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('category_id')->constrained()->cascadeOnDelete();
             $table->unique(['blog_post_id', 'category_id']);
         });
     }

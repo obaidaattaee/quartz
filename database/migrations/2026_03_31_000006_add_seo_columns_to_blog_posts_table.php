@@ -26,8 +26,14 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('blog_posts', function (Blueprint $table) {
-            $table->dropConstrainedForeignId('og_image_id');
-            $table->dropColumn(['meta_title_en', 'meta_title_ar', 'meta_description_en', 'meta_description_ar']);
+            $table->dropForeign(['og_image_id']);
+            $table->dropColumn([
+                'meta_title_en',
+                'meta_title_ar',
+                'meta_description_en',
+                'meta_description_ar',
+                'og_image_id',
+            ]);
         });
     }
 };

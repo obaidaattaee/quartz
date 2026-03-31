@@ -81,7 +81,7 @@ class BlogPost extends Model
     }
 
     /**
-     * Get the categories for the blog post.
+     * Get the categories for this blog post.
      */
     public function categories(): BelongsToMany
     {
@@ -89,7 +89,7 @@ class BlogPost extends Model
     }
 
     /**
-     * Get the tags for the blog post.
+     * Get the tags for this blog post.
      */
     public function tags(): BelongsToMany
     {
@@ -101,6 +101,8 @@ class BlogPost extends Model
      */
     public function scopePublished(Builder $query): Builder
     {
-        return $query->where('status', 'published');
+        return $query->where('status', 'published')
+            ->whereNotNull('published_at')
+            ->where('published_at', '<=', now());
     }
 }

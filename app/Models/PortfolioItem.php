@@ -91,7 +91,7 @@ class PortfolioItem extends Model
     }
 
     /**
-     * Scope a query to only include published items.
+     * Scope a query to only include published portfolio items.
      */
     public function scopePublished(Builder $query): Builder
     {

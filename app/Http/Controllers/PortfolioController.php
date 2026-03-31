@@ -4,42 +4,36 @@ namespace App\Http\Controllers;
 
 use App\Models\PortfolioItem;
 use App\Services\SeoService;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Inertia\Response;
 
 class PortfolioController extends Controller
 {
     /**
-     * Display the portfolio gallery grid.
+     * Display the portfolio gallery page.
      */
-    public function index(string $locale): Response
+    public function index(Request $request, string $locale)
     {
         $items = PortfolioItem::published()
-            ->with('featuredImage')
+            ->with(['featuredImage'])
             ->orderBy('sort_order')
             ->get();
 
-        $serviceCategories = $items->pluck('service_category')
-            ->unique()
-            ->values()
-            ->all();
-
-        $seo = SeoService::forStaticPage('portfolio', $locale, 'Portfolio', "/{$locale}/portfolio");
+        $seo = SeoService::forStaticPage('portfolio', $locale);
 
         return Inertia::render('public/portfolio/index', [
             'items' => $items,
-            'serviceCategories' => $serviceCategories,
             'seo' => $seo,
         ])->withViewData(['seo' => $seo]);
     }
 
     /**
-     * Display a single portfolio case study.
+     * Display a single portfolio item / case study.
      */
-    public function show(string $locale, string $slug): Response
+    public function show(Request $request, string $locale, string $slug)
     {
         $item = PortfolioItem::published()
-            ->with(['featuredImage', 'ogImage', 'beforeImage', 'afterImage'])
+            ->with(['featuredImage', 'beforeImage', 'afterImage'])
             ->where('slug', $slug)
             ->firstOrFail();
 

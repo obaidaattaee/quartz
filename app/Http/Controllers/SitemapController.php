@@ -9,92 +9,88 @@ use Illuminate\Http\Response;
 class SitemapController extends Controller
 {
     /**
-     * Generate XML sitemap with all public routes in both languages.
+     * Generate XML sitemap with all public routes.
      */
     public function index(): Response
     {
+        $locales = ['en', 'ar'];
+
+        // Static pages
         $staticPages = [
             '' => ['changefreq' => 'weekly', 'priority' => '1.0'],
             '/about' => ['changefreq' => 'monthly', 'priority' => '0.8'],
             '/contact' => ['changefreq' => 'monthly', 'priority' => '0.8'],
             '/faq' => ['changefreq' => 'monthly', 'priority' => '0.7'],
+            '/blog' => ['changefreq' => 'daily', 'priority' => '0.9'],
+            '/portfolio' => ['changefreq' => 'weekly', 'priority' => '0.8'],
             '/services/development' => ['changefreq' => 'monthly', 'priority' => '0.8'],
             '/services/automation' => ['changefreq' => 'monthly', 'priority' => '0.8'],
             '/services/qa' => ['changefreq' => 'monthly', 'priority' => '0.8'],
             '/services/cybersecurity' => ['changefreq' => 'monthly', 'priority' => '0.8'],
-            '/blog' => ['changefreq' => 'daily', 'priority' => '0.9'],
-            '/portfolio' => ['changefreq' => 'weekly', 'priority' => '0.9'],
         ];
 
-        $locales = ['en', 'ar'];
+        $blogPosts = BlogPost::published()->select('slug', 'updated_at')->get();
+        $portfolioItems = PortfolioItem::published()->select('slug', 'updated_at')->get();
 
-        $xml = '<?xml version="1.0" encoding="UTF-8"?>'."\n";
-        $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"'."\n";
-        $xml .= '        xmlns:xhtml="http://www.w3.org/1999/xhtml">'."\n";
+        $xml = '<?xml version="1.0" encoding="UTF-8"?>';
+        $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">';
 
-        // Static pages in both locales
+        $baseUrl = rtrim(config('app.url'), '/');
+
+        // Static pages
         foreach ($staticPages as $path => $meta) {
             foreach ($locales as $locale) {
-                $altLocale = $locale === 'en' ? 'ar' : 'en';
-                $url = url("/{$locale}{$path}");
-                $altUrl = url("/{$altLocale}{$path}");
+                $xml .= '<url>';
+                $xml .= '<loc>' . $baseUrl . '/' . $locale . $path . '</loc>';
+                $xml .= '<changefreq>' . $meta['changefreq'] . '</changefreq>';
+                $xml .= '<priority>' . $meta['priority'] . '</priority>';
 
-                $xml .= '<url>'."\n";
-                $xml .= '  <loc>'.$url.'</loc>'."\n";
-                $xml .= '  <changefreq>'.$meta['changefreq'].'</changefreq>'."\n";
-                $xml .= '  <priority>'.$meta['priority'].'</priority>'."\n";
-                $xml .= '  <xhtml:link rel="alternate" hreflang="'.$locale.'" href="'.$url.'"/>'."\n";
-                $xml .= '  <xhtml:link rel="alternate" hreflang="'.$altLocale.'" href="'.$altUrl.'"/>'."\n";
-                $xml .= '</url>'."\n";
+                foreach ($locales as $altLocale) {
+                    $xml .= '<xhtml:link rel="alternate" hreflang="' . $altLocale . '" href="' . $baseUrl . '/' . $altLocale . $path . '" />';
+                }
+
+                $xml .= '</url>';
             }
         }
 
-        // Published blog posts in both locales
-        $posts = BlogPost::published()
-            ->orderBy('published_at', 'desc')
-            ->get();
-
-        foreach ($posts as $post) {
+        // Blog posts
+        foreach ($blogPosts as $post) {
             foreach ($locales as $locale) {
-                $altLocale = $locale === 'en' ? 'ar' : 'en';
-                $url = url("/{$locale}/blog/{$post->slug}");
-                $altUrl = url("/{$altLocale}/blog/{$post->slug}");
+                $xml .= '<url>';
+                $xml .= '<loc>' . $baseUrl . '/' . $locale . '/blog/' . $post->slug . '</loc>';
+                $xml .= '<lastmod>' . $post->updated_at->toW3cString() . '</lastmod>';
+                $xml .= '<changefreq>weekly</changefreq>';
+                $xml .= '<priority>0.7</priority>';
 
-                $xml .= '<url>'."\n";
-                $xml .= '  <loc>'.$url.'</loc>'."\n";
-                $xml .= '  <lastmod>'.$post->updated_at->toW3cString().'</lastmod>'."\n";
-                $xml .= '  <changefreq>monthly</changefreq>'."\n";
-                $xml .= '  <priority>0.6</priority>'."\n";
-                $xml .= '  <xhtml:link rel="alternate" hreflang="'.$locale.'" href="'.$url.'"/>'."\n";
-                $xml .= '  <xhtml:link rel="alternate" hreflang="'.$altLocale.'" href="'.$altUrl.'"/>'."\n";
-                $xml .= '</url>'."\n";
+                foreach ($locales as $altLocale) {
+                    $xml .= '<xhtml:link rel="alternate" hreflang="' . $altLocale . '" href="' . $baseUrl . '/' . $altLocale . '/blog/' . $post->slug . '" />';
+                }
+
+                $xml .= '</url>';
             }
         }
 
-        // Published portfolio items in both locales
-        $portfolioItems = PortfolioItem::published()
-            ->orderBy('sort_order')
-            ->get();
-
+        // Portfolio items
         foreach ($portfolioItems as $item) {
             foreach ($locales as $locale) {
-                $altLocale = $locale === 'en' ? 'ar' : 'en';
-                $url = url("/{$locale}/portfolio/{$item->slug}");
-                $altUrl = url("/{$altLocale}/portfolio/{$item->slug}");
+                $xml .= '<url>';
+                $xml .= '<loc>' . $baseUrl . '/' . $locale . '/portfolio/' . $item->slug . '</loc>';
+                $xml .= '<lastmod>' . $item->updated_at->toW3cString() . '</lastmod>';
+                $xml .= '<changefreq>monthly</changefreq>';
+                $xml .= '<priority>0.7</priority>';
 
-                $xml .= '<url>'."\n";
-                $xml .= '  <loc>'.$url.'</loc>'."\n";
-                $xml .= '  <lastmod>'.$item->updated_at->toW3cString().'</lastmod>'."\n";
-                $xml .= '  <changefreq>monthly</changefreq>'."\n";
-                $xml .= '  <priority>0.6</priority>'."\n";
-                $xml .= '  <xhtml:link rel="alternate" hreflang="'.$locale.'" href="'.$url.'"/>'."\n";
-                $xml .= '  <xhtml:link rel="alternate" hreflang="'.$altLocale.'" href="'.$altUrl.'"/>'."\n";
-                $xml .= '</url>'."\n";
+                foreach ($locales as $altLocale) {
+                    $xml .= '<xhtml:link rel="alternate" hreflang="' . $altLocale . '" href="' . $baseUrl . '/' . $altLocale . '/portfolio/' . $item->slug . '" />';
+                }
+
+                $xml .= '</url>';
             }
         }
 
         $xml .= '</urlset>';
 
-        return response($xml, 200, ['Content-Type' => 'application/xml']);
+        return response($xml, 200, [
+            'Content-Type' => 'application/xml',
+        ]);
     }
 }

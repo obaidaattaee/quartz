@@ -23,8 +23,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('portfolio_items', function (Blueprint $table) {
-            $table->dropConstrainedForeignId('before_image_id');
-            $table->dropConstrainedForeignId('after_image_id');
+            $table->dropForeign(['before_image_id']);
+            $table->dropForeign(['after_image_id']);
+            $table->dropColumn(['before_image_id', 'after_image_id']);
         });
     }
 };

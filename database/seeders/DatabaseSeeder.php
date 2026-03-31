@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             SiteSettingsSeeder::class,
             ContentSeeder::class,
+            Phase04VerificationSeeder::class,
         ]);
     }
 }

@@ -12,10 +12,10 @@ Quartz is a bilingual (EN/AR) professional services website that must convey tru
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation & Design System** - Locale routing, RTL support, design tokens, animation primitives, and shared layout components
-- [ ] **Phase 2: Public Marketing Site** - Landing page, service pages, contact system, about/team, and all visitor-facing content
-- [ ] **Phase 3: Admin Panel** - Dashboard, content CRUD, lead management, media library, site settings, and role-based access
-- [x] **Phase 4: Blog, Portfolio & SEO** - Blog system, portfolio gallery, structured data, sitemaps, and SEO optimization (completed 2026-03-31)
+- [x] **Phase 1: Foundation & Design System** - Locale routing, RTL support, design tokens, animation primitives, and shared layout components
+- [x] **Phase 2: Public Marketing Site** - Landing page, service pages, contact system, about/team, and all visitor-facing content
+- [x] **Phase 3: Admin Panel** - Dashboard, content CRUD, lead management, media library, site settings, and role-based access
+- [x] **Phase 4: Blog, Portfolio & SEO** - Blog system, portfolio gallery, structured data, sitemaps, and SEO optimization
 
 ## Phase Details
 
@@ -93,12 +93,12 @@ Plans:
 **UI hint**: yes
 
 Plans:
-- [x] 04-01-PLAN.md -- Backend foundation: migrations, models, SEO service, types, Blade template (Wave 1)
-- [ ] 04-02-PLAN.md -- Public blog pages: listing, detail, category/tag/author archives (Wave 2)
-- [ ] 04-03-PLAN.md -- Public portfolio pages: gallery grid, case study detail (Wave 2)
-- [x] 04-04-PLAN.md -- Admin extensions: category CRUD, SEO fields, SEO settings (Wave 2)
-- [ ] 04-05-PLAN.md -- SEO completion: RSS feed, XML sitemap, JSON-LD, canonical/hreflang wiring (Wave 3)
-- [ ] 04-06-PLAN.md -- Seed data and full verification checkpoint (Wave 4)
+- [x] 04-01-PLAN.md -- Database schema, SEO infrastructure, SeoService, TypeScript types, reading time helpers (Wave 1)
+- [x] 04-02-PLAN.md -- Public blog pages: listing, detail, category/tag/author archives (Wave 2)
+- [x] 04-03-PLAN.md -- Public portfolio pages: gallery with filters, case study detail (Wave 2)
+- [x] 04-04-PLAN.md -- Admin category CRUD, SEO settings, extended blog/portfolio forms (Wave 3)
+- [x] 04-05-PLAN.md -- RSS feed, XML sitemap, JSON-LD structured data, SEO wiring (Wave 3)
+- [x] 04-06-PLAN.md -- Verification seeder and full Phase 4 verification checkpoint (Wave 4)
 
 ## Progress
 
@@ -109,5 +109,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 |-------|----------------|--------|-----------|
 | 1. Foundation & Design System | 4/4 | Complete |  |
 | 2. Public Marketing Site | 5/5 | Complete | - |
-| 3. Admin Panel | 0/6 | Not started | - |
-| 4. Blog, Portfolio & SEO | 1/1 | Complete   | 2026-03-31 |
+| 3. Admin Panel | 6/6 | Complete | - |
+| 4. Blog, Portfolio & SEO | 6/6 | Complete | 2026-03-31 |
