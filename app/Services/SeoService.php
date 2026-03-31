@@ -18,7 +18,7 @@ class SeoService
         $titleField = 'meta_title_' . $locale;
         $descField = 'meta_description_' . $locale;
 
-        $siteName = config('app.name', 'Quart');
+        $siteName = config('app.name', 'Quartz');
         $baseUrl = rtrim(config('app.url'), '/');
         $altLocale = $locale === 'en' ? 'ar' : 'en';
 
@@ -34,14 +34,17 @@ class SeoService
         $title = $meta?->$titleField ?? ($pageTitles[$pageKey] ?? $siteName) . ' | ' . $siteName;
         $description = $meta?->$descField ?? '';
 
+        $pageUrl = $baseUrl . '/' . $locale . ($pageKey === 'home' ? '' : '/' . $pageKey);
+
         return [
             'title' => $title,
             'description' => $description,
-            'og_image' => $meta?->ogImage?->path ? $baseUrl . '/storage/' . $meta->ogImage->path : null,
-            'canonical' => $baseUrl . '/' . $locale . ($pageKey === 'home' ? '' : '/' . $pageKey),
+            'image' => $meta?->ogImage?->path ? $baseUrl . '/storage/' . $meta->ogImage->path : null,
+            'url' => $pageUrl,
+            'canonical' => $pageUrl,
             'hreflang' => [
-                ['locale' => 'en', 'url' => $baseUrl . '/en' . ($pageKey === 'home' ? '' : '/' . $pageKey)],
-                ['locale' => 'ar', 'url' => $baseUrl . '/ar' . ($pageKey === 'home' ? '' : '/' . $pageKey)],
+                'en' => $baseUrl . '/en' . ($pageKey === 'home' ? '' : '/' . $pageKey),
+                'ar' => $baseUrl . '/ar' . ($pageKey === 'home' ? '' : '/' . $pageKey),
             ],
         ];
     }
@@ -56,22 +59,26 @@ class SeoService
         $postTitleField = 'title_' . $locale;
         $postExcerptField = 'excerpt_' . $locale;
 
-        $siteName = config('app.name', 'Quart');
+        $siteName = config('app.name', 'Quartz');
         $baseUrl = rtrim(config('app.url'), '/');
 
         $title = $post->$titleField ?? $post->$postTitleField . ' | ' . $siteName;
         $description = $post->$descField ?? $post->$postExcerptField ?? '';
 
+        $postUrl = $baseUrl . '/' . $locale . '/blog/' . $post->slug;
+
         return [
             'title' => $title,
             'description' => $description,
-            'og_image' => $post->ogImage?->path
+            'image' => $post->ogImage?->path
                 ? $baseUrl . '/storage/' . $post->ogImage->path
                 : ($post->featuredImage?->path ? $baseUrl . '/storage/' . $post->featuredImage->path : null),
-            'canonical' => $baseUrl . '/' . $locale . '/blog/' . $post->slug,
+            'url' => $postUrl,
+            'type' => 'article',
+            'canonical' => $postUrl,
             'hreflang' => [
-                ['locale' => 'en', 'url' => $baseUrl . '/en/blog/' . $post->slug],
-                ['locale' => 'ar', 'url' => $baseUrl . '/ar/blog/' . $post->slug],
+                'en' => $baseUrl . '/en/blog/' . $post->slug,
+                'ar' => $baseUrl . '/ar/blog/' . $post->slug,
             ],
         ];
     }
@@ -86,22 +93,25 @@ class SeoService
         $itemTitleField = 'title_' . $locale;
         $itemDescField = 'description_' . $locale;
 
-        $siteName = config('app.name', 'Quart');
+        $siteName = config('app.name', 'Quartz');
         $baseUrl = rtrim(config('app.url'), '/');
 
         $title = $item->$titleField ?? $item->$itemTitleField . ' | ' . $siteName;
         $description = $item->$descField ?? $item->$itemDescField ?? '';
 
+        $itemUrl = $baseUrl . '/' . $locale . '/portfolio/' . $item->slug;
+
         return [
             'title' => $title,
             'description' => $description,
-            'og_image' => $item->ogImage?->path
+            'image' => $item->ogImage?->path
                 ? $baseUrl . '/storage/' . $item->ogImage->path
                 : ($item->featuredImage?->path ? $baseUrl . '/storage/' . $item->featuredImage->path : null),
-            'canonical' => $baseUrl . '/' . $locale . '/portfolio/' . $item->slug,
+            'url' => $itemUrl,
+            'canonical' => $itemUrl,
             'hreflang' => [
-                ['locale' => 'en', 'url' => $baseUrl . '/en/portfolio/' . $item->slug],
-                ['locale' => 'ar', 'url' => $baseUrl . '/ar/portfolio/' . $item->slug],
+                'en' => $baseUrl . '/en/portfolio/' . $item->slug,
+                'ar' => $baseUrl . '/ar/portfolio/' . $item->slug,
             ],
         ];
     }

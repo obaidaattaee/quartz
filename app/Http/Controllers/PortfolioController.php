@@ -21,8 +21,15 @@ class PortfolioController extends Controller
 
         $seo = SeoService::forStaticPage('portfolio', $locale);
 
+        $serviceCategories = PortfolioItem::published()
+            ->distinct()
+            ->pluck('service_category')
+            ->filter()
+            ->values();
+
         return Inertia::render('public/portfolio/index', [
             'items' => $items,
+            'serviceCategories' => $serviceCategories,
             'seo' => $seo,
         ])->withViewData(['seo' => $seo]);
     }

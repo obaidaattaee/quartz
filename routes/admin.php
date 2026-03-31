@@ -59,8 +59,8 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
         Route::put('settings', [SiteSettingController::class, 'update'])->name('settings.update');
 
         // SEO settings for static pages
-        Route::get('seo', [AdminSeoSettingController::class, 'index'])->name('seo.index');
-        Route::put('seo', [AdminSeoSettingController::class, 'update'])->name('seo.update');
+        Route::get('seo', [SeoSettingController::class, 'index'])->name('seo.index');
+        Route::put('seo', [SeoSettingController::class, 'update'])->name('seo.update');
 
         // User management (CRUD)
         Route::resource('users', UserController::class)->except(['show']);
