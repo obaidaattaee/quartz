@@ -7,11 +7,13 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 
-#[Fillable(['name', 'email', 'password', 'role'])]
+#[Fillable(['name', 'email', 'password', 'role', 'bio_en', 'bio_ar', 'avatar_media_id', 'social_links'])]
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -30,6 +32,7 @@ class User extends Authenticatable
             'password' => 'hashed',
             'two_factor_confirmed_at' => 'datetime',
             'role' => 'string',
+            'social_links' => 'array',
         ];
     }
 
@@ -47,5 +50,21 @@ class User extends Authenticatable
     public function isEditor(): bool
     {
         return $this->role === 'editor';
+    }
+
+    /**
+     * Get the user's avatar media.
+     */
+    public function avatar(): BelongsTo
+    {
+        return $this->belongsTo(Media::class, 'avatar_media_id');
+    }
+
+    /**
+     * Get the blog posts authored by this user.
+     */
+    public function blogPosts(): HasMany
+    {
+        return $this->hasMany(BlogPost::class, 'author_id');
     }
 }
