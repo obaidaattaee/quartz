@@ -5,6 +5,7 @@ import BlogCard from '@/components/blog-card';
 import ScrollReveal from '@/components/scroll-reveal';
 import SeoHead from '@/components/seo-head';
 import { useLocale } from '@/hooks/use-locale';
+import { t as translate } from '@/lib/i18n';
 import PublicLayout from '@/layouts/public-layout';
 import { cn } from '@/lib/utils';
 import type {
@@ -87,12 +88,14 @@ export default function BlogIndex({ posts, categories, seo }: Props) {
             <section className="py-16 md:py-24">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     {posts.data.length > 0 ? (
-                        <ScrollReveal variant="stagger" as="div">
-                            <div className="grid gap-8 md:grid-cols-2">
-                                {posts.data.map((post) => (
-                                    <BlogCard key={post.id} post={post} />
-                                ))}
-                            </div>
+                        <ScrollReveal
+                            variant="stagger"
+                            as="div"
+                            className="grid gap-8 md:grid-cols-2"
+                        >
+                            {posts.data.map((post) => (
+                                <BlogCard key={post.id} post={post} />
+                            ))}
                         </ScrollReveal>
                     ) : (
                         <div className="py-16 text-center">
@@ -104,7 +107,11 @@ export default function BlogIndex({ posts, categories, seo }: Props) {
 
                     {/* Pagination */}
                     {posts.last_page > 1 && (
-                        <Pagination links={posts.links} />
+                        <Pagination
+                            links={posts.links}
+                            previousLabel={t('common.previous')}
+                            nextLabel={t('common.next')}
+                        />
                     )}
                 </div>
             </section>
@@ -114,15 +121,22 @@ export default function BlogIndex({ posts, categories, seo }: Props) {
 
 function Pagination({
     links,
+    previousLabel,
+    nextLabel,
 }: {
     links: Array<{ url: string | null; label: string; active: boolean }>;
+    previousLabel: string;
+    nextLabel: string;
 }) {
     return (
         <nav className="mt-12 flex items-center justify-center gap-1">
             {links.map((link, index) => {
-                const label = link.label
+                let label = link.label
                     .replace('&laquo;', '\u00AB')
                     .replace('&raquo;', '\u00BB');
+                label = label
+                    .replace(/Previous/g, previousLabel)
+                    .replace(/Next/g, nextLabel);
 
                 if (!link.url) {
                     return (
@@ -155,8 +169,18 @@ function Pagination({
 }
 
 BlogIndex.layout = (page: ReactNode) => {
+    const pageProps = (page as { props?: unknown })?.props as
+        | {
+              locale?: string;
+              translations?: Record<string, string>;
+          }
+        | undefined;
+    const locale = pageProps?.locale ?? 'en';
+    const translations = pageProps?.translations ?? {};
+    const blogTitle = translate(translations, 'nav.blog');
+
     const breadcrumbs: BreadcrumbItem[] = [
-        { title: 'Blog', href: '/blog' },
+        { title: blogTitle, href: `/${locale}/blog` },
     ];
 
     return <PublicLayout breadcrumbs={breadcrumbs}>{page}</PublicLayout>;

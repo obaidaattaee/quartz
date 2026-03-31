@@ -76,10 +76,6 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the blog posts authored by this user.
+     * (duplicate blogPosts relationship removed)
      */
-    public function blogPosts(): HasMany
-    {
-        return $this->hasMany(BlogPost::class, 'author_id');
-    }
 }

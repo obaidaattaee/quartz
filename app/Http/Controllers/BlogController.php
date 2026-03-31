@@ -65,6 +65,24 @@ class BlogController extends Controller
         $post->reading_time_en = max(1, (int) ceil(str_word_count(strip_tags($post->content_en ?? '')) / 200));
         $post->reading_time_ar = max(1, (int) ceil(str_word_count(strip_tags($post->content_ar ?? '')) / 180));
 
+        // Calculate reading time for related posts so BlogCard can render it
+        $relatedPosts->transform(function ($relatedPost) {
+            $relatedPost->reading_time_en = max(
+                1,
+                (int) ceil(
+                    str_word_count(strip_tags($relatedPost->content_en ?? '')) / 200
+                )
+            );
+            $relatedPost->reading_time_ar = max(
+                1,
+                (int) ceil(
+                    str_word_count(strip_tags($relatedPost->content_ar ?? '')) / 180
+                )
+            );
+
+            return $relatedPost;
+        });
+
         return Inertia::render('public/blog/show', [
             'post' => $post,
             'relatedPosts' => $relatedPosts,
@@ -85,6 +103,20 @@ class BlogController extends Controller
             ->with(['author', 'featuredImage', 'categories'])
             ->latest('published_at')
             ->paginate(6);
+
+        // Calculate reading time for each post (BLOG-07)
+        $posts->getCollection()->transform(function ($post) {
+            $post->reading_time_en = max(
+                1,
+                (int) ceil(str_word_count(strip_tags($post->content_en ?? '')) / 200)
+            );
+            $post->reading_time_ar = max(
+                1,
+                (int) ceil(str_word_count(strip_tags($post->content_ar ?? '')) / 180)
+            );
+
+            return $post;
+        });
 
         $seo = SeoService::forStaticPage('blog', $locale);
 
@@ -109,6 +141,20 @@ class BlogController extends Controller
             ->latest('published_at')
             ->paginate(6);
 
+        // Calculate reading time for each post (BLOG-07)
+        $posts->getCollection()->transform(function ($post) {
+            $post->reading_time_en = max(
+                1,
+                (int) ceil(str_word_count(strip_tags($post->content_en ?? '')) / 200)
+            );
+            $post->reading_time_ar = max(
+                1,
+                (int) ceil(str_word_count(strip_tags($post->content_ar ?? '')) / 180)
+            );
+
+            return $post;
+        });
+
         $seo = SeoService::forStaticPage('blog', $locale);
 
         return Inertia::render('public/blog/tag', [
@@ -130,6 +176,20 @@ class BlogController extends Controller
             ->with(['author', 'featuredImage', 'categories'])
             ->latest('published_at')
             ->paginate(6);
+
+        // Calculate reading time for each post (BLOG-07)
+        $posts->getCollection()->transform(function ($post) {
+            $post->reading_time_en = max(
+                1,
+                (int) ceil(str_word_count(strip_tags($post->content_en ?? '')) / 200)
+            );
+            $post->reading_time_ar = max(
+                1,
+                (int) ceil(str_word_count(strip_tags($post->content_ar ?? '')) / 180)
+            );
+
+            return $post;
+        });
 
         $seo = SeoService::forStaticPage('blog', $locale);
 

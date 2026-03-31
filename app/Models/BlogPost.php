@@ -97,12 +97,6 @@ class BlogPost extends Model
     }
 
     /**
-     * Scope a query to only include published posts.
+     * (duplicate scopePublished removed)
      */
-    public function scopePublished(Builder $query): Builder
-    {
-        return $query->where('status', 'published')
-            ->whereNotNull('published_at')
-            ->where('published_at', '<=', now());
-    }
 }

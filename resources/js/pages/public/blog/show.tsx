@@ -10,6 +10,7 @@ import ScrollReveal from '@/components/scroll-reveal';
 import SeoHead from '@/components/seo-head';
 import ShareButtons from '@/components/share-buttons';
 import { useLocale } from '@/hooks/use-locale';
+import { t as translate } from '@/lib/i18n';
 import PublicLayout from '@/layouts/public-layout';
 import { cn } from '@/lib/utils';
 import type {
@@ -140,7 +141,6 @@ export default function BlogShow({ post, relatedPosts, seo }: Props) {
                             {/* Reading time */}
                             <ReadingTime
                                 minutes={readingTime}
-                                locale={locale}
                             />
 
                             {/* Spacer */}
@@ -234,15 +234,17 @@ export default function BlogShow({ post, relatedPosts, seo }: Props) {
                                 {t('blog.relatedPosts')}
                             </h2>
                         </ScrollReveal>
-                        <ScrollReveal variant="stagger" as="div">
-                            <div className="grid gap-8 md:grid-cols-3">
-                                {relatedPosts.map((relatedPost) => (
-                                    <BlogCard
-                                        key={relatedPost.id}
-                                        post={relatedPost}
-                                    />
-                                ))}
-                            </div>
+                        <ScrollReveal
+                            variant="stagger"
+                            as="div"
+                            className="grid gap-8 md:grid-cols-3"
+                        >
+                            {relatedPosts.map((relatedPost) => (
+                                <BlogCard
+                                    key={relatedPost.id}
+                                    post={relatedPost}
+                                />
+                            ))}
                         </ScrollReveal>
                     </div>
                 </section>
@@ -252,9 +254,27 @@ export default function BlogShow({ post, relatedPosts, seo }: Props) {
 }
 
 BlogShow.layout = (page: ReactNode) => {
+    const pageProps = (page as { props?: unknown })?.props as
+        | {
+              locale?: string;
+              translations?: Record<string, string>;
+              post?: {
+                  title_en?: string;
+                  title_ar?: string;
+              };
+          }
+        | undefined;
+    const locale = pageProps?.locale ?? 'en';
+    const translations = pageProps?.translations ?? {};
+    const blogTitle = translate(translations, 'nav.blog');
+    const postTitle =
+        locale === 'ar'
+            ? pageProps?.post?.title_ar ?? 'Post'
+            : pageProps?.post?.title_en ?? 'Post';
+
     const breadcrumbs: BreadcrumbItem[] = [
-        { title: 'Blog', href: '/blog' },
-        { title: page.props?.post?.title_en ?? 'Post', href: '' },
+        { title: blogTitle, href: `/${locale}/blog` },
+        { title: postTitle, href: '' },
     ];
 
     return <PublicLayout breadcrumbs={breadcrumbs}>{page}</PublicLayout>;

@@ -1,5 +1,6 @@
 import { Linkedin, MessageCircle, Twitter } from 'lucide-react';
 
+import { useLocale } from '@/hooks/use-locale';
 import { getShareUrls } from '@/lib/seo';
 
 type Props = {
@@ -8,23 +9,24 @@ type Props = {
 };
 
 export default function ShareButtons({ url, title }: Props) {
+    const { t } = useLocale();
     const shareUrls = getShareUrls(url, title);
 
     const buttons = [
         {
             href: shareUrls.linkedin,
             icon: Linkedin,
-            label: 'Share on LinkedIn',
+            label: t('blog.share.linkedin'),
         },
         {
             href: shareUrls.twitter,
             icon: Twitter,
-            label: 'Share on X',
+            label: t('blog.share.twitter'),
         },
         {
             href: shareUrls.whatsapp,
             icon: MessageCircle,
-            label: 'Share on WhatsApp',
+            label: t('blog.share.whatsapp'),
         },
     ];
 

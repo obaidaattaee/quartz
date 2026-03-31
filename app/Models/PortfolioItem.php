@@ -91,10 +91,6 @@ class PortfolioItem extends Model
     }
 
     /**
-     * Scope a query to only include published portfolio items.
+     * (duplicate scopePublished removed)
      */
-    public function scopePublished(Builder $query): Builder
-    {
-        return $query->where('status', 'published');
-    }
 }

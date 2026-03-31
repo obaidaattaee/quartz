@@ -1,9 +1,10 @@
 import { Link } from '@inertiajs/react';
-import { Calendar, Clock } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 import { motion } from 'motion/react';
 
 import { useLocale } from '@/hooks/use-locale';
 import { fadeInUp } from '@/lib/animations';
+import ReadingTime from '@/components/reading-time';
 import { cn } from '@/lib/utils';
 import type { BlogPostSummary } from '@/types';
 
@@ -127,11 +128,10 @@ export default function BlogCard({ post }: Props) {
                             </span>
 
                             {/* Reading time */}
-                            <span className="text-muted-foreground flex items-center gap-1 text-xs">
-                                <Clock className="h-3.5 w-3.5" />
-                                {readingTime}{' '}
-                                {locale === 'ar' ? 'د' : 'min'}
-                            </span>
+                            <ReadingTime
+                                minutes={readingTime}
+                                className="text-xs"
+                            />
                         </div>
                     </div>
                 </article>

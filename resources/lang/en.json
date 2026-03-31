@@ -262,5 +262,22 @@
     "breadcrumb.services": "Services",
     "breadcrumb.contact": "Contact",
     "breadcrumb.about": "About",
-    "breadcrumb.faq": "FAQ"
+    "breadcrumb.faq": "FAQ",
+
+    "blog.title": "Blog",
+    "blog.subtitle": "Insights, practical guides, and engineering stories from Quartz",
+    "blog.allCategories": "All",
+    "blog.noPosts": "No posts found.",
+    "blog.relatedPosts": "Related posts",
+    "blog.categorySubtitle": "Posts in this category",
+    "blog.tagSubtitle": "Posts tagged with this topic",
+    "blog.authorPosts": "Posts by this author",
+
+    "blog.readingTime": ":minutes min read",
+    "blog.share.linkedin": "Share on LinkedIn",
+    "blog.share.twitter": "Share on X",
+    "blog.share.whatsapp": "Share on WhatsApp",
+
+    "common.previous": "Previous",
+    "common.next": "Next"
 }
