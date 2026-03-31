@@ -1,11 +1,14 @@
-import { Head, usePage } from '@inertiajs/react';
+import { usePage } from '@inertiajs/react';
 import { Code2, Lock, ShieldCheck, Zap } from 'lucide-react';
 
 import ClientLogos from '@/components/client-logos';
 import ComparisonSection from '@/components/comparison-section';
 import CtaSection from '@/components/cta-section';
 import HeroSection from '@/components/hero-section';
+import JsonLd from '@/components/json-ld';
 import ScrollReveal from '@/components/scroll-reveal';
+import SeoHead from '@/components/seo-head';
+import type { SeoData } from '@/components/seo-head';
 import ServiceCard from '@/components/service-card';
 import StatisticsSection from '@/components/statistics-section';
 import TestimonialCard from '@/components/testimonial-card';
@@ -28,16 +31,31 @@ type Testimonial = {
 
 type HomeProps = {
     testimonials: Testimonial[];
+    seo: SeoData;
 };
 
 export default function Home() {
     const { locale, t } = useLocale();
-    const { testimonials } = usePage<{ testimonials: Testimonial[] }>()
-        .props as HomeProps;
+    const { testimonials, seo } =
+        usePage<HomeProps>().props as HomeProps;
+
+    const orgSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'Organization',
+        name: 'Quart',
+        url: window.location.origin,
+        description:
+            'Software development, automation, QA, and cybersecurity services',
+        contactPoint: {
+            '@type': 'ContactPoint',
+            contactType: 'customer service',
+        },
+    };
 
     return (
         <>
-            <Head title={t('nav.home')} />
+            <SeoHead seo={seo} />
+            <JsonLd data={orgSchema} />
 
             {/* 1. Hero */}
             <HeroSection />

@@ -1,9 +1,11 @@
-import { Head, usePage } from '@inertiajs/react';
+import { usePage } from '@inertiajs/react';
 import { Award } from 'lucide-react';
 import { motion } from 'motion/react';
 import type { ReactNode } from 'react';
 
 import ScrollReveal from '@/components/scroll-reveal';
+import SeoHead from '@/components/seo-head';
+import type { SeoData } from '@/components/seo-head';
 import TeamCard from '@/components/team-card';
 import { useLocale } from '@/hooks/use-locale';
 import { fadeInUp } from '@/lib/animations';
@@ -28,16 +30,17 @@ type TeamMember = {
 
 type AboutProps = {
     teamMembers: TeamMember[];
+    seo: SeoData;
 };
 
 export default function About() {
     const { t } = useLocale();
-    const { teamMembers } = usePage<{ teamMembers: TeamMember[] }>()
-        .props as AboutProps;
+    const { teamMembers, seo } =
+        usePage<AboutProps>().props as AboutProps;
 
     return (
         <>
-            <Head title={t('about.title')} />
+            <SeoHead seo={seo} />
 
             {/* Company story hero section */}
             <section className="relative bg-primary/5 py-20 dark:bg-primary/10 md:py-28">

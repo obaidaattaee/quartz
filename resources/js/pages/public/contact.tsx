@@ -1,4 +1,4 @@
-import { Head, usePage } from '@inertiajs/react';
+import { usePage } from '@inertiajs/react';
 import {
     ExternalLink,
     Mail,
@@ -9,15 +9,19 @@ import {
 import type { ReactNode } from 'react';
 
 import ContactForm from '@/components/contact-form';
+import JsonLd from '@/components/json-ld';
 import ScrollReveal from '@/components/scroll-reveal';
+import SeoHead from '@/components/seo-head';
+import type { SeoData } from '@/components/seo-head';
 import { useLocale } from '@/hooks/use-locale';
 import PublicLayout from '@/layouts/public-layout';
 import type { BreadcrumbItem } from '@/types';
 
 export default function Contact() {
     const { locale, t } = useLocale();
-    const { siteSettings } = usePage<{
+    const { siteSettings, seo } = usePage<{
         siteSettings: Record<string, string>;
+        seo?: SeoData;
     }>().props;
 
     const email = siteSettings?.contact_email || t('contact.info.email');
@@ -26,9 +30,21 @@ export default function Contact() {
     const address =
         siteSettings?.contact_address || t('contact.info.address');
 
+    const localBusinessSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'LocalBusiness',
+        name: 'Quart',
+        url: window.location.origin,
+        contactPoint: {
+            '@type': 'ContactPoint',
+            contactType: 'customer service',
+        },
+    };
+
     return (
         <>
-            <Head title={t('contact.title')} />
+            {seo && <SeoHead seo={seo} />}
+            <JsonLd data={localBusinessSchema} />
 
             {/* Hero section */}
             <section className="relative bg-primary/5 py-20 dark:bg-primary/10 md:py-28">

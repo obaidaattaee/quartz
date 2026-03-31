@@ -35,8 +35,8 @@ Route::prefix('{locale}')
         // FAQ (translations-based for v1)
         Route::get('/faq', [FaqController::class, 'index'])->name('faq');
 
-        // Contact (GET: show form via Inertia, POST: submit via controller)
-        Route::inertia('/contact', 'public/contact')->name('contact.show');
+        // Contact (GET: show form via controller with SEO, POST: submit via controller)
+        Route::get('/contact', [ContactController::class, 'show'])->name('contact.show');
         Route::post('/contact', [ContactController::class, 'store'])
             ->middleware('throttle:contact')
             ->name('contact.store');
