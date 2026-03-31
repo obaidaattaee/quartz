@@ -175,19 +175,9 @@ export default function NewsletterIndex({
     );
 }
 
-NewsletterIndex.layout = (page: React.ReactNode) => {
-    const AppLayout = require('@/layouts/app-layout').default;
-
-    return (
-        <AppLayout
-            breadcrumbs={[
-                {
-                    title: 'Newsletter',
-                    href: '/admin/newsletter',
-                },
-            ]}
-        >
-            {page}
-        </AppLayout>
-    );
+NewsletterIndex.layout = {
+    breadcrumbs: [
+        { title: 'Admin', href: '/admin' },
+        { title: 'Newsletter', href: '/admin/newsletter' },
+    ],
 };
