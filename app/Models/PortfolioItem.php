@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -26,6 +27,13 @@ class PortfolioItem extends Model
         'results_metrics',
         'status',
         'sort_order',
+        'meta_title_en',
+        'meta_title_ar',
+        'meta_description_en',
+        'meta_description_ar',
+        'og_image_id',
+        'before_image_id',
+        'after_image_id',
     ];
 
     /**
@@ -48,5 +56,37 @@ class PortfolioItem extends Model
     public function featuredImage(): BelongsTo
     {
         return $this->belongsTo(Media::class, 'featured_image_id');
+    }
+
+    /**
+     * Get the OG image for the portfolio item.
+     */
+    public function ogImage(): BelongsTo
+    {
+        return $this->belongsTo(Media::class, 'og_image_id');
+    }
+
+    /**
+     * Get the before image for the portfolio item.
+     */
+    public function beforeImage(): BelongsTo
+    {
+        return $this->belongsTo(Media::class, 'before_image_id');
+    }
+
+    /**
+     * Get the after image for the portfolio item.
+     */
+    public function afterImage(): BelongsTo
+    {
+        return $this->belongsTo(Media::class, 'after_image_id');
+    }
+
+    /**
+     * Scope a query to only include published items.
+     */
+    public function scopePublished(Builder $query): Builder
+    {
+        return $query->where('status', 'published');
     }
 }
