@@ -32,10 +32,10 @@ RUN apk add --no-cache \
     bcmath \
     opcache \
     pcntl \
-    && apk add --no-cache --virtual .phpize-deps $PHPIZE_DEPS \
+    && apk add --no-cache $PHPIZE_DEPS \
     && pecl install redis \
     && docker-php-ext-enable redis \
-    && apk del .phpize-deps
+    && apk del --no-cache autoconf dpkg-dev dpkg file g++ gcc libc-dev make re2c 2>/dev/null || true
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
