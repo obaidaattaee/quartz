@@ -1,16 +1,23 @@
 <?php
 
 use App\Http\Controllers\AboutController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\PortfolioController;
+use App\Http\Controllers\RssFeedController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\SitemapController;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Route;
 
 // Root redirect to default locale
 Route::redirect('/', '/en');
+
+// Sitemap (no locale prefix)
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
 // All public routes under locale prefix
 Route::prefix('{locale}')
@@ -40,6 +47,20 @@ Route::prefix('{locale}')
         Route::post('/newsletter', [NewsletterController::class, 'store'])
             ->middleware('throttle:newsletter')
             ->name('newsletter.store');
+
+        // Blog routes
+        Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+        Route::get('/blog/category/{slug}', [BlogController::class, 'category'])->name('blog.category');
+        Route::get('/blog/tag/{slug}', [BlogController::class, 'tag'])->name('blog.tag');
+        Route::get('/blog/author/{id}', [BlogController::class, 'author'])->name('blog.author');
+        Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
+
+        // Portfolio routes
+        Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio.index');
+        Route::get('/portfolio/{slug}', [PortfolioController::class, 'show'])->name('portfolio.show');
+
+        // RSS feed
+        Route::get('/feed.xml', RssFeedController::class)->name('feed');
     });
 
 // Auth/admin routes remain WITHOUT locale prefix

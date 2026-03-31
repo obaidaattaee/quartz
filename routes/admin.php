@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\Admin\BlogPostController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ContactLeadController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\PortfolioItemController;
+use App\Http\Controllers\Admin\SeoSettingController;
 use App\Http\Controllers\Admin\ServicePageController;
 use App\Http\Controllers\Admin\SiteSettingController;
 use App\Http\Controllers\Admin\TeamMemberController;
@@ -26,6 +28,13 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
 
     // Portfolio items -- accessible to editors and admins
     Route::resource('portfolio', PortfolioItemController::class);
+
+    // Categories -- accessible to editors and admins (needed for blog post assignment)
+    Route::resource('categories', CategoryController::class)->except(['create', 'edit', 'show']);
+
+    // SEO settings -- accessible to editors and admins
+    Route::get('seo', [SeoSettingController::class, 'index'])->name('seo.index');
+    Route::put('seo', [SeoSettingController::class, 'update'])->name('seo.update');
 
     // Admin-only routes -- editors get 403
     Route::middleware('role:admin')->group(function () {
