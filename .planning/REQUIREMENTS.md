@@ -54,14 +54,14 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Blog System
 
-- [ ] **BLOG-01**: Blog listing page with pagination (6-10 posts per page)
-- [ ] **BLOG-02**: Blog post detail page with rich content rendering
+- [x] **BLOG-01**: Blog listing page with pagination (6-10 posts per page)
+- [x] **BLOG-02**: Blog post detail page with rich content rendering
 - [x] **BLOG-03**: Categories and tags with filterable category/tag pages
 - [x] **BLOG-04**: Author profiles with photo, bio, social links, and authored posts list
-- [x] **BLOG-05**: SEO metadata per post (title, description, OG image)
-- [ ] **BLOG-06**: Related posts section (2-3 posts by category/tag relevance)
+- [ ] **BLOG-05**: SEO metadata per post (title, description, OG image)
+- [x] **BLOG-06**: Related posts section (2-3 posts by category/tag relevance)
 - [x] **BLOG-07**: Reading time estimate displayed near title
-- [ ] **BLOG-08**: Social sharing buttons (LinkedIn, Twitter/X, WhatsApp)
+- [x] **BLOG-08**: Social sharing buttons (LinkedIn, Twitter/X, WhatsApp)
 - [ ] **BLOG-09**: RSS feed auto-generated from published posts
 
 ### Contact & Lead Generation
@@ -204,14 +204,14 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ADMN-08 | Phase 3 | Complete |
 | ADMN-09 | Phase 3 | Complete |
 | ADMN-10 | Phase 3 | Complete |
-| BLOG-01 | Phase 4 | Pending |
-| BLOG-02 | Phase 4 | Pending |
+| BLOG-01 | Phase 4 | Complete |
+| BLOG-02 | Phase 4 | Complete |
 | BLOG-03 | Phase 4 | Complete |
 | BLOG-04 | Phase 4 | Complete |
-| BLOG-05 | Phase 4 | Complete |
-| BLOG-06 | Phase 4 | Pending |
+| BLOG-05 | Phase 4 | Pending |
+| BLOG-06 | Phase 4 | Complete |
 | BLOG-07 | Phase 4 | Complete |
-| BLOG-08 | Phase 4 | Pending |
+| BLOG-08 | Phase 4 | Complete |
 | BLOG-09 | Phase 4 | Pending |
 | PORT-01 | Phase 4 | Pending |
 | PORT-02 | Phase 4 | Pending |

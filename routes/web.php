@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AboutController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\HomeController;
@@ -40,6 +41,13 @@ Route::prefix('{locale}')
         Route::post('/newsletter', [NewsletterController::class, 'store'])
             ->middleware('throttle:newsletter')
             ->name('newsletter.store');
+
+        // Blog (public)
+        Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+        Route::get('/blog/category/{slug}', [BlogController::class, 'category'])->name('blog.category');
+        Route::get('/blog/tag/{slug}', [BlogController::class, 'tag'])->name('blog.tag');
+        Route::get('/blog/author/{id}', [BlogController::class, 'author'])->name('blog.author');
+        Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
     });
 
 // Auth/admin routes remain WITHOUT locale prefix
