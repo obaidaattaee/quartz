@@ -18,7 +18,7 @@ services:
       - DB_PORT=3306
       - DB_DATABASE=quartz
       - DB_USERNAME=quartz
-      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_PASSWORD=${DB_PASSWORD:-quartz_secret_2026}
       - CACHE_STORE=redis
       - SESSION_DRIVER=redis
       - QUEUE_CONNECTION=redis
@@ -48,8 +48,8 @@ services:
     environment:
       - MYSQL_DATABASE=quartz
       - MYSQL_USER=quartz
-      - MYSQL_PASSWORD=${DB_PASSWORD}
-      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MYSQL_PASSWORD=${DB_PASSWORD:-quartz_secret_2026}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD:-quartz_root_2026}
     volumes:
       - dbdata:/var/lib/mysql
     healthcheck:
