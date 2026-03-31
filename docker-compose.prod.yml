@@ -5,14 +5,14 @@ services:
       dockerfile: Dockerfile
     container_name: quartz-app
     restart: always
-    expose:
-      - "80"
+    ports:
+      - "8080:80"
     environment:
       - APP_NAME=Quartz
       - APP_ENV=production
       - APP_DEBUG=false
-      - APP_URL=https://${DOMAIN}
-      - APP_KEY=${APP_KEY}
+      - APP_URL=https://${DOMAIN:-localhost}
+      - APP_KEY=${APP_KEY:-}
       - DB_CONNECTION=mysql
       - DB_HOST=db
       - DB_PORT=3306
@@ -25,12 +25,12 @@ services:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - MAIL_MAILER=${MAIL_MAILER:-smtp}
-      - MAIL_HOST=${MAIL_HOST}
+      - MAIL_HOST=${MAIL_HOST:-}
       - MAIL_PORT=${MAIL_PORT:-587}
-      - MAIL_USERNAME=${MAIL_USERNAME}
-      - MAIL_PASSWORD=${MAIL_PASSWORD}
+      - MAIL_USERNAME=${MAIL_USERNAME:-}
+      - MAIL_PASSWORD=${MAIL_PASSWORD:-}
       - MAIL_ENCRYPTION=${MAIL_ENCRYPTION:-tls}
-      - MAIL_FROM_ADDRESS=${MAIL_FROM_ADDRESS:-noreply@${DOMAIN}}
+      - MAIL_FROM_ADDRESS=${MAIL_FROM_ADDRESS:-noreply@quartz.com}
       - MAIL_FROM_NAME=Quartz Solutions
     volumes:
       - storage:/var/www/html/storage/app/public
@@ -40,9 +40,6 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-    networks:
-      - backend
-      - frontend
 
   db:
     image: mysql:8.0
@@ -61,8 +58,6 @@ services:
       timeout: 5s
       retries: 5
       start_period: 30s
-    networks:
-      - backend
     # No ports exposed — only accessible from app container
 
   redis:
@@ -77,39 +72,10 @@ services:
       interval: 10s
       timeout: 3s
       retries: 3
-    networks:
-      - backend
     # No ports exposed — only accessible from app container
-
-  caddy:
-    image: caddy:2-alpine
-    container_name: quartz-caddy
-    restart: always
-    ports:
-      - "80:80"
-      - "443:443"
-      - "443:443/udp"
-    volumes:
-      - ./docker/Caddyfile:/etc/caddy/Caddyfile:ro
-      - caddy_data:/data
-      - caddy_config:/config
-    environment:
-      - DOMAIN=${DOMAIN}
-    depends_on:
-      - app
-    networks:
-      - frontend
 
 volumes:
   dbdata:
   redisdata:
   storage:
   logs:
-  caddy_data:
-  caddy_config:
-
-networks:
-  backend:
-    driver: bridge
-  frontend:
-    driver: bridge
