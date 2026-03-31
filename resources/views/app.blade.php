@@ -35,8 +35,29 @@
         </style>
 
         <link rel="icon" href="/favicon.ico" sizes="any">
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+        <link rel="icon" type="image/png" sizes="192x192" href="/images/favicon-192.png">
+        <link rel="apple-touch-icon" href="/images/favicon-192.png">
+
+        @isset($seo)
+            <meta name="description" content="{{ $seo['description'] ?? '' }}">
+            <meta property="og:title" content="{{ $seo['title'] ?? config('app.name') }}">
+            <meta property="og:description" content="{{ $seo['description'] ?? '' }}">
+            <meta property="og:image" content="{{ $seo['image'] ?? '' }}">
+            <meta property="og:url" content="{{ $seo['url'] ?? request()->url() }}">
+            <meta property="og:type" content="{{ $seo['type'] ?? 'website' }}">
+            <meta property="og:site_name" content="{{ config('app.name') }}">
+            <meta name="twitter:card" content="summary_large_image">
+            <meta name="twitter:title" content="{{ $seo['title'] ?? config('app.name') }}">
+            <meta name="twitter:description" content="{{ $seo['description'] ?? '' }}">
+            <meta name="twitter:image" content="{{ $seo['image'] ?? '' }}">
+            <link rel="canonical" href="{{ $seo['canonical'] ?? request()->url() }}">
+            @isset($seo['hreflang'])
+                @foreach($seo['hreflang'] as $lang => $href)
+                    <link rel="alternate" hreflang="{{ $lang }}" href="{{ $href }}">
+                @endforeach
+            @endisset
+        @endisset
 
         @viteReactRefresh
         @vite(['resources/css/app.css', 'resources/js/app.tsx', "resources/js/pages/{$page['component']}.tsx"])
