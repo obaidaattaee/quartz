@@ -22,12 +22,12 @@ Visitors immediately understand what services are offered, see proof of quality 
 
 ### Active
 
-- [ ] Portfolio gallery with visual grid of past work, filterable by service type
-- [ ] Blog system with rich editor, categories/tags, SEO metadata, rich media embeds, and author profiles
+- [x] Portfolio gallery with visual grid of past work, filterable by service type — *Validated in Phase 04: Blog, Portfolio & SEO*
+- [x] Blog system with rich editor, categories/tags, SEO metadata, rich media embeds, and author profiles — *Validated in Phase 04*
 - [x] Admin panel — manage blog posts, case studies, contact leads, and all site content — *Validated in Phase 03: Admin Panel*
 - [x] Theme customization in admin — logos, primary/secondary colors, contact information — *Validated in Phase 03*
 - [x] Multi-role authentication — admin and editor roles with different permissions — *Validated in Phase 03*
-- [ ] SEO optimization — meta tags, OG images, structured data, sitemap
+- [x] SEO optimization — meta tags, OG images, structured data, sitemap — *Validated in Phase 04*
 
 ### Out of Scope
 
