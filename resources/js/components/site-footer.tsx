@@ -37,9 +37,13 @@ export default function SiteFooter() {
                     <div className="flex flex-col gap-4">
                         <Link
                             href={`/${locale}`}
-                            className="text-xl font-bold tracking-tight text-foreground"
+                            className="inline-block"
                         >
-                            Quartz
+                            <img
+                                src="/images/logo-full-transparent.png"
+                                alt="Quartz Solutions"
+                                className="h-8 dark:brightness-0 dark:invert"
+                            />
                         </Link>
                         <p className="text-muted-foreground text-sm">
                             {t('footer.tagline')}

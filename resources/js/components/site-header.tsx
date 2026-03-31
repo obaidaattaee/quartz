@@ -61,9 +61,13 @@ export default function SiteHeader() {
                 {/* Logo */}
                 <Link
                     href={`/${locale}`}
-                    className="text-xl font-bold tracking-tight text-foreground"
+                    className="flex items-center gap-2"
                 >
-                    Quartz
+                    <img
+                        src="/images/logo-full-transparent.png"
+                        alt="Quartz Solutions"
+                        className="h-8 dark:brightness-0 dark:invert"
+                    />
                 </Link>
 
                 {/* Desktop Navigation */}
@@ -137,8 +141,12 @@ export default function SiteHeader() {
                         </SheetTrigger>
                         <SheetContent side={isRTL ? 'left' : 'right'}>
                             <SheetHeader>
-                                <SheetTitle className="text-start text-lg font-bold">
-                                    Quartz
+                                <SheetTitle className="text-start">
+                                    <img
+                                        src="/images/logo-full-transparent.png"
+                                        alt="Quartz Solutions"
+                                        className="h-7 dark:brightness-0 dark:invert"
+                                    />
                                 </SheetTitle>
                             </SheetHeader>
                             <nav className="flex flex-col gap-4 p-4">

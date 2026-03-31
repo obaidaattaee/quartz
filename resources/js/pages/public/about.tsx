@@ -1,5 +1,4 @@
 import { usePage } from '@inertiajs/react';
-import { Award } from 'lucide-react';
 import { motion } from 'motion/react';
 import type { ReactNode } from 'react';
 
@@ -11,7 +10,14 @@ import { useLocale } from '@/hooks/use-locale';
 import { fadeInUp } from '@/lib/animations';
 import PublicLayout from '@/layouts/public-layout';
 
-const CERTIFICATION_COUNT = 6;
+const CERTIFICATIONS = [
+    { key: 'iso', src: '/images/certifications/iso.svg' },
+    { key: 'aws', src: '/images/certifications/aws.svg' },
+    { key: 'microsoft', src: '/images/certifications/microsoft.svg' },
+    { key: 'google', src: '/images/certifications/google-cloud.svg' },
+    { key: 'istqb', src: '/images/certifications/istqb.svg' },
+    { key: 'ceh', src: '/images/certifications/ceh.svg' },
+];
 
 type TeamMember = {
     id: number;
@@ -112,23 +118,24 @@ export default function About() {
                         as="div"
                         className="mt-12 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-6"
                     >
-                        {Array.from(
-                            { length: CERTIFICATION_COUNT },
-                            (_, i) => (
-                                <motion.div
-                                    key={i}
-                                    variants={fadeInUp}
-                                    className="flex flex-col items-center gap-2 rounded-lg bg-muted/50 p-4 transition-all duration-300 hover:bg-primary/10"
-                                >
-                                    <Award className="size-8 text-muted-foreground transition-colors duration-300 hover:text-primary" />
-                                    <span className="text-center text-sm font-medium">
-                                        {t(
-                                            `about.certifications.${i}`,
-                                        )}
-                                    </span>
-                                </motion.div>
-                            ),
-                        )}
+                        {CERTIFICATIONS.map((cert) => (
+                            <motion.div
+                                key={cert.key}
+                                variants={fadeInUp}
+                                className="flex flex-col items-center gap-3 rounded-lg bg-muted/50 p-4 transition-all duration-300 hover:bg-primary/10"
+                            >
+                                <img
+                                    src={cert.src}
+                                    alt={t(`about.certifications.${cert.key}`)}
+                                    className="h-16 w-16 rounded-lg object-contain"
+                                />
+                                <span className="text-center text-sm font-medium">
+                                    {t(
+                                        `about.certifications.${cert.key}`,
+                                    )}
+                                </span>
+                            </motion.div>
+                        ))}
                     </ScrollReveal>
                 </div>
             </section>

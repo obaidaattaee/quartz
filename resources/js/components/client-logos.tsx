@@ -1,13 +1,13 @@
 import ScrollReveal from '@/components/scroll-reveal';
 import { useLocale } from '@/hooks/use-locale';
 
-const PLACEHOLDER_LOGOS = [
-    'TechCorp',
-    'GlobalTrade',
-    'FinSecure',
-    'DataFlow',
-    'CloudNine',
-    'SecureNet',
+const CLIENT_LOGOS = [
+    { name: 'TechCorp', src: '/images/clients/techcorp.svg' },
+    { name: 'GlobalTrade', src: '/images/clients/globaltrade.svg' },
+    { name: 'FinSecure', src: '/images/clients/finsecure.svg' },
+    { name: 'DataFlow', src: '/images/clients/dataflow.svg' },
+    { name: 'CloudNine', src: '/images/clients/cloudnine.svg' },
+    { name: 'SecureNet', src: '/images/clients/securenet.svg' },
 ];
 
 export default function ClientLogos() {
@@ -21,14 +21,16 @@ export default function ClientLogos() {
                 </h2>
 
                 <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
-                    {PLACEHOLDER_LOGOS.map((name) => (
+                    {CLIENT_LOGOS.map((logo) => (
                         <div
-                            key={name}
+                            key={logo.name}
                             className="grayscale opacity-60 transition-all duration-300 hover:grayscale-0 hover:opacity-100"
                         >
-                            <div className="flex h-12 w-28 items-center justify-center rounded-lg bg-muted text-sm font-medium text-muted-foreground">
-                                {name}
-                            </div>
+                            <img
+                                src={logo.src}
+                                alt={logo.name}
+                                className="h-10 w-auto dark:brightness-0 dark:invert"
+                            />
                         </div>
                     ))}
                 </div>
