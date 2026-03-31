@@ -44,6 +44,14 @@ export type BlogPost = {
     author_id: number;
     status: 'draft' | 'published';
     published_at: string | null;
+    meta_title_en: string | null;
+    meta_title_ar: string | null;
+    meta_description_en: string | null;
+    meta_description_ar: string | null;
+    og_image_id: number | null;
+    og_image?: MediaItem | null;
+    categories?: AdminCategory[];
+    tags?: AdminTag[];
     created_at: string;
     updated_at: string;
 };
@@ -64,6 +72,16 @@ export type PortfolioItem = {
     results_metrics: { label: string; value: string }[] | null;
     status: 'draft' | 'published';
     sort_order: number;
+    meta_title_en: string | null;
+    meta_title_ar: string | null;
+    meta_description_en: string | null;
+    meta_description_ar: string | null;
+    og_image_id: number | null;
+    og_image?: MediaItem | null;
+    before_image_id: number | null;
+    after_image_id: number | null;
+    before_image?: MediaItem | null;
+    after_image?: MediaItem | null;
     created_at: string;
     updated_at: string;
 };
@@ -137,6 +155,36 @@ export type SiteSettings = {
     social_twitter?: string;
     social_github?: string;
     social_instagram?: string;
+};
+
+export type AdminCategory = {
+    id: number;
+    name_en: string;
+    name_ar: string;
+    slug: string;
+    sort_order: number;
+    posts_count?: number;
+    created_at: string;
+    updated_at: string;
+};
+
+export type AdminTag = {
+    id: number;
+    name_en: string;
+    name_ar: string;
+    slug: string;
+    posts_count?: number;
+};
+
+export type SeoMetadataItem = {
+    id: number;
+    page_key: string;
+    meta_title_en: string | null;
+    meta_title_ar: string | null;
+    meta_description_en: string | null;
+    meta_description_ar: string | null;
+    og_image_id: number | null;
+    og_image?: MediaItem | null;
 };
 
 export type NavGroup = {
