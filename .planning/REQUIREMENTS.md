@@ -1,4 +1,4 @@
-# Requirements: Quart
+# Requirements: Quartz
 
 **Defined:** 2026-03-28
 **Core Value:** Visitors immediately understand what services are offered, see proof of quality through case studies and testimonials, and can easily get in touch — in a visually polished, professional experience that builds trust.
@@ -56,11 +56,11 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [ ] **BLOG-01**: Blog listing page with pagination (6-10 posts per page)
 - [ ] **BLOG-02**: Blog post detail page with rich content rendering
-- [ ] **BLOG-03**: Categories and tags with filterable category/tag pages
-- [ ] **BLOG-04**: Author profiles with photo, bio, social links, and authored posts list
-- [ ] **BLOG-05**: SEO metadata per post (title, description, OG image)
+- [x] **BLOG-03**: Categories and tags with filterable category/tag pages
+- [x] **BLOG-04**: Author profiles with photo, bio, social links, and authored posts list
+- [x] **BLOG-05**: SEO metadata per post (title, description, OG image)
 - [ ] **BLOG-06**: Related posts section (2-3 posts by category/tag relevance)
-- [ ] **BLOG-07**: Reading time estimate displayed near title
+- [x] **BLOG-07**: Reading time estimate displayed near title
 - [ ] **BLOG-08**: Social sharing buttons (LinkedIn, Twitter/X, WhatsApp)
 - [ ] **BLOG-09**: RSS feed auto-generated from published posts
 
@@ -88,11 +88,11 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### SEO
 
-- [ ] **SEO-01**: Admin-editable meta titles and descriptions per page
-- [ ] **SEO-02**: Open Graph and social sharing meta tags on all pages
+- [x] **SEO-01**: Admin-editable meta titles and descriptions per page
+- [x] **SEO-02**: Open Graph and social sharing meta tags on all pages
 - [ ] **SEO-03**: Auto-generated XML sitemap including all public routes, blog posts, and portfolio items
 - [ ] **SEO-04**: JSON-LD structured data (Organization, Service, Article, LocalBusiness, FAQ schemas)
-- [ ] **SEO-05**: Canonical URLs and hreflang tags linking EN/AR versions of each page
+- [x] **SEO-05**: Canonical URLs and hreflang tags linking EN/AR versions of each page
 
 ### Admin Panel
 
@@ -206,22 +206,22 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ADMN-10 | Phase 3 | Complete |
 | BLOG-01 | Phase 4 | Pending |
 | BLOG-02 | Phase 4 | Pending |
-| BLOG-03 | Phase 4 | Pending |
-| BLOG-04 | Phase 4 | Pending |
-| BLOG-05 | Phase 4 | Pending |
+| BLOG-03 | Phase 4 | Complete |
+| BLOG-04 | Phase 4 | Complete |
+| BLOG-05 | Phase 4 | Complete |
 | BLOG-06 | Phase 4 | Pending |
-| BLOG-07 | Phase 4 | Pending |
+| BLOG-07 | Phase 4 | Complete |
 | BLOG-08 | Phase 4 | Pending |
 | BLOG-09 | Phase 4 | Pending |
 | PORT-01 | Phase 4 | Pending |
 | PORT-02 | Phase 4 | Pending |
 | PORT-03 | Phase 4 | Pending |
 | PORT-04 | Phase 4 | Pending |
-| SEO-01 | Phase 4 | Pending |
-| SEO-02 | Phase 4 | Pending |
+| SEO-01 | Phase 4 | Complete |
+| SEO-02 | Phase 4 | Complete |
 | SEO-03 | Phase 4 | Pending |
 | SEO-04 | Phase 4 | Pending |
-| SEO-05 | Phase 4 | Pending |
+| SEO-05 | Phase 4 | Complete |
 
 **Coverage:**
 - v1 requirements: 67 total

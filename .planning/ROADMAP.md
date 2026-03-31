@@ -1,8 +1,8 @@
-# Roadmap: Quart
+# Roadmap: Quartz
 
 ## Overview
 
-Quart is a bilingual (EN/AR) professional services website that must convey trust through polished visuals, showcase work, and convert visitors into leads. The build progresses from foundational infrastructure (locale routing, RTL, design system) through the public marketing pages visitors see, into the admin panel that manages all content, and finally delivers the content marketing features (blog, portfolio) alongside SEO hardening. Each phase produces a coherent, verifiable capability.
+Quartz is a bilingual (EN/AR) professional services website that must convey trust through polished visuals, showcase work, and convert visitors into leads. The build progresses from foundational infrastructure (locale routing, RTL, design system) through the public marketing pages visitors see, into the admin panel that manages all content, and finally delivers the content marketing features (blog, portfolio) alongside SEO hardening. Each phase produces a coherent, verifiable capability.
 
 ## Phases
 
@@ -39,7 +39,7 @@ Plans:
 - [x] 01-04-PLAN.md -- UAT gap closure: middleware lazy eval, CSS fixes, RTL Sheet, REQUIREMENTS tracking (Wave 1)
 
 ### Phase 2: Public Marketing Site
-**Goal**: Visitors land on a visually polished site, understand what services Quart offers, see proof of quality through testimonials and team credentials, and can reach out through multiple contact channels
+**Goal**: Visitors land on a visually polished site, understand what services Quartz offers, see proof of quality through testimonials and team credentials, and can reach out through multiple contact channels
 **Depends on**: Phase 1
 **Requirements**: LAND-01, LAND-02, LAND-03, LAND-04, LAND-05, LAND-06, LAND-07, SRVC-01, SRVC-02, SRVC-03, SRVC-04, SRVC-05, CONT-01, CONT-02, CONT-03, CONT-04, CONT-05, CONT-06, CONT-07, TEAM-01, TEAM-02, TEAM-03
 **Success Criteria** (what must be TRUE):
@@ -93,7 +93,7 @@ Plans:
 **UI hint**: yes
 
 Plans:
-- [ ] 04-01-PLAN.md -- Backend foundation: migrations, models, SEO service, types, Blade template (Wave 1)
+- [x] 04-01-PLAN.md -- Backend foundation: migrations, models, SEO service, types, Blade template (Wave 1)
 - [ ] 04-02-PLAN.md -- Public blog pages: listing, detail, category/tag/author archives (Wave 2)
 - [ ] 04-03-PLAN.md -- Public portfolio pages: gallery grid, case study detail (Wave 2)
 - [ ] 04-04-PLAN.md -- Admin extensions: category CRUD, SEO fields, SEO settings (Wave 2)
