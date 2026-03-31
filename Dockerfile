@@ -31,7 +31,11 @@ RUN apk add --no-cache \
     intl \
     bcmath \
     opcache \
-    pcntl
+    pcntl \
+    && apk add --no-cache --virtual .phpize-deps $PHPIZE_DEPS \
+    && pecl install redis \
+    && docker-php-ext-enable redis \
+    && apk del .phpize-deps
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
