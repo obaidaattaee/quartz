@@ -1,8 +1,20 @@
 # Quartz
 
+## Current Milestone: v1.1 Brand Redesign & 3D Interactive Experience
+
+**Goal:** Transform the current template-looking site into a unique, premium consultancy brand with an interactive 3D hero that makes Quartz instantly memorable and drives lead generation.
+
+**Target features:**
+- Full rebrand — new color palette, typography, logo, icon/illustration style, card/section layouts
+- 3D interactive hero — Three.js Earth globe with Roblox-style robot characters representing each service
+- Redesigned landing page — new section layouts, visual hierarchy, and flow that builds trust
+- Redesigned portfolio — full case studies with depth, professional visuals, social proof
+- Lead generation optimization — CTAs, trust signals, conversion paths throughout
+- Visual language overhaul — new component designs that feel hand-crafted, not templated
+
 ## What This Is
 
-A professional bilingual (English/Arabic) business website for Quartz, a company offering software development, automation, QA, and cybersecurity services. Built on the existing Laravel + Inertia.js + React stack, featuring a premium animated UI inspired by scotchpos.com, with a full-featured blog, portfolio gallery, service pages, and a custom admin panel for complete content and theme management.
+A professional bilingual (English/Arabic) business website for Quartz Solutions, a company offering software development, automation, QA, and cybersecurity services. Built on Laravel + Inertia.js + React with a 3D interactive hero experience, premium brand identity, full-featured blog, portfolio gallery with in-depth case studies, service pages, and a custom admin panel for complete content and theme management.
 
 ## Core Value
 
@@ -12,22 +24,27 @@ Visitors immediately understand what services are offered, see proof of quality 
 
 ### Validated
 
-- [x] English/Arabic bilingual support with URL-based routing (/en/..., /ar/...) and full RTL layout — *Validated in Phase 01: Foundation & Design System*
-- [x] Dark/light mode toggle with smooth transitions — *Validated in Phase 01*
-- [x] Scroll reveal animations, hero motion graphics, hover interactions, and page transitions (scotchpos.com style) — *Validated in Phase 01 + Phase 02*
-- [x] Landing page with hero animation, service overview sections, testimonials, and CTA — *Validated in Phase 02: Public Marketing Site*
-- [x] Individual service detail pages for each service (dev, automation, QA, cybersecurity) — *Validated in Phase 02*
-- [x] Multi-channel contact — form, WhatsApp, phone, email all visible — *Validated in Phase 02*
-- [x] Scroll reveal animations applied to page content sections — *Validated in Phase 02*
+- [x] English/Arabic bilingual support with URL-based routing (/en/..., /ar/...) and full RTL layout — *Phase 01*
+- [x] Dark/light mode toggle with smooth transitions — *Phase 01*
+- [x] Scroll reveal animations, hero motion graphics, hover interactions, and page transitions — *Phase 01 + 02*
+- [x] Landing page with hero animation, service overview sections, testimonials, and CTA — *Phase 02*
+- [x] Individual service detail pages for each service — *Phase 02*
+- [x] Multi-channel contact — form, WhatsApp, phone, email all visible — *Phase 02*
+- [x] Portfolio gallery with visual grid, filterable by service type — *Phase 04*
+- [x] Blog system with rich editor, categories/tags, SEO metadata, author profiles — *Phase 04*
+- [x] Admin panel — manage blog posts, case studies, contact leads, all site content — *Phase 03*
+- [x] Theme customization in admin — logos, colors, contact information — *Phase 03*
+- [x] Multi-role authentication — admin and editor roles — *Phase 03*
+- [x] SEO optimization — meta tags, OG images, structured data, sitemap — *Phase 04*
 
 ### Active
 
-- [x] Portfolio gallery with visual grid of past work, filterable by service type — *Validated in Phase 04: Blog, Portfolio & SEO*
-- [x] Blog system with rich editor, categories/tags, SEO metadata, rich media embeds, and author profiles — *Validated in Phase 04*
-- [x] Admin panel — manage blog posts, case studies, contact leads, and all site content — *Validated in Phase 03: Admin Panel*
-- [x] Theme customization in admin — logos, primary/secondary colors, contact information — *Validated in Phase 03*
-- [x] Multi-role authentication — admin and editor roles with different permissions — *Validated in Phase 03*
-- [x] SEO optimization — meta tags, OG images, structured data, sitemap — *Validated in Phase 04*
+- [ ] Full brand redesign — new color palette, typography, visual language, component designs
+- [ ] 3D interactive hero — Three.js Earth globe with Roblox-style robot characters per service
+- [ ] Landing page redesign — new section layouts, visual hierarchy, trust-building flow
+- [ ] Portfolio redesign — full case studies (problem → approach → results), professional visuals, social proof
+- [ ] Lead generation optimization — strategic CTAs, trust signals, conversion paths
+- [ ] Visual language overhaul — icons, cards, sections, animations that feel hand-crafted
 
 ### Out of Scope
 
@@ -36,6 +53,7 @@ Visitors immediately understand what services are offered, see proof of quality 
 - Real-time chat / chatbot — contact form and direct channels are sufficient for v1
 - Mobile app — web-first, responsive design covers mobile
 - Client portal / project dashboard — separate concern from the marketing site
+- Interactive learning courses (Educative-style) — deferred to v1.2 milestone
 
 ## Context
 
@@ -81,4 +99,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-28 after Phase 03 completion*
+*Last updated: 2026-04-04 after milestone v1.1 started*
