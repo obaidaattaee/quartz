@@ -77,43 +77,43 @@ Requirements for milestone v1.1: Brand Redesign & 3D Interactive Experience. Eac
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| BRAND-01 | Pending | Pending |
-| BRAND-02 | Pending | Pending |
-| BRAND-03 | Pending | Pending |
-| BRAND-04 | Pending | Pending |
-| BRAND-05 | Pending | Pending |
-| BRAND-06 | Pending | Pending |
-| BRAND-07 | Pending | Pending |
-| LAND-01 | Pending | Pending |
-| LAND-02 | Pending | Pending |
-| LAND-03 | Pending | Pending |
-| LAND-04 | Pending | Pending |
-| LAND-05 | Pending | Pending |
-| LAND-06 | Pending | Pending |
-| LAND-07 | Pending | Pending |
-| PORT-01 | Pending | Pending |
-| PORT-02 | Pending | Pending |
-| PORT-03 | Pending | Pending |
-| PORT-04 | Pending | Pending |
-| PORT-05 | Pending | Pending |
-| PORT-06 | Pending | Pending |
-| LEAD-01 | Pending | Pending |
-| LEAD-02 | Pending | Pending |
-| LEAD-03 | Pending | Pending |
-| LEAD-04 | Pending | Pending |
-| LEAD-05 | Pending | Pending |
-| 3DHR-01 | Pending | Pending |
-| 3DHR-02 | Pending | Pending |
-| 3DHR-03 | Pending | Pending |
-| 3DHR-04 | Pending | Pending |
-| 3DHR-05 | Pending | Pending |
-| 3DHR-06 | Pending | Pending |
+| BRAND-01 | Phase 5 | Pending |
+| BRAND-02 | Phase 5 | Pending |
+| BRAND-03 | Phase 5 | Pending |
+| BRAND-04 | Phase 5 | Pending |
+| BRAND-05 | Phase 5 | Pending |
+| BRAND-06 | Phase 5 | Pending |
+| BRAND-07 | Phase 5 | Pending |
+| LAND-01 | Phase 6 | Pending |
+| LAND-02 | Phase 6 | Pending |
+| LAND-03 | Phase 6 | Pending |
+| LAND-04 | Phase 6 | Pending |
+| LAND-05 | Phase 6 | Pending |
+| LAND-06 | Phase 6 | Pending |
+| LAND-07 | Phase 6 | Pending |
+| PORT-01 | Phase 7 | Pending |
+| PORT-02 | Phase 7 | Pending |
+| PORT-03 | Phase 7 | Pending |
+| PORT-04 | Phase 7 | Pending |
+| PORT-05 | Phase 7 | Pending |
+| PORT-06 | Phase 7 | Pending |
+| LEAD-01 | Phase 8 | Pending |
+| LEAD-02 | Phase 8 | Pending |
+| LEAD-03 | Phase 8 | Pending |
+| LEAD-04 | Phase 8 | Pending |
+| LEAD-05 | Phase 8 | Pending |
+| 3DHR-01 | Phase 9 | Pending |
+| 3DHR-02 | Phase 9 | Pending |
+| 3DHR-03 | Phase 9 | Pending |
+| 3DHR-04 | Phase 9 | Pending |
+| 3DHR-05 | Phase 9 | Pending |
+| 3DHR-06 | Phase 9 | Pending |
 
 **Coverage:**
 - v1.1 requirements: 31 total
-- Mapped to phases: 0
-- Unmapped: 31
+- Mapped to phases: 31
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-04-04*
-*Last updated: 2026-04-04 after initial definition*
+*Last updated: 2026-04-04 after roadmap creation*

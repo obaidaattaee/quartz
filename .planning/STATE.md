@@ -2,12 +2,12 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Brand Redesign & 3D Interactive Experience
-status: defining_requirements
+status: ready_to_plan
 stopped_at: null
-last_updated: "2026-04-04T08:30:00.000Z"
+last_updated: "2026-04-04T09:00:00.000Z"
 last_activity: 2026-04-04
 progress:
-  total_phases: 0
+  total_phases: 5
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
@@ -21,14 +21,24 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-04)
 
 **Core value:** Visitors immediately understand what services are offered, see proof of quality through case studies and testimonials, and can easily get in touch -- in a visually polished, professional experience that builds trust.
-**Current focus:** Milestone v1.1 — Brand Redesign & 3D Interactive Experience
+**Current focus:** Milestone v1.1 -- Phase 5: Brand Design System
 
 ## Current Position
 
-Phase: Not started (defining requirements)
-Plan: —
-Status: Defining requirements
-Last activity: 2026-04-04 — Milestone v1.1 started
+Phase: 5 of 9 (Brand Design System) -- first phase of v1.1
+Plan: 0 of 0 in current phase (not yet planned)
+Status: Ready to plan
+Last activity: 2026-04-04 -- Roadmap created for v1.1
+
+Progress: [..........] 0%
+
+## Performance Metrics
+
+**Velocity (v1.0):**
+- Total plans completed: 21
+- v1.0 shipped: 2026-03-31
+
+**v1.1:** No plans executed yet.
 
 ## Accumulated Context
 
@@ -36,7 +46,10 @@ Last activity: 2026-04-04 — Milestone v1.1 started
 
 - [v1.0]: All 4 phases shipped (Foundation, Public Marketing, Admin Panel, Blog/Portfolio/SEO). 21 plans completed.
 - [v1.1]: Full brand redesign with 3D interactive Three.js hero. Roblox-style robots on Earth globe representing services.
-- [v1.1]: 3D assets sourced from open libraries (Sketchfab, Poly.pizza). Future milestone will add Educative-style learning platform.
+- [v1.1]: Priority order: Brand -> Landing Page -> Portfolio -> Lead Gen -> 3D Hero (last).
+- [v1.1]: Design inspiration is Mailchimp (content-first, playful characters, simple CTA flow).
+- [v1.1]: Asset sourcing (fonts, illustrations, 3D models) is part of the work, included in relevant phases.
+- [v1.1]: CSS changes scoped to public pages only -- admin panel must not break during rebrand.
 
 ### Pending Todos
 
@@ -45,11 +58,12 @@ None yet.
 ### Blockers/Concerns
 
 - Three.js + React integration needs careful performance optimization (bundle size, mobile rendering)
-- 3D model sourcing from open libraries — need to find appropriate Roblox-style robot models with compatible licenses
+- 3D model sourcing from open libraries -- need to find appropriate Roblox-style robot models with compatible licenses
 - Bilingual support must be preserved across all redesigned components
+- Arabic font subsetting -- Arabic fonts are 200-500KB, need to determine correct character ranges
 
 ## Session Continuity
 
 Last session: 2026-04-04
-Stopped at: Defining milestone v1.1 requirements
+Stopped at: Roadmap created for v1.1. Ready to plan Phase 5.
 Resume file: None
