@@ -122,8 +122,13 @@ Plans:
   3. All public-facing cards, buttons, inputs, and section containers use the new border-radius, shadow scale, and spacing rhythm -- visually distinct from the v1.0 design
   4. Page entrance animations, scroll reveals, hover interactions, and ambient motion all follow a defined, consistent motion language across every public page
   5. Each of the four services (dev, automation, QA, cybersecurity) has a custom icon matching the new brand aesthetic, and all required font files, icon assets, and illustration textures are downloaded and committed to the repository
-**Plans**: TBD
+**Plans**: 3 plans
 **UI hint**: yes
+
+Plans:
+- [ ] 05-01-PLAN.md -- Color palette, typography (Space Grotesk), OKLCH tokens, ambient CSS, font preload (Wave 1)
+- [ ] 05-02-PLAN.md -- Component styling: card glass-morphism, button interactions, input brand styling (Wave 2)
+- [ ] 05-03-PLAN.md -- Motion variants, custom service icon SVGs, ServiceIcon component, textures (Wave 2)
 
 ### Phase 6: Landing Page Redesign
 **Goal**: Visitors land on a Mailchimp-inspired, content-first page that unfolds as a trust-building narrative -- bold value proposition, service explanations with custom icons, robot mascot brand characters, redesigned testimonials, and intentional visual rhythm
@@ -186,7 +191,7 @@ Phases execute in numeric order: 5 -> 6 -> 7 -> 8 -> 9
 | 2. Public Marketing Site | v1.0 | 5/5 | Complete | - |
 | 3. Admin Panel | v1.0 | 6/6 | Complete | - |
 | 4. Blog, Portfolio & SEO | v1.0 | 6/6 | Complete | 2026-03-31 |
-| 5. Brand Design System | v1.1 | 0/0 | Not started | - |
+| 5. Brand Design System | v1.1 | 0/3 | In progress | - |
 | 6. Landing Page Redesign | v1.1 | 0/0 | Not started | - |
 | 7. Portfolio Case Studies | v1.1 | 0/0 | Not started | - |
 | 8. Lead Generation | v1.1 | 0/0 | Not started | - |
