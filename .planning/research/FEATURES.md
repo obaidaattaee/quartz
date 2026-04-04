@@ -1,263 +1,296 @@
-# Feature Landscape
+# Feature Research
 
-**Domain:** Professional tech services website (software dev, automation, QA, cybersecurity) -- bilingual EN/AR
-**Researched:** 2026-03-28
-**Overall confidence:** HIGH
+**Domain:** Premium agency/consultancy website redesign -- 3D interactive hero, brand system, portfolio case studies, lead generation
+**Researched:** 2026-04-04
+**Confidence:** HIGH
+**Milestone:** v1.1 Brand Redesign & 3D Interactive Experience
 
----
-
-## Table Stakes
-
-Features visitors expect from a professional tech services company website. Missing any of these and the site feels incomplete, untrustworthy, or amateur -- visitors leave.
-
-### Landing Page & First Impression
-
-| Feature | Why Expected | Complexity | Notes |
-|---------|--------------|------------|-------|
-| Hero section with clear value proposition | Visitors decide in 3-5 seconds whether to stay. Must answer "What do you do?" and "Why should I care?" instantly | Medium | scotchpos.com style: bold headline, supporting text, primary CTA. Avoid generic "Welcome to our website" |
-| Service overview cards/sections | Visitors need to see the full service offering at a glance without clicking through multiple pages | Low | 4 services (dev, automation, QA, cybersecurity) -- icon + short description + link to detail page |
-| Primary call-to-action (above the fold) | Every page needs a clear next step. "Get a Quote" / "Book a Consultation" / "Contact Us" | Low | Sticky or repeated CTA. Must be visible without scrolling |
-| Responsive / mobile-first layout | Over 60% of web traffic is mobile. Non-responsive = immediate bounce | Medium | Not optional. Tailwind handles this well, but every component must be tested at all breakpoints |
-| Fast page load (under 3 seconds) | Google Core Web Vitals and user patience. Slow = unprofessional | Medium | Lazy load images, optimize bundles, minimize animation payload. LCP is the weakest metric for animation-heavy sites |
-| SSL / HTTPS | Browser warnings on non-HTTPS sites destroy trust instantly | Low | Laravel ships with this. Ensure forced HTTPS redirect |
-
-### Service Detail Pages
-
-| Feature | Why Expected | Complexity | Notes |
-|---------|--------------|------------|-------|
-| Individual page per service | Visitors arriving from search expect to land on a page specific to their need (e.g., "cybersecurity services") | Medium | 4 pages minimum: software development, automation, QA, cybersecurity |
-| Problem-solution framing | Best-performing service pages lead with the client's pain point, then present the service as the solution | Low | Structure: Problem > Approach > Deliverables > CTA. Not "We are experts in X" but "You face Y, here's how we solve it" |
-| Relevant deliverables / process overview | Clients want to know what they actually get. Vague "we deliver solutions" language erodes trust | Low | Bullet list or step process: Discovery > Design > Build > Test > Deploy |
-| Per-service CTA | Each service page should funnel visitors to contact for that specific service | Low | Pre-fill contact form with service type when clicking from service page |
-
-### Contact & Lead Generation
-
-| Feature | Why Expected | Complexity | Notes |
-|---------|--------------|------------|-------|
-| Contact form with validation | The primary conversion mechanism. Must be simple (name, email, message minimum) and work flawlessly | Low | Store submissions in database, send email notification to admin. Spam protection (honeypot or rate limit, not CAPTCHA for v1) |
-| Multi-channel contact info visible | Business phone, email, WhatsApp link, physical location (if applicable) | Low | Footer and dedicated contact page. WhatsApp uses wa.me deep link -- no API needed for v1 |
-| Contact page with map or location | Even for remote-first companies, a physical presence signal builds trust | Low | Google Maps embed or static map image. Can be admin-configurable |
-| Email notification on form submission | Admin must know immediately when a lead arrives | Low | Laravel Mail. Simple notification to configured admin email(s) |
-
-### Trust Signals
-
-| Feature | Why Expected | Complexity | Notes |
-|---------|--------------|------------|-------|
-| Client testimonials | Third most important trust signal after reviews and certifications. Visitors look for social proof before engaging | Low | Quote + client name + company + optional photo. Minimum 3 testimonials. Admin-managed |
-| Client/partner logos | "As seen in" or "Trusted by" logo bar signals credibility at a glance | Low | Simple image grid in a horizontal scroll or flex row. scotchpos.com uses this pattern effectively |
-| Team section (real photos + bios) | Faceless companies feel untrustworthy. Professional services are sold person-to-person | Medium | Photo + name + role + short bio. Avoid stock photos -- they actively damage trust |
-| Certifications & badges | Especially critical for cybersecurity services. ISO 27001, CREST, SOC 2, industry certifications | Low | Logo display in footer or dedicated section. Admin-managed list |
-
-### Navigation & Information Architecture
-
-| Feature | Why Expected | Complexity | Notes |
-|---------|--------------|------------|-------|
-| Sticky/fixed header navigation | Users need persistent access to navigation, especially on long-scroll pages | Low | 4-6 items max: Home, Services (dropdown), Portfolio, Blog, About, Contact |
-| Footer with sitemap, contact, and legal | Footer is the second most scanned area after header. Must contain quick links, contact info, social links | Low | Standard pattern. Include copyright, privacy policy link |
-| Breadcrumbs on inner pages | Helps orientation on service/blog/portfolio detail pages | Low | Especially important for SEO and for users arriving from search on deep pages |
-| 404 error page | Broken links happen. A branded 404 page with navigation maintains professionalism | Low | Include search or links back to key pages. Takes 30 minutes to build |
-
-### SEO Fundamentals
-
-| Feature | Why Expected | Complexity | Notes |
-|---------|--------------|------------|-------|
-| Per-page meta titles and descriptions | Foundation of on-page SEO. Every page needs unique, keyword-relevant metadata | Medium | Admin-editable per page. Inertia's Head component handles this client-side; also needs server-side for crawlers |
-| Open Graph / social sharing meta | Links shared on LinkedIn, Twitter, WhatsApp must show proper title, description, image | Low | OG tags generated server-side. Admin sets per-page or falls back to defaults |
-| XML sitemap | Search engines need a sitemap to discover all pages efficiently | Low | Auto-generated from routes + blog posts + portfolio items. Laravel packages exist |
-| Structured data (JSON-LD) | Entity-based search in 2026 means structured data is no longer optional. Organization, Service, Article schemas | Medium | Organization schema on all pages, Service schema on service pages, Article schema on blog posts, LocalBusiness if applicable |
-| Canonical URLs | Prevent duplicate content issues, especially with bilingual routes (/en/about vs /ar/about) | Low | hreflang tags linking EN and AR versions of each page. Canonical pointing to preferred version |
-
-### Bilingual Support (EN/AR)
-
-| Feature | Why Expected | Complexity | Notes |
-|---------|--------------|------------|-------|
-| URL-based language routing (/en/, /ar/) | Better SEO than cookie-based or subdomain approaches. Shareable language-specific URLs | High | Every route must be duplicated. Already a project decision. Significant routing complexity |
-| Full RTL layout for Arabic | Not just text direction -- entire layout mirrors. Sidebars, navigation flow, padding, margins all reverse | High | Tailwind RTL plugin or logical properties (start/end vs left/right). Must be baked in from component level, not bolted on |
-| Language switcher (persistent, visible) | Users must be able to switch languages from any page and land on the same page in the other language | Medium | Link in header. Must preserve current route and map to equivalent in other language |
-| Bidirectional text handling | Arabic content frequently contains English brand names, technical terms, numbers | Medium | Use dir="auto" on dynamic content, bdi elements for embedded LTR text in RTL context |
-| Arabic typography | Arabic requires different font families, larger line-height (1.6-1.8x), different font sizing | Medium | System Arabic fonts (e.g., Noto Sans Arabic) or loaded web fonts. CSS custom properties for per-language typography |
-| Equal content depth in both languages | Arabic pages with less content than English signal the Arabic is an afterthought | Low (effort, not code) | Content creation concern, not technical. But admin CMS must make bilingual content creation easy |
+**Scope note:** This research focuses exclusively on NEW features for the v1.1 milestone. The existing v1 features (landing page, service pages, contact form, blog, portfolio grid, admin panel, bilingual support, dark/light mode, SEO) are already shipped and are not re-documented here except where they serve as dependencies.
 
 ---
 
-## Differentiators
+## Feature Landscape
 
-Features that set Quartz apart from competitors. Not expected, but valued -- these create competitive advantage.
+### Table Stakes (Users Expect These)
 
-### Premium Visual Experience
+These are features that premium agency/consultancy websites in 2025-2026 routinely ship. Missing these means the Quartz site will still look "template-y" rather than custom and professional. Organized by the four focus areas.
 
-| Feature | Value Proposition | Complexity | Notes |
-|---------|-------------------|------------|-------|
-| Scroll-triggered reveal animations | Creates a polished, premium feel. Visitors remember sites that "come alive" as they scroll | Medium | Use IntersectionObserver or Framer Motion's whileInView. Respect prefers-reduced-motion. Cap at 20% viewport movement for parallax |
-| Hero motion graphics / animated entrance | First-impression differentiator. scotchpos.com style: elements animate in on page load with staggered timing | High | Framer Motion orchestrated animations. Keep LCP under 2.5s -- animate after critical content renders |
-| Smooth page transitions | Eliminates the "flash of white" between page loads. Feels like an app, not a website | High | Inertia.js page transitions + Framer Motion AnimatePresence. Complex with bilingual routes and varied layouts |
-| Hover micro-interactions | Buttons, cards, and links respond to hover with subtle scale, shadow, or color transitions | Low | CSS transitions on interactive elements. Low effort, high polish payoff |
-| Dark/light mode toggle | User preference accommodation. Signals modern, thoughtful design | Medium | CSS custom properties + localStorage persistence + prefers-color-scheme detection. Must maintain WCAG contrast ratios in both modes |
+#### 1. 3D Interactive Hero Experience
 
-### Portfolio & Case Studies
+| Feature | Why Expected | Complexity | Notes |
+|---------|--------------|------------|-------|
+| 3D Earth globe as hero centerpiece | Awwwards-level agency sites now routinely use Three.js/R3F hero scenes. A static hero with floating shapes (current state) reads as template. The globe directly ties to Quartz's global reach narrative | HIGH | React Three Fiber wrapping Three.js. Globe.gl or custom sphere geometry with GeoJSON country outlines. Must lazy-load the canvas to protect LCP |
+| Animated robot characters on the globe | The Roblox-style robots representing each service (dev, automation, QA, cybersecurity) are the brand signature. Without them the globe is just another globe | HIGH | 4 low-poly GLTF models. Pre-modeled in Blender, exported as compressed .glb files (draco compression). Each robot needs idle animation loop + hover/click interaction |
+| Smooth loading transition | Users on slower connections see a jarring blank canvas while Three.js initializes. Premium sites mask this with a branded loading state | MEDIUM | Suspense boundary with a lightweight 2D placeholder that cross-fades into the 3D scene. Show the 2D hero text immediately, load 3D in background |
+| Mobile fallback / adaptive quality | 40%+ of Quartz's target audience (SE Asia, Middle East) uses mid-range mobile devices where WebGL is slow or unsupported | MEDIUM | PerformanceMonitor from R3F to auto-downgrade DPR and disable post-processing. Below threshold: show high-quality static illustration or CSS animation instead of 3D |
+| Reduced motion respect | Accessibility requirement. Users with `prefers-reduced-motion` should not see the animated 3D scene | LOW | Already have `useReducedMotion` hook in codebase. Extend to disable the Three.js canvas entirely and show static fallback |
+| Hero text overlay with clear value proposition | The 3D scene is background/accent -- the text message must still dominate. Agencies that make the 3D compete with the copy lose conversions | LOW | Layer text above canvas with pointer-events-none on the canvas. Current hero text pattern is solid, carry forward |
+| Interactive globe controls (rotate, zoom) | Users expect to be able to interact with a 3D element they see. A non-interactive 3D scene feels broken | MEDIUM | OrbitControls from R3F with constrained rotation (no flip). Auto-rotate when idle, user takes over on drag, returns to auto-rotate after timeout |
 
-| Feature | Value Proposition | Complexity | Notes |
-|---------|-------------------|------------|-------|
-| Visual portfolio grid with filtering | Clients can browse past work by service type. Grid layout with hover previews | Medium | Filterable by service category (dev, automation, QA, cyber). Masonry or uniform grid. Admin-managed entries |
-| Case study detail pages | Deep dives into specific projects: Problem > Approach > Results with metrics | Medium | Optional -- PROJECT.md suggests gallery over full case studies initially. Can start as gallery, evolve to case studies |
-| Results metrics display | Concrete numbers ("reduced incidents by 47%") build more trust than narrative alone | Low | Animated counters or highlighted stat blocks within case studies or on landing page |
-| Before/after or process visuals | Visual evidence of transformation is more compelling than text description | Low | Image comparison sliders or side-by-side layouts |
+#### 2. Brand Design System
 
-### Content Marketing (Blog)
+| Feature | Why Expected | Complexity | Notes |
+|---------|--------------|------------|-------|
+| Cohesive color palette (light + dark + accent) | The current palette is generic Tailwind defaults. Premium consultancy sites have a distinct, recognizable color identity that carries through every element | MEDIUM | Define 6-8 semantic color tokens (brand-primary, brand-secondary, surface, accent, etc.) as CSS custom properties in Tailwind config. Must work across light and dark modes |
+| Custom typography scale | Generic system fonts or default Inter reads as template. Typography is the single highest-impact branding lever | LOW | 2 typefaces max: display/heading font (distinctive, possibly geometric sans) + body font (highly readable). Must support Arabic glyphs -- this eliminates many display fonts. Use variable fonts for performance |
+| Component design language (cards, sections, buttons) | Every UI element should feel "Quartz" not "Shadcn default." Card radiuses, shadow depths, border treatments, spacing rhythm all need to be intentional and consistent | MEDIUM | Design tokens file defining border-radius scale, shadow scale, spacing rhythm. Update all existing Shadcn/Radix components to use the token system |
+| Icon and illustration style | Inconsistent icon styles (mixing Lucide with custom SVGs with stock) breaks the premium feel | MEDIUM | Choose one icon approach: custom service icons in a consistent stroke weight and style that match the robot characters' aesthetic. Lucide for UI chrome is fine, but service/feature icons should be custom |
+| Motion design language | Animations should feel intentional and branded, not generic fade-in-up on everything. Premium sites have a recognizable motion signature | MEDIUM | Define 3-4 motion patterns: entrance (how elements appear), transition (page to page), interaction (hover/click feedback), ambient (subtle background motion). Currently using motion/react (Framer Motion) -- good foundation |
+| Responsive spacing and layout grid | Current layout likely uses ad-hoc padding/margins. A system ensures every page feels cohesive | LOW | Define a spacing scale (4, 8, 12, 16, 24, 32, 48, 64, 96, 128) and section rhythm. All sections use the same vertical padding pattern |
+| Dark/light mode that feels designed, not inverted | Current dark mode is likely a simple color inversion. Premium dark modes have their own carefully chosen palette | MEDIUM | Separate dark palette with adjusted saturation (dark backgrounds need less saturated accent colors). The 3D scene should also adapt -- darker ambient lighting, adjusted globe colors |
 
-| Feature | Value Proposition | Complexity | Notes |
-|---------|-------------------|------------|-------|
-| Rich blog editor (WYSIWYG) | Non-technical editors can create and publish content without developer help | High | Tiptap or similar in React. Must support headings, lists, images, code blocks, embeds. Bilingual content creation |
-| Categories and tags | Content organization for both navigation and SEO. Visitors find related content | Medium | Admin-managed taxonomy. Category pages auto-generated with pagination |
-| Author profiles | Humanizes content, builds individual thought leadership, supports E-E-A-T for SEO | Low | Photo + bio + social links + list of authored posts |
-| Related posts | Keeps visitors reading. Increases time-on-site and demonstrates content depth | Low | Algorithm: same category > same tags > recent. Show 2-3 related posts at article bottom |
-| Reading time estimate | Sets reader expectations. Small detail that signals polished content experience | Low | Word count / 200. Display near title |
-| Social sharing buttons | Amplifies content reach. Visitors share articles to LinkedIn, Twitter, WhatsApp | Low | Static share links (no third-party scripts). WhatsApp sharing is critical for MENA region |
-| SEO metadata per post | Each post needs its own title, description, OG image for search and social | Medium | Fields in blog admin. Auto-generate from content if not manually set |
-| RSS feed | Content syndication for tech-savvy audience. Low effort, ongoing value | Low | Laravel can generate RSS from blog posts route |
+#### 3. Portfolio Case Studies
 
-### Admin Panel (CMS)
+| Feature | Why Expected | Complexity | Notes |
+|---------|--------------|------------|-------|
+| Problem-Approach-Results narrative structure | Every premium agency portfolio follows this arc. The current portfolio show page has title/description/content but no structured storytelling framework | MEDIUM | Database schema needs: challenge field, approach field, results field (structured, not just rich text). Admin form needs matching sections. Front-end renders each as a distinct visual block |
+| Quantified results with visual metrics | Case studies that say "improved performance" are weak. "Reduced load time by 62%" with a big number display converts. 72% of B2B buyers say case studies influence purchase decisions | MEDIUM | ResultsMetrics component already exists in codebase. Enhance to support animated number counters (count-up on scroll), percentage bars, before/after comparisons |
+| Full-bleed project imagery and screenshots | Portfolio pages with small inline images look amateur. Premium case studies use edge-to-edge hero images, device mockups, and UI screenshots that showcase the work | MEDIUM | Image gallery component with lightbox. Support for browser mockup frames, phone mockup frames, and full-width hero images. Lazy loading with blur-up placeholder |
+| Client testimonial per case study | A testimonial specifically tied to the project is far more convincing than a generic homepage testimonial | LOW | Add optional testimonial fields (quote, name, title, avatar) to the portfolio item model. Display as a styled pull-quote block within the case study |
+| Technology/tools used badges | Visitors (especially technical decision-makers) want to see the tech stack used. Signals competence and relevance | LOW | Tag-style badges for technologies. Already have service_category -- extend to support multiple tech tags per project |
+| Related projects / next project navigation | Once a visitor is engaged with case studies, guide them deeper. "Next Project" or "Similar Work" keeps them in the portfolio | LOW | Query related items by service_category. Show as cards at bottom of case study page. "Next Project" navigation with arrow |
 
-| Feature | Value Proposition | Complexity | Notes |
-|---------|-------------------|------------|-------|
-| Dashboard with key metrics | At-a-glance overview: recent leads, post count, portfolio items | Medium | Simple stats cards. Data already in database |
-| Blog post CRUD with preview | Create, edit, publish, draft, schedule blog posts with live preview | High | Rich editor + image upload + bilingual fields + SEO fields + preview mode |
-| Portfolio/case study CRUD | Add, edit, remove portfolio items with images and descriptions | Medium | Image upload, service category assignment, bilingual content fields |
-| Testimonial management | Add, edit, reorder, show/hide testimonials | Low | Simple CRUD. Drag-to-reorder is a nice touch |
-| Contact lead management | View, filter, mark as read/handled, export incoming contact form submissions | Medium | List view with status tracking. Email notification already covered in table stakes |
-| Service page content editing | Edit service page content (headings, descriptions, process steps) without code changes | High | Structured content fields per service. Not a free-form page builder -- scoped editing |
-| Site settings (logo, colors, contact info) | Change branding without developer. Logo upload, primary/secondary color pickers, contact details | Medium | Stored in database, loaded on every request (cached). Color values applied via CSS custom properties |
-| Media library | Upload, browse, and reuse images across blog posts, portfolio, and pages | Medium | File upload + thumbnail generation + image optimization. Organize by usage context |
-| Multi-role access (admin + editor) | Content team publishes posts without accessing site settings or leads | Medium | Laravel policies/gates. Admin: everything. Editor: blog + portfolio content only |
+#### 4. Lead Generation Optimization
 
-### Advanced Engagement
-
-| Feature | Value Proposition | Complexity | Notes |
-|---------|-------------------|------------|-------|
-| Interactive service comparison ("Old Way vs New Way") | scotchpos.com pattern. Demonstrates value by contrasting client's current pain with your solution | Medium | Tabbed or side-by-side layout. Content-driven, admin-managed |
-| Animated statistics / counter section | Numbers like "50+ projects delivered" animate on scroll. Instant credibility | Low | IntersectionObserver triggers count-up animation. 3-4 key metrics on landing page |
-| FAQ section with accordion | Reduces support queries, improves SEO (FAQ schema), addresses objections | Low | Collapsible sections. Admin-managed Q&A pairs. Supports FAQ structured data |
-| Newsletter signup | Build an audience for content marketing. Lightweight -- just email capture | Low | Email field + consent checkbox. Store in database. Integration with email service (Mailchimp, etc.) can come later |
+| Feature | Why Expected | Complexity | Notes |
+|---------|--------------|------------|-------|
+| Strategic CTA placement throughout all pages | Current site has a single CTA section component. Premium B2B sites place CTAs after every trust-building moment (after testimonials, after case study results, in-line within service descriptions) | LOW | Multiple CTA variants: inline (within content), section-break (between sections), sticky (floating), and end-of-page (final pitch). Pages with a single repeated CTA goal outperform competing CTAs by 20-30% |
+| Animated statistics/social proof section | "150+ projects delivered," "98% client retention," "4 countries served" -- big animated numbers that build trust at a glance. The existing statistics-section.tsx is a foundation but needs enhancement | MEDIUM | Count-up animation on scroll intersection. Use real numbers from the admin panel. Display prominently on homepage and about page |
+| Client logo showcase (enhanced) | The existing client-logos.tsx component needs to feel premium -- auto-scrolling marquee, grayscale-to-color on hover, proper sizing | LOW | Infinite scroll marquee animation. Grayscale filter with color on hover. Admin-managed logo upload already exists |
+| Trust signals near conversion points | Testimonial quotes, client count, project count placed directly adjacent to CTAs and contact forms. Placing proof next to action reduces hesitation | LOW | Design pattern: every CTA section includes a one-liner proof point ("Trusted by 50+ companies across 4 countries") |
+| Contact form with service pre-selection | Current form already supports service query param. Enhance with multi-step progressive disclosure to reduce perceived friction | MEDIUM | Step 1: Name + email + service. Step 2: Budget range + timeline + message. Reduces initial friction while capturing qualification data |
+| WhatsApp floating action button | WhatsApp is the dominant business communication channel in SE Asia and Middle East (Quartz's primary markets). A floating WhatsApp button provides instant conversion path | LOW | Floating button, bottom-right (bottom-left for RTL), with pulse animation. Links to wa.me with pre-filled message. Only show on mobile or when WhatsApp is contextually relevant |
 
 ---
 
-## Anti-Features
+### Differentiators (Competitive Advantage)
 
-Features to explicitly NOT build. Each would add complexity without proportional value, or would actively harm the product.
+Features that go beyond table stakes and create a memorable, distinctive experience. These are what separate Quartz from template-based competitor sites.
 
-| Anti-Feature | Why Avoid | What to Do Instead |
-|--------------|-----------|-------------------|
-| User registration / visitor accounts | This is a showcase site, not a platform. Registration adds complexity (password resets, GDPR data management, security surface area) with zero business value | Keep it simple: admin users only. Visitors browse and contact |
-| Real-time chat / chatbot | Requires someone to actually respond in real-time or significant AI investment. Unattended chat widgets damage trust more than they help | WhatsApp link (async, personal), contact form (structured), and visible phone/email. These are higher-converting for professional services |
-| E-commerce / payment processing | No products being sold. Payment processing adds PCI compliance burden and ongoing maintenance | If productized services emerge later, add as a separate concern |
-| Client portal / project dashboard | Separate application domain entirely. Mixing it with the marketing site creates architectural confusion | Build separately if needed. Marketing site links to it |
-| Full page builder / drag-and-drop admin | Enormous complexity. Non-technical users don't need infinite flexibility -- they need structured, scoped editing that's hard to break | Structured content fields per section. Admin edits content within a defined structure, not layout |
-| Auto-playing video with sound | Universally disliked. Increases bounce rate. Penalized by mobile browsers | If video is used, muted autoplay or click-to-play only |
-| Cookie consent banners (v1) | Not legally required in many MENA markets for a services site without tracking. Adds visual noise and development time | Revisit if analytics tracking is added or if targeting EU markets. Minimize tracking in v1 |
-| Aggressive pop-ups / modals on page load | Professional services buyers find them annoying. Damages the premium feel the animations are building | If newsletter signup is added, use inline placement or scroll-triggered subtle banner, never a blocking modal |
-| Infinite scroll on blog | Hurts SEO (search engines need paginated URLs), makes it impossible to reach the footer, loses user's place | Standard pagination with numbered pages. 6-10 posts per page |
-| Complex search functionality | For a site with 4 service pages, a portfolio gallery, and a blog, browser Ctrl+F and good navigation is sufficient | Add search only when blog content exceeds 50+ posts. Simple full-text search, not Elasticsearch |
-| Multilingual auto-detection / forced redirect | Guessing language from IP or browser headers and forcing a redirect frustrates users who prefer a specific language. Especially problematic for expats in MENA region | Default to one language (EN or AR based on business priority), show clear language switcher. Let users choose |
-| Over-animated pages | When everything animates, nothing stands out. Excessive animation causes motion sickness (vestibular disorders), hurts performance, and feels gimmicky | Animate strategically: hero entrance, scroll reveals for key sections, hover states. Respect prefers-reduced-motion. Less is more |
-| Social media feed embeds | Third-party embeds are slow, break layout control, and age poorly (deleted tweets, etc.) | Link to social profiles. If showcasing social proof, screenshot and curate manually |
+| Feature | Value Proposition | Complexity | Notes |
+|---------|-------------------|------------|-------|
+| Robot characters as brand mascots across the site | The Roblox-style robots become a visual thread beyond the hero -- appearing in service sections, loading states, error pages, even the admin panel. Creates brand recall that generic stock imagery cannot | HIGH | Requires 4 base robot models + additional poses/variants. High asset creation cost but enormous brand differentiation. Start with hero robots, extend to other pages incrementally |
+| Scroll-driven storytelling on landing page | Instead of static sections, the landing page unfolds as a narrative: globe zooms in > robots introduce themselves > services appear > social proof builds > CTA lands. GSAP ScrollTrigger + R3F integration | HIGH | GSAP ScrollTrigger controlling Three.js camera positions and React component visibility. Complex to build but creates the "I have to show you this" shareability factor |
+| Custom cursor interactions | Cursor morphs contextually: default arrow becomes "View" on portfolio items, "Explore" on the globe, "Contact" on CTA buttons. Agency signature move from Awwwards-winning sites | MEDIUM | Custom cursor component that reads hover target data attributes. Must be disabled on touch devices. CSS pointer-events management is tricky with the 3D canvas layer |
+| Page transitions with shared elements | When clicking a portfolio item, the card image expands into the case study hero image. Service cards morph into service page headers. Creates spatial continuity | HIGH | Inertia.js page transitions + Framer Motion layout animations. Requires careful coordination between Inertia's navigation and React's animation lifecycle. The existing Inertia + motion/react setup supports this but needs custom work |
+| Interactive service visualization on globe | Each robot on the globe corresponds to a service. Hovering/clicking a robot highlights that service region on the globe, shows a tooltip, and provides a direct link to the service page | HIGH | Raycasting in R3F to detect hover/click on individual robot meshes. Tooltip overlay positioned via 3D-to-2D coordinate projection. Must work with both mouse and touch |
+| Dark mode 3D scene adaptation | The globe and robots visually transform between light and dark mode -- not just background color but lighting, atmosphere glow, robot material properties | MEDIUM | Separate material configurations for light/dark. Smooth transition between them using lerped values. Tied to the existing appearance system |
+| Animated case study timeline | Instead of static problem/approach/results sections, the case study scrolls through a visual timeline with animated data reveals, slide-in screenshots, and progressive number counting | MEDIUM | Scroll-triggered section reveals with staggered child animations. Builds on existing ScrollReveal but with more sophisticated choreography |
+| Bilingual 3D labels and tooltips | Globe annotations and robot tooltips render in the active locale (EN/AR). Arabic text in 3D space requires SDF text rendering or HTML overlay approach | MEDIUM | HTML overlays positioned via CSS3DRenderer or projected 2D overlays are simpler and more reliable than 3D text geometry. Use the existing locale system |
+
+---
+
+### Anti-Features (Commonly Requested, Often Problematic)
+
+| Feature | Why Requested | Why Problematic | Alternative |
+|---------|---------------|-----------------|-------------|
+| Full-screen 3D-only hero with no text | "Make it more immersive like a game" | Destroys conversion. Users cannot understand the value proposition. Google cannot index it. Accessibility disaster. Mobile users see nothing useful while 3D loads | 3D as background/accent with text overlay. The message is primary, the 3D is atmosphere |
+| Auto-playing background video hero | "Every premium site has video" | Massive performance cost (2-5MB minimum), delays LCP, uses bandwidth on mobile, accessibility issues. The 3D globe IS the visual interest -- adding video on top is redundant | The 3D interactive hero IS the video replacement. It is better because it is interactive and lighter when done right |
+| Chatbot / AI assistant on the site | "Everyone has chatbots now" | For a services company with 4 offerings, a chatbot adds friction not value. The decision tree is simple: learn about services > see proof > contact. A chatbot interrupts this flow | Clear CTAs, visible contact channels (WhatsApp, email, phone), and a simple contact form. Direct human connection, not bot deflection |
+| Parallax scrolling on every section | "The scotchpos.com inspiration uses parallax" | Excessive parallax causes motion sickness, breaks on mobile, conflicts with RTL layout mirroring, and competes with the 3D hero for GPU resources | Selective scroll-triggered reveals (already implemented via ScrollReveal). Reserve parallax for 1-2 hero/feature sections maximum |
+| Animated page loader / splash screen | "Show our logo animation before the site loads" | Adds artificial delay to an already-complex loading experience (3D assets loading). Users interpret loaders as slowness. Every second of loader loses ~7% of visitors | Skeleton screens and progressive loading. Show content structure immediately, load 3D in background, fade in when ready |
+| Portfolio filtering with complex animation | "Animate cards shuffling when filtering" | Layout animation with mixed-direction (LTR/RTL) content is fragile. Filter animations with Inertia.js server-side rendering create jank. Over-engineering a simple feature | Instant filter with subtle fade transition. The current filterable portfolio grid works -- enhance the card design, not the filter animation |
+| Mega-menu navigation | "We need dropdowns for services, portfolio, blog sub-categories" | Quartz has 5-6 top-level pages. A mega-menu signals complexity that does not exist. Adds mobile hamburger menu complexity | Clean horizontal nav with active state indicators. Service sub-pages accessible from the services overview page. Keep navigation flat |
+| Real-time visitor counter / "X people viewing" | "Shows we are popular" | Feels manipulative on a services website. Appropriate for e-commerce, inappropriate for B2B professional services. Requires WebSocket infrastructure for questionable value | Static social proof: "Trusted by 50+ companies" with client logos. Genuine, verifiable, no infrastructure cost |
+| Heavy post-processing effects (bloom, chromatic aberration, film grain) | "Make the 3D look cinematic" | Destroys performance on mid-range devices (Quartz's SE Asia/Middle East audience). Bloom on text makes it unreadable. Film grain over the globe obscures the actual content | Clean, well-lit 3D with quality materials and subtle environment mapping. Let the models and design speak, not the effects |
 
 ---
 
 ## Feature Dependencies
 
 ```
-Bilingual routing (/en/, /ar/)
-  --> RTL layout system
-  --> Language switcher component
-  --> All content models need bilingual fields
-  --> Per-language SEO metadata
+[Brand Design System (color palette, typography, tokens)]
+    |
+    +--required-by--> [3D Hero Scene (materials reference brand colors)]
+    +--required-by--> [Landing Page Redesign (all components use tokens)]
+    +--required-by--> [Portfolio Case Study Redesign (card styles, typography)]
+    +--required-by--> [Lead Gen CTAs (button styles, visual hierarchy)]
 
-Admin authentication (Laravel Breeze/Jetstream)
-  --> Multi-role access (admin + editor)
-  --> All admin CRUD features
+[3D Robot Character Models (Blender assets)]
+    |
+    +--required-by--> [3D Hero Globe Scene]
+    +--required-by--> [Robot Mascots Across Site (differentiator)]
+    +--required-by--> [Interactive Service Visualization on Globe]
 
-Media library (file upload infrastructure)
-  --> Blog post images
-  --> Portfolio gallery images
-  --> Team photos
-  --> Logo/branding uploads in settings
+[3D Hero Globe Scene (R3F + globe geometry)]
+    |
+    +--required-by--> [Scroll-Driven Storytelling (GSAP integration)]
+    +--required-by--> [Interactive Service Visualization]
+    +--required-by--> [Dark Mode 3D Adaptation]
 
-Contact form
-  --> Lead management in admin
-  --> Email notification system
+[Portfolio Schema Redesign (problem/approach/results fields)]
+    |
+    +--required-by--> [Case Study Narrative Pages]
+    +--required-by--> [Animated Case Study Timeline (differentiator)]
+    +--required-by--> [Per-Case-Study Testimonials]
 
-Blog post model + CRUD
-  --> Categories & tags system
-  --> Author profiles
-  --> RSS feed generation
-  --> Blog SEO metadata
-  --> Related posts algorithm
+[Existing Admin Panel]
+    +--required-by--> [Brand Token Management (admin can adjust colors)]
+    +--required-by--> [Portfolio Schema Redesign (new admin form fields)]
+    +--required-by--> [Statistics Management (admin edits numbers)]
 
-Portfolio model + CRUD
-  --> Service category taxonomy (shared with service pages)
-  --> Portfolio filtering on frontend
+[Existing i18n System (useLocale hook)]
+    +--required-by--> [Bilingual 3D Labels]
+    +--required-by--> [RTL-Aware Cursor Interactions]
+    +--required-by--> [All New Components (must support EN/AR)]
 
-Site settings (database-driven)
-  --> Theme customization (colors, logos)
-  --> Contact info display across site
-
-Animation system (Framer Motion setup)
-  --> Hero animations
-  --> Scroll reveal effects
-  --> Page transitions
-  --> Hover micro-interactions
-  --> Animated counters
-  --> prefers-reduced-motion support
+[Existing Contact Form]
+    +--enhances--> [Multi-Step Progressive Form]
+    +--enhances--> [WhatsApp Floating Button]
+    +--enhances--> [Strategic CTA Placement]
 ```
+
+### Dependency Notes
+
+- **Brand Design System must come first:** Every other feature depends on the color palette, typography, and design tokens. Building the 3D scene or redesigning the portfolio without the brand system means rework.
+- **3D Robot Models are an external dependency:** These need to be created in Blender by a 3D artist (or the developer if skilled). They block the hero scene entirely. Starting model creation early is critical path.
+- **Portfolio Schema Redesign blocks case study pages:** The current database schema stores title/description/content. The new structured case study format needs challenge/approach/results/metrics/testimonial fields. Migration must happen before front-end redesign.
+- **Existing admin panel is a dependency, not a blocker:** New features extend the admin, they do not require admin rewrites. Add fields to existing forms.
+- **i18n system is already solid:** The `useLocale` hook and URL-based routing (`/en/`, `/ar/`) are in place. New components just need to follow the established pattern.
 
 ---
 
-## MVP Recommendation
+## MVP Definition
 
-### Phase 1: Foundation (must ship first)
+### Launch With (v1.1 Core)
 
-1. **Bilingual routing + RTL layout system** -- everything depends on this. Retrofitting bilingual support is a rewrite
-2. **Landing page** with hero, service overview, testimonials, CTA, client logos
-3. **Service detail pages** (4 pages) with problem-solution framing
-4. **Contact form** with email notification and lead storage
-5. **Basic navigation** (header, footer, language switcher)
-6. **SEO fundamentals** (meta tags, OG, sitemap, structured data)
+The minimum set that delivers the "wow this is not a template" transformation.
 
-### Phase 2: Content Systems
+- [ ] **Brand design system** -- New color palette, typography, design tokens applied to all existing components. This is the highest-impact, lowest-risk change. Without it, everything else still looks template-y
+- [ ] **3D Earth globe hero with robot characters** -- The signature feature. Globe with 4 robots representing services, auto-rotate, basic hover interaction, mobile fallback. Does not need scroll-driven storytelling or complex interactions for launch
+- [ ] **Landing page section redesign** -- New visual hierarchy, section layouts, and flow using the brand system. Rebuild the homepage with the new design language
+- [ ] **Portfolio case study structure** -- Problem > Approach > Results narrative with quantified metrics, full-bleed imagery, per-project testimonial. Redesign the portfolio show page
+- [ ] **Strategic CTA placement** -- Multiple CTA touchpoints on every page, trust signals near conversion points, enhanced statistics section with animated counters
+- [ ] **Enhanced client logo showcase** -- Marquee/scroll animation, grayscale-to-color hover
 
-7. **Admin panel foundation** -- authentication, dashboard, site settings
-8. **Blog system** -- editor, categories, author profiles, SEO per post
-9. **Portfolio gallery** -- visual grid with service filtering
+### Add After Validation (v1.1.x)
 
-### Phase 3: Polish & Differentiation
+Features to layer on once the core redesign is live and performing.
 
-10. **Scroll animations and page transitions** -- the premium layer
-11. **Dark/light mode**
-12. **Testimonial management in admin**
-13. **Lead management in admin**
-14. **Advanced sections** (FAQ, animated counters, newsletter signup)
+- [ ] **Scroll-driven storytelling on landing page** -- GSAP ScrollTrigger controlling globe camera + section reveals. Add after core 3D hero is stable and performing well
+- [ ] **Custom cursor interactions** -- Contextual cursor states on hover. Add after the base design is polished and tested across browsers
+- [ ] **Page transitions with shared elements** -- Portfolio card to case study expansion. Add after Inertia page transitions are stable with the new 3D scene
+- [ ] **Interactive service visualization on globe** -- Click/hover robots to navigate services. Add after basic globe interaction is proven performant
+- [ ] **Multi-step contact form** -- Progressive disclosure form. Add after measuring current form conversion baseline
+- [ ] **Robot mascots in other pages** -- Error pages, loading states, service sections. Extend after hero robots are finalized
 
-### Defer
+### Future Consideration (v1.2+)
 
-- **Full case study pages**: Start with portfolio gallery. Evolve to case studies when real project data exists to populate them
-- **Complex search**: Only when blog content volume justifies it (50+ posts)
-- **Newsletter integration with email service**: Capture emails in database first, integrate with Mailchimp/SendGrid when list grows
-- **RSS feed**: Low priority, add when blog is active
+- [ ] **Animated case study timeline** -- Requires significant scroll animation engineering. Defer until case study content is populated and the simpler structure is validated
+- [ ] **Dark mode 3D adaptation** -- Separate lighting/materials for dark mode. Nice but not critical -- a single well-lit scene works for both modes with background color changes
+- [ ] **Bilingual 3D labels** -- Arabic text in 3D overlays. Complex with RTL considerations. Defer until the globe interactions are mature
+- [ ] **Admin-controlled brand tokens** -- Let admin adjust brand colors/fonts. Defer until the brand is established and stable
+
+---
+
+## Feature Prioritization Matrix
+
+| Feature | User Value | Implementation Cost | Priority |
+|---------|------------|---------------------|----------|
+| Brand design system (palette, typography, tokens) | HIGH | MEDIUM | P1 |
+| 3D Earth globe hero (basic) | HIGH | HIGH | P1 |
+| Robot character models (4 service robots) | HIGH | HIGH | P1 |
+| Landing page section redesign | HIGH | MEDIUM | P1 |
+| Portfolio case study narrative structure | HIGH | MEDIUM | P1 |
+| Strategic CTA placement | HIGH | LOW | P1 |
+| Animated statistics counters | MEDIUM | LOW | P1 |
+| Enhanced client logo marquee | MEDIUM | LOW | P1 |
+| Mobile 3D fallback | HIGH | MEDIUM | P1 |
+| Globe interactive controls (rotate/zoom) | MEDIUM | LOW | P1 |
+| Per-case-study testimonial | MEDIUM | LOW | P1 |
+| Technology badges on case studies | LOW | LOW | P1 |
+| Related projects navigation | MEDIUM | LOW | P1 |
+| WhatsApp floating button | MEDIUM | LOW | P1 |
+| Scroll-driven storytelling (GSAP) | HIGH | HIGH | P2 |
+| Custom cursor interactions | MEDIUM | MEDIUM | P2 |
+| Interactive service viz on globe | HIGH | HIGH | P2 |
+| Page transitions with shared elements | MEDIUM | HIGH | P2 |
+| Multi-step contact form | MEDIUM | MEDIUM | P2 |
+| Robot mascots across site | MEDIUM | MEDIUM | P2 |
+| Animated case study timeline | MEDIUM | HIGH | P3 |
+| Dark mode 3D adaptation | LOW | MEDIUM | P3 |
+| Bilingual 3D labels | LOW | HIGH | P3 |
+| Admin brand token management | LOW | MEDIUM | P3 |
+
+**Priority key:**
+- P1: Must have for v1.1 launch -- delivers the "this is not a template" transformation
+- P2: Should have, layer in after core is stable -- enhances the wow factor
+- P3: Nice to have, future milestone -- polish and depth
+
+---
+
+## Competitor Feature Analysis
+
+Analysis of how premium tech service/agency sites handle each feature area.
+
+| Feature Area | Premium Agencies (Awwwards-level) | Mid-tier Agency Sites | Quartz v1.1 Approach |
+|-------------|-----------------------------------|----------------------|---------------------|
+| **Hero section** | Full 3D scenes (Three.js/R3F), scroll-driven narratives, custom shaders, 5-15s load acceptable for the "wow" | Static image/video hero, basic parallax, Lottie animations | 3D globe with robot characters. Prioritize fast loading with progressive enhancement. Not as heavy as Awwwards winners but significantly above mid-tier |
+| **Brand identity** | Completely custom design language: unique typography, color, illustration style. Zero template smell | Customized templates with brand colors. Often mix-and-match component styles | Full custom design token system. 2 typefaces, 6-8 colors, consistent component language. Should feel as custom as premium tier |
+| **Portfolio/case studies** | Full narrative case studies with immersive scroll, video walkthroughs, animated data visualization, 2000+ word depth | Grid of thumbnails with short descriptions. Minimal case study depth | Structured narrative (problem > approach > results) with quantified metrics, full-bleed imagery, testimonials. Mid-way between depth extremes |
+| **Lead generation** | Subtle: premium sites let the work speak and have minimal CTAs. Contact page is often the only conversion point | Aggressive: popups, chatbots, multiple competing CTAs, newsletter signup walls | Strategic: CTAs placed at natural decision points (after proof sections), trust signals adjacent to conversion actions, one clear primary action per page |
+| **Animation** | GSAP + R3F + custom shaders. Scroll-driven everything. 3-5 second initial loads acceptable | Basic CSS transitions, occasional Lottie, generic scroll reveals | motion/react (Framer Motion) for UI, GSAP for scroll-driven sequences, R3F for 3D. Targeted animation that enhances meaning, not decoration |
+| **Mobile experience** | Often degraded significantly. Some Awwwards sites are barely functional on mobile | Responsive but boring. Same content, less visual impact | Full responsive with adaptive 3D quality. Static fallback for low-end devices. Mobile is first-class because target markets are mobile-heavy |
+
+---
+
+## Bilingual (RTL/LTR) Considerations for New Features
+
+These apply across all feature areas and are specific to the Quartz constraint of supporting English and Arabic.
+
+| Feature | RTL Impact | Mitigation |
+|---------|-----------|------------|
+| 3D Globe | Globe rotation direction should reverse for RTL (spin right-to-left). Robot placement is not directional so no change needed | Auto-rotate direction tied to `document.dir`. Minor config change |
+| Custom cursor | Cursor offset calculations invert in RTL. Context labels must be translated | Use CSS logical properties for positioning. Labels from i18n system |
+| Scroll storytelling | Horizontal scroll direction and parallax direction must reverse for RTL | GSAP ScrollTrigger supports RTL with `direction` config. Test early |
+| Statistics counters | Arabic numerals (Eastern Arabic digits) may be expected in Arabic locale | Use `Intl.NumberFormat` with locale parameter. Already standard practice |
+| Client logo marquee | Scroll direction should reverse for RTL | CSS animation-direction or JS-based marquee with direction prop |
+| Case study layout | Full-bleed images are direction-neutral but text alignment and before/after image ordering needs RTL treatment | Use CSS logical properties (margin-inline-start vs margin-left). BeforeAfterImages component needs direction awareness |
+| WhatsApp FAB | Position bottom-left in RTL instead of bottom-right | Use `inset-inline-end` instead of `right` in Tailwind |
 
 ---
 
 ## Sources
 
-- [The 7 Trust Signals Missing From Most Professional Service Websites](https://www.codeconspirators.com/the-7-trust-signals-missing-from-most-professional-service-websites-with-examples/)
-- [23 Mistakes of Professional Services Websites](https://www.charleskingsmill.com/blog/professionalwebsites)
-- [Best Tech Startup Websites of 2025: Trends for 2026](https://thebranx.com/blog/the-best-tech-startup-websites-of-2025-trends-lessons-and-whats-next-for-2026)
-- [14 Best IT Services Company Website Designs for 2026](https://www.operationtechnology.com/blog/best-it-services-website-designs/)
-- [RTL Arabic Website Design Best Practices](https://www.aivensoft.com/en/blog/rtl-arabic-website-design-guide)
-- [Arabic RTL Web Design Best Practices](https://bycomsolutions.com/blog/arabic-rtl-web-design-best-practices/)
-- [Website Animations in 2026: Pros, Cons & Best Practices](https://www.shadowdigital.cc/resources/do-you-need-website-animations)
-- [Scrolling Effects In Web Design 2026: Benefits & Risks](https://www.digitalsilk.com/digital-trends/scrolling-effects/)
-- [Inclusive Dark Mode: Designing Accessible Dark Themes](https://www.smashingmagazine.com/2025/04/inclusive-dark-mode-designing-accessible-dark-themes/)
-- [Structured Data & Schema Markup for SEO in 2026](https://doesinfotech.com/the-role-of-structured-data-schema-markup-in-seo/)
-- [Why Schema Markup is Critical for SEO Success in 2026](https://12amagency.com/blog/why-schema-markup-is-critical-for-seo-success/)
-- [How to Build a Services Website: Best Practices](https://webflow.com/blog/website-for-services)
-- [The 10 Best Professional Services Website Examples in 2026](https://www.blendb2b.com/blog/the-10-best-professional-services-website-examples)
+### 3D Interactive Hero
+- [Three.js Agencies Overview (Utsubo, 2026)](https://www.utsubo.com/blog/top-threejs-agencies)
+- [3D Web Design with Three.js (Mivi, 2026)](https://mivibzzz.com/resources/web-development/3d-web-design-threejs-modern-libraries)
+- [React Three Fiber Performance Scaling (pmnd.rs docs)](https://docs.pmnd.rs/react-three-fiber/advanced/scaling-performance)
+- [Hero Section Design Best Practices 2026 (Perfect Afternoon)](https://www.perfectafternoon.com/2025/hero-section-design/)
+- [Globe.GL Library](https://globe.gl/)
+- [r3f-globe React Three Fiber Globe Component](https://github.com/vasturiano/r3f-globe)
+- [Awwwards Interactive 3D Hero Sections](https://www.awwwards.com/inspiration/interactive-3d-hero-section-carl-gordon-portfolio-c-2024)
+
+### Brand Design Systems
+- [Design Systems Examples for 2026 (Superside)](https://www.superside.com/blog/design-systems-examples)
+- [Visual Branding Guide 2026 (Tenet)](https://www.wearetenet.com/blog/visual-branding)
+- [Brand Identity System Guide 2025 (Spellbrand)](https://spellbrand.com/blog/brand-identity-system)
+- [Design System Benefits for Modern Brands (Superside)](https://www.superside.com/blog/design-systems)
+
+### Portfolio Case Studies
+- [Portfolio Case Study Examples Guide 2026 (InfluenceFlow)](https://influenceflow.io/resources/portfolio-case-study-examples-the-complete-2026-guide-for-creative-professionals/)
+- [How to Write Portfolio Case Studies That Drive Sales (Taylor Nguyen)](https://taylornguyen.ca/posts/website-case-studies)
+- [Writing Agency Website Case Studies (New Media Campaigns)](https://www.newmediacampaigns.com/blog/tips-for-writing-agency-website-case-studies)
+- [Webflow Portfolio Design Examples](https://webflow.com/blog/design-portfolio-examples)
+
+### Lead Generation & Conversion
+- [B2B Lead Generation Trends 2026 (Leadinfo)](https://www.leadinfo.com/en/blog/b2b-lead-generation-trends-in-2026-the-7-channels-and-tactics-that-actually-work/)
+- [15 B2B Website Best Practices 2026 (Directive)](https://directiveconsulting.com/blog/15-b2b-website-best-practices-for-2026-built-for-buyers-not-just-browsers/)
+- [Social Proof Conversion Statistics 2026 (Genesys Growth)](https://genesysgrowth.com/blog/social-proof-conversion-stats-for-marketing-leaders)
+- [CTA Placement Strategies 2026 (LandingPageFlow)](https://www.landingpageflow.com/post/best-cta-placement-strategies-for-landing-pages)
+- [B2B Trust in 2026 (Search Engine Journal)](https://www.searchenginejournal.com/addressing-the-b2b-trust-deficit-how-to-win-buyers-in-2026/559267/)
+- [B2B CRO Guide 2026 (Grow Conversions)](https://grow-conversions.com/blog/b2b-conversion-rate-optimization/)
+
+### Animation & Interaction
+- [CSS/JS Animation Trends 2026 (Web Peak)](https://webpeak.org/blog/css-js-animation-trends/)
+- [Website Animations Pros/Cons 2026 (Shadow Digital)](https://www.shadowdigital.cc/resources/do-you-need-website-animations)
+- [Interactive Elements in Agency Web Development 2026 (OneWebCare)](https://onewebcare.com/blog/interactive-elements-in-agency-website-development/)
+
+### RTL / Bilingual
+- [Arabic RTL Web Design Best Practices (Bycom Solutions)](https://bycomsolutions.com/blog/arabic-rtl-web-design-best-practices/)
+- [Challenges in English-Arabic Applications (Monterail)](https://www.monterail.com/blog/challenges-solutions-developing-english-arabic-applications)
+- [RTL Website Design Mistakes & Best Practices (Reffine)](https://www.reffine.com/en/blog/rtl-website-design-and-development-mistakes-best-practices)
+
+---
+*Feature research for: Quartz v1.1 Brand Redesign & 3D Interactive Experience*
+*Researched: 2026-04-04*
