@@ -1,0 +1,11 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Shield -->
+  <path d="M12 2L4 6V12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12V6L12 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Shield accent fill -->
+  <path d="M12 4L6 7V12C6 15.3137 8.68629 18 12 18C15.3137 18 18 15.3137 18 12V7L12 4Z" fill="var(--primary, oklch(0.704 0.14 182.503))" opacity="0.15"/>
+  <!-- Checkmark -->
+  <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Magnifier overlay -->
+  <circle cx="17" cy="17" r="2.5" stroke="currentColor" stroke-width="1.5"/>
+  <path d="M19 19L21 21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+</svg>

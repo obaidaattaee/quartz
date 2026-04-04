@@ -1,63 +1,94 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.1
-milestone_name: Brand Redesign & 3D Interactive Experience
-status: executing
-stopped_at: Completed 05-02-PLAN.md
-last_updated: "2026-04-04T18:53:46.000Z"
-last_activity: 2026-04-04
+milestone: v1.0
+milestone_name: milestone
+status: completed
+stopped_at: Completed 05-03-PLAN.md
+last_updated: "2026-04-04T18:53:49.449Z"
+last_activity: 2026-03-31
 progress:
-  total_phases: 5
-  completed_phases: 0
-  total_plans: 3
-  completed_plans: 2
-  percent: 0
+  total_phases: 4
+  completed_phases: 4
+  total_plans: 21
+  completed_plans: 21
+  percent: 74
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-04-04)
+See: .planning/PROJECT.md (updated 2026-03-28)
 
 **Core value:** Visitors immediately understand what services are offered, see proof of quality through case studies and testimonials, and can easily get in touch -- in a visually polished, professional experience that builds trust.
-**Current focus:** Phase 05 — brand-design-system
+**Current focus:** All phases complete — v1.0 milestone delivered
 
 ## Current Position
 
-Phase: 05 (brand-design-system) — EXECUTING
-Plan: 3 of 3
-Status: Ready to execute
-Last activity: 2026-04-04
+Phase: All complete
+Plan: 21/21
+Status: Complete
+Last activity: 2026-03-31
 
-Progress: [..........] 0%
+Progress: [#######...] 74%
 
 ## Performance Metrics
 
-**Velocity (v1.0):**
+**Velocity:**
 
-- Total plans completed: 21
-- v1.0 shipped: 2026-03-31
+- Total plans completed: 0
+- Average duration: -
+- Total execution time: 0 hours
 
-**v1.1:**
+**By Phase:**
 
-| Phase | Plan | Duration | Tasks | Files |
-|-------|------|----------|-------|-------|
-| Phase 05 P02 | 2min | 2 tasks | 3 files |
+| Phase | Plans | Total | Avg/Plan |
+|-------|-------|-------|----------|
+| - | - | - | - |
+
+**Recent Trend:**
+
+- Last 5 plans: -
+- Trend: -
+
+*Updated after each plan completion*
+| Phase 01 P01 | 8min | 2 tasks | 13 files |
+| Phase 01 P03 | 6min | 3 tasks | 12 files |
+| Phase 02 P01 | 11min | 2 tasks | 17 files |
+| Phase 02 P04 | 5min | 2 tasks | 6 files |
+| Phase 02 P05 | 3min | 2 tasks | 0 files |
+| Phase 03 P02 | 8min | 2 tasks | 19 files |
+| Phase 03 P04 | 7min | 2 tasks | 16 files |
+| Phase 03 P06 | 7min | 2 tasks | 21 files |
+| Phase 04-blog-portfolio-seo P06 | 6min | 2 tasks | 26 files |
+| Phase 05 P03 | 2min | 2 tasks | 7 files |
 
 ## Accumulated Context
 
 ### Decisions
 
-- [v1.0]: All 4 phases shipped (Foundation, Public Marketing, Admin Panel, Blog/Portfolio/SEO). 21 plans completed.
-- [v1.1]: Full brand redesign with 3D interactive Three.js hero. Roblox-style robots on Earth globe representing services.
-- [v1.1]: Priority order: Brand -> Landing Page -> Portfolio -> Lead Gen -> 3D Hero (last).
-- [v1.1]: Design inspiration is Mailchimp (content-first, playful characters, simple CTA flow).
-- [v1.1]: Asset sourcing (fonts, illustrations, 3D models) is part of the work, included in relevant phases.
-- [v1.1]: CSS changes scoped to public pages only -- admin panel must not break during rebrand.
-- [Phase 05]: Self-hosted Space Grotesk WOFF2 from Google Fonts rather than Fontsource npm package (D-24/D-27 compliance)
-- [Phase 05]: Dark mode sidebar tokens preserved at hue 230; semantic tokens shifted to hue 240-245 for navy distinction
-- [Phase 05]: Badge component already conforms to brand spec (rounded-md, brand variant) -- no changes needed
+Decisions are logged in PROJECT.md Key Decisions table.
+Recent decisions affecting current work:
+
+- [Roadmap]: 4-phase coarse roadmap derived from 67 v1 requirements. Foundation first to avoid RTL retrofit. Public site before admin to validate data models. Blog/portfolio last because it depends on admin CMS.
+- [Phase 01]: Removed viewTransition defaults from createInertiaApp due to Inertia v3 type limitations -- viewTransition available per-Link/visit instead
+- [Phase 01]: Self-hosted fonts via @fontsource-variable instead of CDN (fonts.bunny.net) for reliability and performance
+- [Phase 01]: RTL breadcrumb flip uses both Tailwind rtl: variant and CSS fallback for maximum compatibility
+- [Phase 01]: 404 page renders standalone without layout via Inertia exception handler in bootstrap/app.php
+- [Phase 02]: Honeypot anti-spam over CAPTCHA for cleaner UX on a professional services site
+- [Phase 02]: Markdown mailable for admin contact notifications (clean formatting, extensible)
+- [Phase 02]: Used wasSuccessful to fully replace contact form with success message rather than inline toast
+- [Phase 02]: JSON-LD structured data pattern: reusable JsonLd component with Head script injection
+- [Phase 02]: Pre-existing TypeScript errors from wayfinder @/routes auto-generated imports are expected and do not affect Phase 2 public page correctness — Wayfinder modules are generated at build time by the plugin -- tsc --noEmit cannot resolve them
+- [Phase 03]: Used fetch API for MediaLibraryModal JSON requests instead of Inertia router (modal context needs non-page JSON)
+- [Phase 03]: forceMount + CSS hidden on BilingualTabs to prevent Tiptap content loss on tab switch (Pitfall 1)
+- [Phase 03]: Tiptap v3 setContent uses emitUpdate:false option object instead of boolean second param
+- [Phase 03]: Sort order swap pattern for reorderable admin lists (find adjacent, swap values)
+- [Phase 03]: Contact leads read-only with status management (new/read/handled) -- no CRUD since they come from public form
+- [Phase 03]: Used updateOrCreate in content seeders for idempotent re-seeding from JSON translations
+- [Phase 03]: Site settings CSS overrides use separate custom properties to avoid Tailwind oklch format conflicts
+- [Phase 04-blog-portfolio-seo]: Phase04VerificationSeeder with updateOrCreate for idempotent bilingual test data seeding
+- [Phase 05]: Service icons use var(--primary) CSS variable with oklch fallback for theme-adaptive teal accent
 
 ### Pending Todos
 
@@ -65,13 +96,12 @@ None yet.
 
 ### Blockers/Concerns
 
-- Three.js + React integration needs careful performance optimization (bundle size, mobile rendering)
-- 3D model sourcing from open libraries -- need to find appropriate Roblox-style robot models with compatible licenses
-- Bilingual support must be preserved across all redesigned components
-- Arabic font subsetting -- Arabic fonts are 200-500KB, need to determine correct character ranges
+- [Research]: Tiptap RTL has known issues (GitHub #3957). TextDirection extension needs validation before Phase 4 blog work.
+- [Research]: Arabic font subsetting (200-500KB fonts) needs investigation during Phase 1 typography work.
+- [Research]: GSAP ScrollTrigger.refresh() hook placement after Inertia page loads needs validation during Phase 1/2 animation work.
 
 ## Session Continuity
 
-Last session: 2026-04-04T18:53:46.000Z
-Stopped at: Completed 05-02-PLAN.md
+Last session: 2026-04-04T18:53:49.435Z
+Stopped at: Completed 05-03-PLAN.md
 Resume file: None
