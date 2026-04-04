@@ -42,7 +42,7 @@ export default function Home() {
     const orgSchema = {
         '@context': 'https://schema.org',
         '@type': 'Organization',
-        name: 'Quart',
+        name: 'Quartz Solutions',
         url: window.location.origin,
         description:
             'Software development, automation, QA, and cybersecurity services',

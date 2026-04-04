@@ -39,11 +39,19 @@ export default function SiteFooter() {
                             href={`/${locale}`}
                             className="inline-block"
                         >
-                            <img
-                                src="/images/logo-full-transparent.png"
-                                alt="Quartz Solutions"
-                                className="h-8 dark:brightness-0 dark:invert"
-                            />
+                            <picture>
+                                <source
+                                    srcSet="/images/logo-full-transparent.webp"
+                                    type="image/webp"
+                                />
+                                <img
+                                    src="/images/logo-full-transparent.png"
+                                    alt="Quartz Solutions"
+                                    width={88}
+                                    height={40}
+                                    className="h-8 w-auto dark:brightness-0 dark:invert"
+                                />
+                            </picture>
                         </Link>
                         <p className="text-muted-foreground text-sm">
                             {t('footer.tagline')}

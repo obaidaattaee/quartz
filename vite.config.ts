@@ -22,4 +22,33 @@ export default defineConfig({
             formVariants: true,
         }),
     ],
+    build: {
+        rollupOptions: {
+            output: {
+                manualChunks(id) {
+                    if (id.includes('node_modules')) {
+                        if (id.includes('react') || id.includes('scheduler')) {
+                            return 'vendor-react';
+                        }
+
+                        if (id.includes('@radix-ui') || id.includes('@headlessui')) {
+                            return 'vendor-ui';
+                        }
+
+                        if (id.includes('@inertiajs')) {
+                            return 'vendor-inertia';
+                        }
+
+                        if (id.includes('framer-motion') || id.includes('motion')) {
+                            return 'vendor-motion';
+                        }
+
+                        if (id.includes('fontsource')) {
+                            return 'vendor-fonts';
+                        }
+                    }
+                },
+            },
+        },
+    },
 });

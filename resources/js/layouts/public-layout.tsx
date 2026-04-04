@@ -1,4 +1,4 @@
-import { Link, usePage } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import type { ReactNode } from 'react';
 import { useEffect } from 'react';
 
@@ -52,8 +52,53 @@ export default function PublicLayout({ children, breadcrumbs = [] }: Props) {
         };
     }, [siteSettings]);
 
+    const breadcrumbSchema =
+        breadcrumbs.length > 0
+            ? {
+                  '@context': 'https://schema.org',
+                  '@type': 'BreadcrumbList',
+                  itemListElement: [
+                      {
+                          '@type': 'ListItem',
+                          position: 1,
+                          name: t('breadcrumb.home'),
+                          item: `${window.location.origin}/${locale}`,
+                      },
+                      ...breadcrumbs.map((item, index) => {
+                          const href =
+                              typeof item.href === 'string'
+                                  ? item.href
+                                  : '';
+
+                          return {
+                              '@type': 'ListItem',
+                              position: index + 2,
+                              name: item.title,
+                              ...(href
+                                  ? {
+                                        item: href.startsWith('http')
+                                            ? href
+                                            : `${window.location.origin}${href}`,
+                                    }
+                                  : {}),
+                          };
+                      }),
+                  ],
+              }
+            : null;
+
     return (
         <div className="flex min-h-screen flex-col">
+            {breadcrumbSchema && (
+                <Head>
+                    <script
+                        type="application/ld+json"
+                        dangerouslySetInnerHTML={{
+                            __html: JSON.stringify(breadcrumbSchema),
+                        }}
+                    />
+                </Head>
+            )}
             <SiteHeader />
 
             {/* Breadcrumbs -- only on inner pages (D-12, NAV-02) */}
