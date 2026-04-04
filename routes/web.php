@@ -9,18 +9,11 @@ use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\RssFeedController;
 use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\SitemapController;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Route;
 
-// Sitemap (no locale prefix)
-Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
-
 // Root redirect to default locale
 Route::redirect('/', '/en');
-
-// Sitemap (no locale prefix)
-Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
 // All public routes under locale prefix
 Route::prefix('{locale}')

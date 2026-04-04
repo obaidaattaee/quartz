@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SitemapController;
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
 use Illuminate\Foundation\Application;
@@ -17,6 +18,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
         then: function () {
             Route::middleware(['web'])->group(base_path('routes/admin.php'));
+
+            // Sitemap — no session, no Inertia, no CSRF (Google needs clean XML)
+            Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
         },
     )
     ->withMiddleware(function (Middleware $middleware): void {
