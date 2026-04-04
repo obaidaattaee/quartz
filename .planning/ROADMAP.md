@@ -127,7 +127,7 @@ Plans:
 
 Plans:
 - [x] 05-01-PLAN.md -- Color palette, typography (Space Grotesk), OKLCH tokens, ambient CSS, font preload (Wave 1)
-- [ ] 05-02-PLAN.md -- Component styling: card glass-morphism, button interactions, input brand styling (Wave 2)
+- [x] 05-02-PLAN.md -- Component styling: card glass-morphism, button interactions, input brand styling (Wave 2)
 - [ ] 05-03-PLAN.md -- Motion variants, custom service icon SVGs, ServiceIcon component, textures (Wave 2)
 
 ### Phase 6: Landing Page Redesign
@@ -191,7 +191,7 @@ Phases execute in numeric order: 5 -> 6 -> 7 -> 8 -> 9
 | 2. Public Marketing Site | v1.0 | 5/5 | Complete | - |
 | 3. Admin Panel | v1.0 | 6/6 | Complete | - |
 | 4. Blog, Portfolio & SEO | v1.0 | 6/6 | Complete | 2026-03-31 |
-| 5. Brand Design System | v1.1 | 0/3 | In progress | - |
+| 5. Brand Design System | v1.1 | 2/3 | In progress | - |
 | 6. Landing Page Redesign | v1.1 | 0/0 | Not started | - |
 | 7. Portfolio Case Studies | v1.1 | 0/0 | Not started | - |
 | 8. Lead Generation | v1.1 | 0/0 | Not started | - |
