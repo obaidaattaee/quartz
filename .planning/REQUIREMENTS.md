@@ -12,8 +12,8 @@ Requirements for milestone v1.1: Brand Redesign & 3D Interactive Experience. Eac
 - [x] **BRAND-01**: New color palette (6-8 semantic tokens) for light and dark modes using oklch
 - [x] **BRAND-02**: New typography pairing — display font + body font with Arabic glyph support
 - [x] **BRAND-03**: Component design language — new card styles, button designs, border radius, shadow scale, spacing rhythm
-- [ ] **BRAND-04**: Motion design language — defined entrance, transition, interaction, and ambient animation patterns
-- [ ] **BRAND-05**: Custom service icons matching the brand aesthetic (dev, automation, QA, cybersecurity)
+- [x] **BRAND-04**: Motion design language — defined entrance, transition, interaction, and ambient animation patterns
+- [x] **BRAND-05**: Custom service icons matching the brand aesthetic (dev, automation, QA, cybersecurity)
 - [x] **BRAND-06**: Dark mode palette that feels designed (adjusted saturation, custom surfaces) not inverted
 - [x] **BRAND-07**: Source and download all brand assets — fonts, icons, illustrations, textures
 
@@ -80,8 +80,8 @@ Requirements for milestone v1.1: Brand Redesign & 3D Interactive Experience. Eac
 | BRAND-01 | Phase 5 | Complete |
 | BRAND-02 | Phase 5 | Complete |
 | BRAND-03 | Phase 5 | Complete |
-| BRAND-04 | Phase 5 | Pending |
-| BRAND-05 | Phase 5 | Pending |
+| BRAND-04 | Phase 5 | Complete |
+| BRAND-05 | Phase 5 | Complete |
 | BRAND-06 | Phase 5 | Complete |
 | BRAND-07 | Phase 5 | Complete |
 | LAND-01 | Phase 6 | Pending |
