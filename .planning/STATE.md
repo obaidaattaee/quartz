@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Brand Redesign & 3D Interactive Experience
-status: planning
-stopped_at: Phase 5 planned (3 plans, 2 waves)
-last_updated: "2026-04-04T18:39:57.988Z"
-last_activity: 2026-04-04 -- Roadmap created for v1.1
+status: executing
+stopped_at: Completed 05-01-PLAN.md
+last_updated: "2026-04-04T18:49:11.668Z"
+last_activity: 2026-04-04
 progress:
   total_phases: 5
   completed_phases: 0
   total_plans: 3
-  completed_plans: 0
+  completed_plans: 1
   percent: 0
 ---
 
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-04)
 
 **Core value:** Visitors immediately understand what services are offered, see proof of quality through case studies and testimonials, and can easily get in touch -- in a visually polished, professional experience that builds trust.
-**Current focus:** Milestone v1.1 -- Phase 5: Brand Design System
+**Current focus:** Phase 05 — brand-design-system
 
 ## Current Position
 
-Phase: 5 of 9 (Brand Design System) -- first phase of v1.1
-Plan: 0 of 0 in current phase (not yet planned)
-Status: Ready to plan
-Last activity: 2026-04-04 -- Roadmap created for v1.1
+Phase: 05 (brand-design-system) — EXECUTING
+Plan: 2 of 3
+Status: Ready to execute
+Last activity: 2026-04-04
 
 Progress: [..........] 0%
 
@@ -51,6 +51,8 @@ Progress: [..........] 0%
 - [v1.1]: Design inspiration is Mailchimp (content-first, playful characters, simple CTA flow).
 - [v1.1]: Asset sourcing (fonts, illustrations, 3D models) is part of the work, included in relevant phases.
 - [v1.1]: CSS changes scoped to public pages only -- admin panel must not break during rebrand.
+- [Phase 05]: Self-hosted Space Grotesk WOFF2 from Google Fonts rather than Fontsource npm package (D-24/D-27 compliance)
+- [Phase 05]: Dark mode sidebar tokens preserved at hue 230; semantic tokens shifted to hue 240-245 for navy distinction
 
 ### Pending Todos
 
@@ -65,6 +67,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-04T18:39:57.874Z
-Stopped at: Phase 5 planned (3 plans, 2 waves)
-Resume file: .planning/phases/05-brand-design-system/05-01-PLAN.md
+Last session: 2026-04-04T18:49:11.648Z
+Stopped at: Completed 05-01-PLAN.md
+Resume file: None

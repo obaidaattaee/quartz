@@ -126,7 +126,7 @@ Plans:
 **UI hint**: yes
 
 Plans:
-- [ ] 05-01-PLAN.md -- Color palette, typography (Space Grotesk), OKLCH tokens, ambient CSS, font preload (Wave 1)
+- [x] 05-01-PLAN.md -- Color palette, typography (Space Grotesk), OKLCH tokens, ambient CSS, font preload (Wave 1)
 - [ ] 05-02-PLAN.md -- Component styling: card glass-morphism, button interactions, input brand styling (Wave 2)
 - [ ] 05-03-PLAN.md -- Motion variants, custom service icon SVGs, ServiceIcon component, textures (Wave 2)
 
