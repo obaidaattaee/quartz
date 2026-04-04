@@ -26,11 +26,11 @@
         {{-- Inline style to set the HTML background color based on our theme in app.css --}}
         <style>
             html {
-                background-color: oklch(0.985 0 0);
+                background-color: oklch(0.985 0.005 180);
             }
 
             html.dark {
-                background-color: oklch(0.13 0.01 240);
+                background-color: oklch(0.13 0.012 245);
             }
         </style>
 
@@ -58,6 +58,8 @@
                 @endforeach
             @endisset
         @endisset
+
+        <link rel="preload" as="font" type="font/woff2" href="{{ Vite::asset('resources/fonts/SpaceGrotesk-Variable.woff2') }}" crossorigin>
 
         @viteReactRefresh
         @vite(['resources/css/app.css', 'resources/js/app.tsx', "resources/js/pages/{$page['component']}.tsx"])
