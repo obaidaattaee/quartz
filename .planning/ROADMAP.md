@@ -1,8 +1,9 @@
 # Roadmap: Quartz
 
-## Overview
+## Milestones
 
-Quartz is a bilingual (EN/AR) professional services website that must convey trust through polished visuals, showcase work, and convert visitors into leads. The build progresses from foundational infrastructure (locale routing, RTL, design system) through the public marketing pages visitors see, into the admin panel that manages all content, and finally delivers the content marketing features (blog, portfolio) alongside SEO hardening. Each phase produces a coherent, verifiable capability.
+- v1.0 MVP - Phases 1-4 (shipped 2026-03-31)
+- v1.1 Brand Redesign & 3D Interactive Experience - Phases 5-9 (in progress)
 
 ## Phases
 
@@ -12,12 +13,13 @@ Quartz is a bilingual (EN/AR) professional services website that must convey tru
 
 Decimal phases appear between their surrounding integers in numeric order.
 
+<details>
+<summary>v1.0 MVP (Phases 1-4) - SHIPPED 2026-03-31</summary>
+
 - [x] **Phase 1: Foundation & Design System** - Locale routing, RTL support, design tokens, animation primitives, and shared layout components
 - [x] **Phase 2: Public Marketing Site** - Landing page, service pages, contact system, about/team, and all visitor-facing content
 - [x] **Phase 3: Admin Panel** - Dashboard, content CRUD, lead management, media library, site settings, and role-based access
 - [x] **Phase 4: Blog, Portfolio & SEO** - Blog system, portfolio gallery, structured data, sitemaps, and SEO optimization
-
-## Phase Details
 
 ### Phase 1: Foundation & Design System
 **Goal**: Every page rendered in either English (LTR) or Arabic (RTL) looks correct, uses the same design tokens, and has working navigation with smooth transitions
@@ -30,7 +32,6 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. Sticky header with navigation items is visible on desktop and collapses to hamburger menu on mobile; footer displays sitemap links, contact info, and social links; breadcrumbs appear on inner pages; a branded 404 page is shown for unknown routes
   5. All UI components (buttons, cards, inputs, badges) render consistently with hover micro-interactions in both LTR and RTL layouts across mobile, tablet, and desktop breakpoints
 **Plans**: 4 plans
-**UI hint**: yes
 
 Plans:
 - [x] 01-01-PLAN.md -- Locale routing, design tokens, fonts, RTL, i18n infrastructure (Wave 1)
@@ -49,7 +50,6 @@ Plans:
   4. About page presents the company story, team members with real photos/bios/roles, and certifications/badges
   5. Newsletter email capture is functional and stores submissions in the database; FAQ section with accordion is present with structured data markup
 **Plans**: 5 plans
-**UI hint**: yes
 
 Plans:
 - [x] 02-01-PLAN.md -- Backend infrastructure, routes, translations, accordion install (Wave 1)
@@ -69,7 +69,6 @@ Plans:
   4. Admin can upload a logo, pick primary/secondary brand colors, update contact info and social links through site settings; a media library allows uploading, browsing, and reusing images with thumbnail generation
   5. Editor role users can only access blog and portfolio management; admin role users have access to everything; unauthorized sections are not accessible
 **Plans**: 6 plans
-**UI hint**: yes
 
 Plans:
 - [x] 03-01-PLAN.md -- Backend foundation: migrations, models, services, middleware, routes, dashboard, sidebar (Wave 1)
@@ -90,7 +89,6 @@ Plans:
   4. Every public page has admin-editable meta titles and descriptions, Open Graph tags, and canonical URLs; hreflang tags link EN/AR versions of each page; an auto-generated XML sitemap includes all public routes, blog posts, and portfolio items
   5. JSON-LD structured data is present on relevant pages (Organization, Service, Article, LocalBusiness, FAQ schemas) and validates without errors in Google's Rich Results Test
 **Plans**: 6 plans
-**UI hint**: yes
 
 Plans:
 - [x] 04-01-PLAN.md -- Database schema, SEO infrastructure, SeoService, TypeScript types, reading time helpers (Wave 1)
@@ -100,14 +98,101 @@ Plans:
 - [x] 04-05-PLAN.md -- RSS feed, XML sitemap, JSON-LD structured data, SEO wiring (Wave 3)
 - [x] 04-06-PLAN.md -- Verification seeder and full Phase 4 verification checkpoint (Wave 4)
 
+</details>
+
+### v1.1 Brand Redesign & 3D Interactive Experience (In Progress)
+
+**Milestone Goal:** Transform the current template-looking site into a unique, premium consultancy brand with an interactive 3D hero that makes Quartz instantly memorable and drives lead generation.
+
+- [ ] **Phase 5: Brand Design System** - New color palette, typography, component language, motion patterns, service icons, and asset sourcing
+- [ ] **Phase 6: Landing Page Redesign** - Rebuilt landing page with Mailchimp-inspired content-first layout, robot mascot illustrations, and scroll-driven storytelling
+- [ ] **Phase 7: Portfolio Case Studies** - In-depth case study pages with narrative structure, animated metrics, project imagery, and related navigation
+- [ ] **Phase 8: Lead Generation** - Strategic CTAs, animated statistics, client logo marquee, trust signals, and WhatsApp floating button
+- [ ] **Phase 9: 3D Interactive Hero** - Three.js Earth globe with Roblox-style robot characters, interactive controls, loading transition, and mobile fallback
+
+## Phase Details
+
+### Phase 5: Brand Design System
+**Goal**: The entire public site speaks a cohesive, premium visual language -- new colors, typography, component shapes, motion patterns, and custom icons -- that feels hand-crafted rather than templated
+**Depends on**: Phase 4 (v1.0 complete)
+**Requirements**: BRAND-01, BRAND-02, BRAND-03, BRAND-04, BRAND-05, BRAND-06, BRAND-07
+**Success Criteria** (what must be TRUE):
+  1. Light and dark modes each use a distinct, intentionally designed OKLCH color palette (not an auto-inversion) with semantic tokens applied consistently across all public page components
+  2. A new display font and body font render correctly in both English and Arabic, with proper weight, size scale, and line-height in both LTR and RTL layouts
+  3. All public-facing cards, buttons, inputs, and section containers use the new border-radius, shadow scale, and spacing rhythm -- visually distinct from the v1.0 design
+  4. Page entrance animations, scroll reveals, hover interactions, and ambient motion all follow a defined, consistent motion language across every public page
+  5. Each of the four services (dev, automation, QA, cybersecurity) has a custom icon matching the new brand aesthetic, and all required font files, icon assets, and illustration textures are downloaded and committed to the repository
+**Plans**: 3 plans
+**UI hint**: yes
+
+Plans:
+- [x] 05-01-PLAN.md -- Color palette, typography (Space Grotesk), OKLCH tokens, ambient CSS, font preload (Wave 1)
+- [x] 05-02-PLAN.md -- Component styling: card glass-morphism, button interactions, input brand styling (Wave 2)
+- [ ] 05-03-PLAN.md -- Motion variants, custom service icon SVGs, ServiceIcon component, textures (Wave 2)
+
+### Phase 6: Landing Page Redesign
+**Goal**: Visitors land on a Mailchimp-inspired, content-first page that unfolds as a trust-building narrative -- bold value proposition, service explanations with custom icons, robot mascot brand characters, redesigned testimonials, and intentional visual rhythm
+**Depends on**: Phase 5
+**Requirements**: LAND-01, LAND-02, LAND-03, LAND-04, LAND-05, LAND-06, LAND-07
+**Success Criteria** (what must be TRUE):
+  1. The hero section displays a bold, clear value proposition with a single primary CTA above the fold, styled in the new brand language (not the v1.0 hero)
+  2. Scrolling through the landing page feels like a narrative -- sections unfold progressively, building from "what we do" through "proof of quality" to a conversion CTA at the bottom
+  3. Service overview section shows all four services with custom brand icons and concise copy; robot mascot SVG illustrations appear in at least two sections as brand personality elements
+  4. Testimonials section has a noticeably stronger visual treatment than v1.0 (not a plain card grid) with client names, companies, and visual emphasis
+  5. All sections use intentional spacing rhythm and visual hierarchy from the Phase 5 design system; the page renders correctly in both EN (LTR) and AR (RTL)
+**Plans**: TBD
+**UI hint**: yes
+
+### Phase 7: Portfolio Case Studies
+**Goal**: Each portfolio project tells a complete story -- problem, approach, results -- with professional visuals, animated metrics, and client proof that demonstrates Quartz's competence to prospective clients
+**Depends on**: Phase 5
+**Requirements**: PORT-01, PORT-02, PORT-03, PORT-04, PORT-05, PORT-06
+**Success Criteria** (what must be TRUE):
+  1. Case study pages display a Problem, Approach, and Results narrative structure with dedicated database fields populated through the admin panel
+  2. Result metrics animate on scroll (count-up numbers, percentage bars) and before/after comparisons are visually presented where applicable
+  3. Each case study shows full-bleed project imagery with device mockup frames and a lightbox gallery for additional screenshots; technology/tools used appear as branded badges
+  4. Client testimonials tied to specific case studies appear inline; a "Related Projects" section and "Next Project" navigation appear at the bottom of each case study
+**Plans**: TBD
+**UI hint**: yes
+
+### Phase 8: Lead Generation
+**Goal**: Every page in the site is optimized for conversion -- strategic CTAs appear after trust-building moments, animated social proof reinforces credibility, and visitors can reach Quartz instantly via WhatsApp
+**Depends on**: Phase 6, Phase 7
+**Requirements**: LEAD-01, LEAD-02, LEAD-03, LEAD-04, LEAD-05
+**Success Criteria** (what must be TRUE):
+  1. CTAs appear after trust-building content (testimonials, case study results, statistics) on the landing page, service pages, and portfolio pages -- not just at the top and bottom
+  2. A statistics section with animated count-up numbers triggers on scroll; a client logo marquee auto-scrolls continuously and logos shift from grayscale to color on hover
+  3. Trust signals ("Trusted by 50+ companies" or similar) are placed directly adjacent to CTA buttons throughout the site
+  4. A WhatsApp floating action button is visible on all public pages, positioned correctly in both LTR and RTL layouts, and links to the configured WhatsApp number
+**Plans**: TBD
+**UI hint**: yes
+
+### Phase 9: 3D Interactive Hero
+**Goal**: The landing page hero features a Three.js Earth globe with Roblox-style robot characters representing each service, creating an instantly memorable first impression that differentiates Quartz from every competitor
+**Depends on**: Phase 6
+**Requirements**: 3DHR-01, 3DHR-02, 3DHR-03, 3DHR-04, 3DHR-05, 3DHR-06
+**Success Criteria** (what must be TRUE):
+  1. The landing page hero displays a 3D Earth globe rendered via React Three Fiber with a branded atmosphere effect; the globe and scene load without blocking initial page paint (lazy-loaded with Suspense)
+  2. Four Roblox-style robot characters are positioned on the globe, each representing a service; hovering a robot shows a tooltip with the service name
+  3. Users can rotate and zoom the globe; the interactive controls work on both desktop (mouse) and mobile (touch)
+  4. A branded loading placeholder (matching the design system) cross-fades into the 3D scene once assets are loaded; devices that cannot sustain 24+ FPS automatically fall back to a static illustration
+  5. All 3D robot models (GLTF/GLB) and Earth textures are sourced, optimized, and committed to the repository; the Three.js bundle is isolated in a separate Vite chunk and only downloaded on the landing page
+**Plans**: TBD
+
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4
+Phases execute in numeric order: 5 -> 6 -> 7 -> 8 -> 9
+(Phase 7 can begin after Phase 5 completes, in parallel with Phase 6. Phase 8 depends on both 6 and 7.)
 
-| Phase | Plans Complete | Status | Completed |
-|-------|----------------|--------|-----------|
-| 1. Foundation & Design System | 4/4 | Complete |  |
-| 2. Public Marketing Site | 5/5 | Complete | - |
-| 3. Admin Panel | 6/6 | Complete | - |
-| 4. Blog, Portfolio & SEO | 6/6 | Complete | 2026-03-31 |
+| Phase | Milestone | Plans Complete | Status | Completed |
+|-------|-----------|----------------|--------|-----------|
+| 1. Foundation & Design System | v1.0 | 4/4 | Complete | - |
+| 2. Public Marketing Site | v1.0 | 5/5 | Complete | - |
+| 3. Admin Panel | v1.0 | 6/6 | Complete | - |
+| 4. Blog, Portfolio & SEO | v1.0 | 6/6 | Complete | 2026-03-31 |
+| 5. Brand Design System | v1.1 | 2/3 | In progress | - |
+| 6. Landing Page Redesign | v1.1 | 0/0 | Not started | - |
+| 7. Portfolio Case Studies | v1.1 | 0/0 | Not started | - |
+| 8. Lead Generation | v1.1 | 0/0 | Not started | - |
+| 9. 3D Interactive Hero | v1.1 | 0/0 | Not started | - |

@@ -1,233 +1,119 @@
-# Requirements: Quartz
+# Requirements: Quartz Solutions
 
-**Defined:** 2026-03-28
+**Defined:** 2026-04-04
 **Core Value:** Visitors immediately understand what services are offered, see proof of quality through case studies and testimonials, and can easily get in touch — in a visually polished, professional experience that builds trust.
 
-## v1 Requirements
+## v1.1 Requirements
 
-Requirements for initial release. Each maps to roadmap phases.
+Requirements for milestone v1.1: Brand Redesign & 3D Interactive Experience. Each maps to roadmap phases.
 
-### Foundation & Bilingual
+### Brand Design System
 
-- [x] **INTL-01**: URL-based language routing with /en/ and /ar/ prefixes on all public routes
-- [x] **INTL-02**: Full RTL layout for Arabic using CSS logical properties (start/end, not left/right)
-- [x] **INTL-03**: Language switcher in header that preserves current page when switching
-- [x] **INTL-04**: Bidirectional text handling for mixed EN/AR content (brand names, technical terms)
-- [x] **INTL-05**: Arabic typography system with proper fonts, line-height (1.6-1.8x), and no letter-spacing
-- [x] **INTL-06**: All translatable content stored with bilingual fields (EN + AR)
+- [x] **BRAND-01**: New color palette (6-8 semantic tokens) for light and dark modes using oklch
+- [x] **BRAND-02**: New typography pairing — display font + body font with Arabic glyph support
+- [x] **BRAND-03**: Component design language — new card styles, button designs, border radius, shadow scale, spacing rhythm
+- [ ] **BRAND-04**: Motion design language — defined entrance, transition, interaction, and ambient animation patterns
+- [ ] **BRAND-05**: Custom service icons matching the brand aesthetic (dev, automation, QA, cybersecurity)
+- [x] **BRAND-06**: Dark mode palette that feels designed (adjusted saturation, custom surfaces) not inverted
+- [x] **BRAND-07**: Source and download all brand assets — fonts, icons, illustrations, textures
 
-### Design System & Visual Foundation
+### Landing Page Redesign
 
-- [x] **DSGN-01**: Premium color palette with primary/secondary colors, applied via CSS custom properties
-- [x] **DSGN-02**: Dark/light mode toggle with smooth transition and localStorage persistence
-- [x] **DSGN-03**: Responsive layout system tested at all breakpoints (mobile, tablet, desktop)
-- [x] **DSGN-04**: Consistent component library (buttons, cards, inputs, badges) with hover micro-interactions
-- [x] **DSGN-05**: Animation system using Motion + GSAP for scroll reveals, staggered entrances, and hover effects
-- [~] **DSGN-06**: Smooth page transitions between routes (Inertia + View Transitions / AnimatePresence)
-- [x] **DSGN-07**: prefers-reduced-motion support — disable animations for users who opt out
-- [x] **DSGN-08**: Sticky header navigation with 4-6 items and mobile hamburger menu
+- [ ] **LAND-01**: New hero section with bold value proposition and clear CTA (Mailchimp-style content-first)
+- [ ] **LAND-02**: Scroll-driven storytelling flow — sections unfold as a narrative building trust toward conversion
+- [ ] **LAND-03**: Service overview with custom icons and concise copy that explains each offering
+- [ ] **LAND-04**: Robot mascot characters woven into sections as brand illustrations (2D/SVG)
+- [ ] **LAND-05**: Redesigned testimonials section with stronger visual treatment
+- [ ] **LAND-06**: New section layouts with intentional spacing rhythm and visual hierarchy
+- [ ] **LAND-07**: Source and download robot mascot illustrations (2D/SVG) for brand identity
 
-### Landing Page
+### Portfolio Case Studies
 
-- [x] **LAND-01**: Hero section with animated entrance, clear value proposition, and primary CTA
-- [x] **LAND-02**: Service overview section with 4 cards (dev, automation, QA, cybersecurity) linking to detail pages
-- [x] **LAND-03**: Client/partner logo bar (horizontal scroll or flex grid)
-- [x] **LAND-04**: Client testimonials section with quotes, names, companies, and optional photos
-- [x] **LAND-05**: Animated statistics/counter section with scroll-triggered count-up (3-4 key metrics)
-- [x] **LAND-06**: "Old Way vs New Way" interactive comparison section
-- [x] **LAND-07**: Bottom CTA section driving visitors to contact
+- [ ] **PORT-01**: Problem → Approach → Results narrative structure with dedicated DB fields
+- [ ] **PORT-02**: Animated visual metrics — count-up numbers, percentage bars, before/after comparisons
+- [ ] **PORT-03**: Full-bleed project imagery with device mockup frames and lightbox gallery
+- [ ] **PORT-04**: Client testimonial tied to each case study (optional per project)
+- [ ] **PORT-05**: Technology/tools used badges per project
+- [ ] **PORT-06**: Related projects navigation and "Next Project" at bottom of case study
 
-### Service Pages
+### Lead Generation
 
-- [x] **SRVC-01**: Individual detail page for each service (software dev, automation, QA, cybersecurity)
-- [x] **SRVC-02**: Problem-solution framing: client pain point → approach → deliverables
-- [x] **SRVC-03**: Process overview with visual step-by-step flow
-- [x] **SRVC-04**: Per-service CTA that pre-fills contact form with service type
-- [x] **SRVC-05**: Scroll reveal animations on service page sections
+- [ ] **LEAD-01**: Strategic CTA placement after trust-building moments on all pages
+- [ ] **LEAD-02**: Enhanced statistics section with animated count-up numbers on scroll
+- [ ] **LEAD-03**: Client logo marquee — auto-scrolling, grayscale-to-color on hover
+- [ ] **LEAD-04**: Trust signals placed adjacent to CTAs ("Trusted by 50+ companies")
+- [ ] **LEAD-05**: WhatsApp floating action button with RTL positioning support
 
-### Portfolio & Case Studies
+### 3D Interactive Hero
 
-- [x] **PORT-01**: Visual portfolio grid with hover previews and filtering by service type
-- [x] **PORT-02**: Case study detail pages with problem → approach → results and metrics
-- [x] **PORT-03**: Before/after visuals or image comparison layouts
-- [x] **PORT-04**: Results metrics display with animated counters
+- [ ] **3DHR-01**: Three.js Earth globe as hero centerpiece using React Three Fiber
+- [ ] **3DHR-02**: 4 Roblox-style robot characters on globe representing each service
+- [ ] **3DHR-03**: Interactive controls — rotate, zoom, hover robots for tooltips
+- [ ] **3DHR-04**: Branded loading transition — placeholder cross-fades into 3D scene
+- [ ] **3DHR-05**: Mobile fallback — static illustration for devices that can't run WebGL
+- [ ] **3DHR-06**: Source and download 3D robot models (GLTF/GLB) and Earth textures from open libraries
 
-### Blog System
+## Future Requirements
 
-- [x] **BLOG-01**: Blog listing page with pagination (6-10 posts per page)
-- [x] **BLOG-02**: Blog post detail page with rich content rendering
-- [x] **BLOG-03**: Categories and tags with filterable category/tag pages
-- [x] **BLOG-04**: Author profiles with photo, bio, social links, and authored posts list
-- [x] **BLOG-05**: SEO metadata per post (title, description, OG image)
-- [x] **BLOG-06**: Related posts section (2-3 posts by category/tag relevance)
-- [x] **BLOG-07**: Reading time estimate displayed near title
-- [x] **BLOG-08**: Social sharing buttons (LinkedIn, Twitter/X, WhatsApp)
-- [x] **BLOG-09**: RSS feed auto-generated from published posts
+### Interactive Learning Platform (v1.2)
 
-### Contact & Lead Generation
-
-- [x] **CONT-01**: Contact form with validation (name, email, phone, service interest, message)
-- [x] **CONT-02**: Multi-channel contact info visible on contact page and footer (WhatsApp, phone, email)
-- [x] **CONT-03**: Contact page with embedded map or location display
-- [x] **CONT-04**: Email notification sent to admin on form submission
-- [x] **CONT-05**: Spam protection on contact form (honeypot or rate limiting)
-- [x] **CONT-06**: FAQ section with accordion and FAQ structured data (JSON-LD)
-- [x] **CONT-07**: Newsletter email capture stored in database
-
-### About & Team
-
-- [x] **TEAM-01**: About page with company story and mission
-- [x] **TEAM-02**: Team member section with real photos, names, roles, and bios
-- [x] **TEAM-03**: Certifications and badges display
-
-### Navigation & Structure
-
-- [x] **NAV-01**: Footer with sitemap links, contact info, social links, and legal
-- [x] **NAV-02**: Breadcrumbs on inner pages (services, blog, portfolio)
-- [x] **NAV-03**: Custom branded 404 error page with navigation back to key pages
-
-### SEO
-
-- [x] **SEO-01**: Admin-editable meta titles and descriptions per page
-- [x] **SEO-02**: Open Graph and social sharing meta tags on all pages
-- [x] **SEO-03**: Auto-generated XML sitemap including all public routes, blog posts, and portfolio items
-- [x] **SEO-04**: JSON-LD structured data (Organization, Service, Article, LocalBusiness, FAQ schemas)
-- [x] **SEO-05**: Canonical URLs and hreflang tags linking EN/AR versions of each page
-
-### Admin Panel
-
-- [x] **ADMN-01**: Admin dashboard with key metrics (recent leads, post count, portfolio count)
-- [x] **ADMN-02**: Blog post CRUD with rich text editor (Tiptap), bilingual fields, image upload, and preview
-- [x] **ADMN-03**: Portfolio/case study CRUD with images, service category, and bilingual content
-- [x] **ADMN-04**: Contact lead list with status tracking (new, read, handled) and filtering
-- [x] **ADMN-05**: Testimonial management — add, edit, reorder, show/hide
-- [x] **ADMN-06**: Service page content editing — structured fields for headings, descriptions, process steps
-- [x] **ADMN-07**: Site settings — logo upload, primary/secondary color pickers, contact info, social links
-- [x] **ADMN-08**: Media library — upload, browse, and reuse images with thumbnail generation
-- [x] **ADMN-09**: Multi-role access — admin (everything) and editor (blog + portfolio only)
-- [x] **ADMN-10**: Team member management — add, edit, reorder team members with photos and bios
-
-## v2 Requirements
-
-Deferred to future release. Tracked but not in current roadmap.
-
-### Advanced Content
-
-- **BLOG-10**: Scheduled/draft post publishing with publish date
-- **BLOG-11**: Content versioning / revision history
-- **PORT-05**: Video case studies with embedded player
-
-### Advanced Engagement
-
-- **ENGM-01**: Newsletter integration with email service (Mailchimp/SendGrid)
-- **ENGM-02**: Search functionality when blog exceeds 50+ posts
-- **ENGM-03**: Interactive service comparison tool with custom data
-
-### Advanced Admin
-
-- **ADMN-11**: Activity log / audit trail for admin actions
-- **ADMN-12**: Content scheduling and workflow (draft → review → publish)
-- **ADMN-13**: Analytics dashboard with traffic data integration
-
-### Compliance
-
-- **CMPL-01**: Cookie consent banner (if targeting EU markets)
-- **CMPL-02**: Privacy policy and terms pages (admin-editable)
+- **LEARN-01**: Interactive coding courses and learning paths (Educative-style)
+- **LEARN-02**: Software best practices and scaling guides
+- **LEARN-03**: Progress tracking for learners
 
 ## Out of Scope
 
 | Feature | Reason |
 |---------|--------|
-| User registration / visitor accounts | Showcase site, not a platform. Adds GDPR burden with zero business value |
-| Real-time chat / chatbot | Requires real-time staffing or AI investment. WhatsApp + form higher-converting for services |
-| E-commerce / payments | No products sold. PCI compliance burden unjustified |
-| Client portal / project dashboard | Separate application domain, not a marketing site feature |
-| Page builder / drag-and-drop admin | Enormous complexity. Structured editing is safer and sufficient |
-| Auto-playing video with sound | Universally disliked, increases bounce rate |
-| Infinite scroll on blog | Hurts SEO, prevents reaching footer, loses user position |
-| Auto language detection / forced redirect | Frustrates expats and bilingual users. Let users choose |
-| Social media feed embeds | Slow, break layout control, age poorly |
-| Complex search (Elasticsearch) | Blog volume doesn't justify it for v1 |
+| Custom cursor interactions | Added complexity for marginal UX gain — revisit post-launch |
+| Page transitions with shared elements | High complexity with Inertia.js coordination — defer to polish phase |
+| Full-screen 3D-only hero | Destroys conversion — text must remain primary |
+| Auto-playing background video | Redundant with 3D hero, massive performance cost |
+| Chatbot / AI assistant | Simple decision tree doesn't need a bot — direct contact is better |
+| Mega-menu navigation | Only 5-6 top-level pages — flat nav is sufficient |
+| Heavy post-processing effects | Destroys mobile performance for target markets |
 
 ## Traceability
 
-Which phases cover which requirements. Updated during roadmap creation.
-
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| INTL-01 | Phase 1 | Complete |
-| INTL-02 | Phase 1 | Complete |
-| INTL-03 | Phase 1 | Complete |
-| INTL-04 | Phase 1 | Complete |
-| INTL-05 | Phase 1 | Complete |
-| INTL-06 | Phase 1 | Complete |
-| DSGN-01 | Phase 1 | Complete |
-| DSGN-02 | Phase 1 | Complete |
-| DSGN-03 | Phase 1 | Complete |
-| DSGN-04 | Phase 1 | Complete |
-| DSGN-05 | Phase 1 | Complete |
-| DSGN-06 | Phase 1 | Partial |
-| DSGN-07 | Phase 1 | Complete |
-| DSGN-08 | Phase 1 | Complete |
-| NAV-01 | Phase 1 | Complete |
-| NAV-02 | Phase 1 | Complete |
-| NAV-03 | Phase 1 | Complete |
-| LAND-01 | Phase 2 | Complete |
-| LAND-02 | Phase 2 | Complete |
-| LAND-03 | Phase 2 | Complete |
-| LAND-04 | Phase 2 | Complete |
-| LAND-05 | Phase 2 | Complete |
-| LAND-06 | Phase 2 | Complete |
-| LAND-07 | Phase 2 | Complete |
-| SRVC-01 | Phase 2 | Complete |
-| SRVC-02 | Phase 2 | Complete |
-| SRVC-03 | Phase 2 | Complete |
-| SRVC-04 | Phase 2 | Complete |
-| SRVC-05 | Phase 2 | Complete |
-| CONT-01 | Phase 2 | Complete |
-| CONT-02 | Phase 2 | Complete |
-| CONT-03 | Phase 2 | Complete |
-| CONT-04 | Phase 2 | Complete |
-| CONT-05 | Phase 2 | Complete |
-| CONT-06 | Phase 2 | Complete |
-| CONT-07 | Phase 2 | Complete |
-| TEAM-01 | Phase 2 | Complete |
-| TEAM-02 | Phase 2 | Complete |
-| TEAM-03 | Phase 2 | Complete |
-| ADMN-01 | Phase 3 | Complete |
-| ADMN-02 | Phase 3 | Complete |
-| ADMN-03 | Phase 3 | Complete |
-| ADMN-04 | Phase 3 | Complete |
-| ADMN-05 | Phase 3 | Complete |
-| ADMN-06 | Phase 3 | Complete |
-| ADMN-07 | Phase 3 | Complete |
-| ADMN-08 | Phase 3 | Complete |
-| ADMN-09 | Phase 3 | Complete |
-| ADMN-10 | Phase 3 | Complete |
-| BLOG-01 | Phase 4 | Complete |
-| BLOG-02 | Phase 4 | Complete |
-| BLOG-03 | Phase 4 | Complete |
-| BLOG-04 | Phase 4 | Complete |
-| BLOG-05 | Phase 4 | Complete |
-| BLOG-06 | Phase 4 | Complete |
-| BLOG-07 | Phase 4 | Complete |
-| BLOG-08 | Phase 4 | Complete |
-| BLOG-09 | Phase 4 | Complete |
-| PORT-01 | Phase 4 | Complete |
-| PORT-02 | Phase 4 | Complete |
-| PORT-03 | Phase 4 | Complete |
-| PORT-04 | Phase 4 | Complete |
-| SEO-01 | Phase 4 | Complete |
-| SEO-02 | Phase 4 | Complete |
-| SEO-03 | Phase 4 | Complete |
-| SEO-04 | Phase 4 | Complete |
-| SEO-05 | Phase 4 | Complete |
+| BRAND-01 | Phase 5 | Complete |
+| BRAND-02 | Phase 5 | Complete |
+| BRAND-03 | Phase 5 | Complete |
+| BRAND-04 | Phase 5 | Pending |
+| BRAND-05 | Phase 5 | Pending |
+| BRAND-06 | Phase 5 | Complete |
+| BRAND-07 | Phase 5 | Complete |
+| LAND-01 | Phase 6 | Pending |
+| LAND-02 | Phase 6 | Pending |
+| LAND-03 | Phase 6 | Pending |
+| LAND-04 | Phase 6 | Pending |
+| LAND-05 | Phase 6 | Pending |
+| LAND-06 | Phase 6 | Pending |
+| LAND-07 | Phase 6 | Pending |
+| PORT-01 | Phase 7 | Pending |
+| PORT-02 | Phase 7 | Pending |
+| PORT-03 | Phase 7 | Pending |
+| PORT-04 | Phase 7 | Pending |
+| PORT-05 | Phase 7 | Pending |
+| PORT-06 | Phase 7 | Pending |
+| LEAD-01 | Phase 8 | Pending |
+| LEAD-02 | Phase 8 | Pending |
+| LEAD-03 | Phase 8 | Pending |
+| LEAD-04 | Phase 8 | Pending |
+| LEAD-05 | Phase 8 | Pending |
+| 3DHR-01 | Phase 9 | Pending |
+| 3DHR-02 | Phase 9 | Pending |
+| 3DHR-03 | Phase 9 | Pending |
+| 3DHR-04 | Phase 9 | Pending |
+| 3DHR-05 | Phase 9 | Pending |
+| 3DHR-06 | Phase 9 | Pending |
 
 **Coverage:**
-- v1 requirements: 67 total
-- Mapped to phases: 67
+- v1.1 requirements: 31 total
+- Mapped to phases: 31
 - Unmapped: 0
 
 ---
-*Requirements defined: 2026-03-28*
-*Last updated: 2026-03-28 after roadmap creation*
+*Requirements defined: 2026-04-04*
+*Last updated: 2026-04-04 after roadmap creation*
