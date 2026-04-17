@@ -6,12 +6,12 @@ services:
     container_name: quartz-app
     restart: unless-stopped
     ports:
-      - "80:80"
+      - "8080:80"
     environment:
       - APP_NAME=Quartz
-      - APP_ENV=production
-      - APP_DEBUG=false
-      - APP_URL=${APP_URL:-http://localhost}
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - APP_URL=${APP_URL:-http://localhost:8080}
       - DB_CONNECTION=mysql
       - DB_HOST=db
       - DB_PORT=3306
@@ -29,7 +29,13 @@ services:
       - MAIL_ENCRYPTION=${MAIL_ENCRYPTION:-tls}
       - MAIL_FROM_ADDRESS=${MAIL_FROM_ADDRESS:-noreply@quartz.com}
       - MAIL_FROM_NAME=Quartz Solutions
+      - VITE_HMR_HOST=localhost
     volumes:
+      # Bind the whole project so host edits appear instantly in the container.
+      - .:/var/www/html
+      # Preserve image-built deps so host doesn't shadow them.
+      - /var/www/html/node_modules
+      - /var/www/html/vendor
       - storage:/var/www/html/storage/app/public
     depends_on:
       db:
