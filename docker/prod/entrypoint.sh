@@ -12,7 +12,10 @@ mkdir -p \
 
 chown -R www-data:www-data storage bootstrap/cache 2>/dev/null || true
 
-# ---- Build production caches (compose depends_on already waited for db) -----
+# ---- Run database migrations (compose depends_on already waited for db) -----
+php artisan migrate --force --no-interaction
+
+# ---- Build production caches -----------------------------------------------
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
