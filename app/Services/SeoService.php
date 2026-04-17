@@ -11,8 +11,12 @@ class SeoService
     /**
      * Get SEO data for a static page.
      */
-    public static function forStaticPage(string $pageKey, string $locale): array
-    {
+    public static function forStaticPage(
+        string $pageKey,
+        string $locale,
+        ?string $overrideTitle = null,
+        ?string $overridePath = null,
+    ): array {
         $meta = SeoMetadata::where('page_key', $pageKey)->first();
 
         $titleField = 'meta_title_' . $locale;
@@ -20,21 +24,43 @@ class SeoService
 
         $siteName = config('app.name', 'Quartz');
         $baseUrl = rtrim(config('app.url'), '/');
-        $altLocale = $locale === 'en' ? 'ar' : 'en';
 
         $pageTitles = [
-            'home' => $locale === 'en' ? 'Software Development & Cybersecurity' : 'تطوير البرمجيات والأمن السيبراني',
+            'home' => $locale === 'en'
+                ? 'Enterprise software, automation & cybersecurity'
+                : 'برمجيات المؤسسات والأتمتة والأمن السيبراني',
             'about' => $locale === 'en' ? 'About Us' : 'من نحن',
             'contact' => $locale === 'en' ? 'Contact Us' : 'اتصل بنا',
             'faq' => $locale === 'en' ? 'FAQ' : 'الأسئلة الشائعة',
             'blog' => $locale === 'en' ? 'Blog' : 'المدونة',
-            'portfolio' => $locale === 'en' ? 'Portfolio' : 'أعمالنا',
+            'portfolio' => $locale === 'en' ? 'Work' : 'أعمالنا',
+            'industries' => $locale === 'en' ? 'Industries' : 'القطاعات',
         ];
 
-        $title = $meta?->$titleField ?? ($pageTitles[$pageKey] ?? $siteName) . ' | ' . $siteName;
-        $description = $meta?->$descField ?? '';
+        $descriptionDefaults = [
+            'industries' => $locale === 'en'
+                ? 'Software solutions shaped to the operating reality of your sector — retail, healthcare, finance, government, education.'
+                : 'حلول برمجية مُصاغة لواقع قطاعك — التجزئة، الرعاية الصحية، المال، الحكومة، التعليم.',
+        ];
 
-        $pageUrl = $baseUrl . '/' . $locale . ($pageKey === 'home' ? '' : '/' . $pageKey);
+        $resolvedTitle = $overrideTitle ?? ($pageTitles[$pageKey] ?? $siteName);
+        $title = $meta?->$titleField ?? $resolvedTitle . ' | ' . $siteName;
+        $description = $meta?->$descField ?? ($descriptionDefaults[$pageKey] ?? '');
+
+        // Path resolution: explicit override wins, otherwise derive from pageKey.
+        $path = $overridePath
+            ?? ('/' . $locale . ($pageKey === 'home' ? '' : '/' . $pageKey));
+        $pageUrl = $baseUrl . $path;
+
+        // Hreflang alternates swap the locale segment, keeping the rest of the path.
+        $hreflang = [];
+        foreach (['en', 'ar'] as $lang) {
+            $hreflang[$lang] = $baseUrl . preg_replace(
+                '#^/(en|ar)(/|$)#',
+                '/' . $lang . '$2',
+                $path,
+            );
+        }
 
         return [
             'title' => $title,
@@ -42,10 +68,7 @@ class SeoService
             'image' => $meta?->ogImage?->path ? $baseUrl . '/storage/' . $meta->ogImage->path : null,
             'url' => $pageUrl,
             'canonical' => $pageUrl,
-            'hreflang' => [
-                'en' => $baseUrl . '/en' . ($pageKey === 'home' ? '' : '/' . $pageKey),
-                'ar' => $baseUrl . '/ar' . ($pageKey === 'home' ? '' : '/' . $pageKey),
-            ],
+            'hreflang' => $hreflang,
         ];
     }
 

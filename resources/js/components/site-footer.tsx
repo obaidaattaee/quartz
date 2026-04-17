@@ -9,6 +9,8 @@ export default function SiteFooter() {
 
     const serviceLinks = [
         { key: 'nav.services.dev', href: `/${locale}/services/development` },
+        { key: 'nav.services.web', href: `/${locale}/services/web-development` },
+        { key: 'nav.services.mobile', href: `/${locale}/services/mobile-apps` },
         {
             key: 'nav.services.automation',
             href: `/${locale}/services/automation`,

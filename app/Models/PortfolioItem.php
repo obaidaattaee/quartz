@@ -27,6 +27,19 @@ class PortfolioItem extends Model
         'slug',
         'description_en',
         'description_ar',
+        'outcome_headline_en',
+        'outcome_headline_ar',
+        'challenge_en',
+        'challenge_ar',
+        'approach_en',
+        'approach_ar',
+        'solution_en',
+        'solution_ar',
+        'results_en',
+        'results_ar',
+        'timeline',
+        'team_size',
+        'services_used',
         'content_en',
         'content_ar',
         'service_category',
@@ -53,6 +66,7 @@ class PortfolioItem extends Model
     {
         return [
             'results_metrics' => 'array',
+            'services_used' => 'array',
             'status' => 'string',
             'sort_order' => 'integer',
         ];

@@ -72,6 +72,19 @@ export type PortfolioItemSummary = {
 export type PortfolioItemDetail = PortfolioItemSummary & {
     content_en: string | null;
     content_ar: string | null;
+    outcome_headline_en: string | null;
+    outcome_headline_ar: string | null;
+    challenge_en: string | null;
+    challenge_ar: string | null;
+    approach_en: string | null;
+    approach_ar: string | null;
+    solution_en: string | null;
+    solution_ar: string | null;
+    results_en: string | null;
+    results_ar: string | null;
+    timeline: string | null;
+    team_size: string | null;
+    services_used: string[] | null;
     results_metrics: { label: string; value: string }[] | null;
     before_image?: MediaItem | null;
     after_image?: MediaItem | null;

@@ -5,6 +5,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\IndustryController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\RssFeedController;
@@ -24,7 +25,7 @@ Route::prefix('{locale}')
 
         // Service pages (database-backed via controller)
         Route::get('/services/{slug}', [ServiceController::class, 'show'])
-            ->where('slug', 'development|automation|qa|cybersecurity')
+            ->where('slug', 'development|web-development|mobile-apps|automation|qa|cybersecurity')
             ->name('services.show');
 
         // About (database-backed team members)
@@ -42,6 +43,12 @@ Route::prefix('{locale}')
         // Portfolio (public)
         Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio.index');
         Route::get('/portfolio/{slug}', [PortfolioController::class, 'show'])->name('portfolio.show');
+
+        // Industries (public)
+        Route::get('/industries', [IndustryController::class, 'index'])->name('industries.index');
+        Route::get('/industries/{slug}', [IndustryController::class, 'show'])
+            ->where('slug', '[a-z0-9-]+')
+            ->name('industries.show');
 
         // Newsletter
         Route::post('/newsletter', [NewsletterController::class, 'store'])

@@ -31,6 +31,8 @@
     "dependencies": {
         "@fontsource-variable/cairo": "^5.2.7",
         "@fontsource-variable/instrument-sans": "^5.2.8",
+        "@fontsource-variable/inter": "^5.2.8",
+        "@fontsource/almarai": "^5.2.8",
         "@gsap/react": "^2.1.2",
         "@headlessui/react": "^2.2.0",
         "@inertiajs/react": "^3.0.0",

@@ -52,6 +52,9 @@ export default function PublicLayout({ children, breadcrumbs = [] }: Props) {
         };
     }, [siteSettings]);
 
+    const origin =
+        typeof window !== 'undefined' ? window.location.origin : '';
+
     const breadcrumbSchema =
         breadcrumbs.length > 0
             ? {
@@ -62,7 +65,7 @@ export default function PublicLayout({ children, breadcrumbs = [] }: Props) {
                           '@type': 'ListItem',
                           position: 1,
                           name: t('breadcrumb.home'),
-                          item: `${window.location.origin}/${locale}`,
+                          item: `${origin}/${locale}`,
                       },
                       ...breadcrumbs.map((item, index) => {
                           const href =
@@ -78,7 +81,7 @@ export default function PublicLayout({ children, breadcrumbs = [] }: Props) {
                                   ? {
                                         item: href.startsWith('http')
                                             ? href
-                                            : `${window.location.origin}${href}`,
+                                            : `${origin}${href}`,
                                     }
                                   : {}),
                           };
@@ -88,7 +91,7 @@ export default function PublicLayout({ children, breadcrumbs = [] }: Props) {
             : null;
 
     return (
-        <div className="flex min-h-screen flex-col">
+        <div className="public-theme flex min-h-screen flex-col bg-background text-foreground">
             {breadcrumbSchema && (
                 <Head>
                     <script

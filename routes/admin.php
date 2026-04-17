@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\BlogPostController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ContactLeadController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\IndustryController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\NewsletterController;
 use App\Http\Controllers\Admin\PortfolioItemController;
@@ -56,8 +57,11 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
         Route::resource('team', TeamMemberController::class);
         Route::post('team/{teamMember}/reorder', [TeamMemberController::class, 'reorder'])->name('team.reorder');
 
-        // Service page management (edit-only, fixed set of 4 service pages)
+        // Service page management (edit-only, fixed set of 6 service pages)
         Route::resource('services', ServicePageController::class)->only(['index', 'edit', 'update']);
+
+        // Industries (edit-only; 5 seeded rows, admin can toggle visibility + edit content)
+        Route::resource('industries', IndustryController::class)->only(['index', 'edit', 'update']);
 
         // Site settings (branding, colors, contact, social)
         Route::get('settings', [SiteSettingController::class, 'index'])->name('settings.index');

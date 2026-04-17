@@ -1,65 +1,107 @@
+# ============================================================================
+# Quartz — Development stack
+# ----------------------------------------------------------------------------
+#   app    PHP-FPM + nginx + Vite dev server  (ports 8080, 5173)
+#   db     MySQL 8                            (no host port)
+#   redis  Redis 7                            (no host port)
+#
+# Source is bind-mounted. Vendor, node_modules, bootstrap/cache,
+# storage/framework, storage/logs are anonymous volumes so host tools
+# never collide with container state.
+#
+# Run every composer/artisan command via  docker compose exec app ...
+# Never run them on the host.
+# ============================================================================
+
 services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: docker/dev/Dockerfile
     container_name: quartz-app
     restart: unless-stopped
     ports:
-      - "8080:80"
+      - "8080:80"      # Laravel
+      - "5173:5173"    # Vite HMR
     environment:
-      - APP_NAME=Quartz
-      - APP_ENV=local
-      - APP_DEBUG=true
-      - APP_URL=${APP_URL:-http://localhost:8080}
-      - DB_CONNECTION=mysql
-      - DB_HOST=db
-      - DB_PORT=3306
-      - DB_DATABASE=quartz
-      - DB_USERNAME=quartz
-      - DB_PASSWORD=${DB_PASSWORD:-quartz_secret}
-      - CACHE_STORE=file
-      - SESSION_DRIVER=file
-      - QUEUE_CONNECTION=database
-      - MAIL_MAILER=${MAIL_MAILER:-log}
-      - MAIL_HOST=${MAIL_HOST:-}
-      - MAIL_PORT=${MAIL_PORT:-587}
-      - MAIL_USERNAME=${MAIL_USERNAME:-}
-      - MAIL_PASSWORD=${MAIL_PASSWORD:-}
-      - MAIL_ENCRYPTION=${MAIL_ENCRYPTION:-tls}
-      - MAIL_FROM_ADDRESS=${MAIL_FROM_ADDRESS:-noreply@quartz.com}
-      - MAIL_FROM_NAME=Quartz Solutions
-      - VITE_HMR_HOST=localhost
+      APP_NAME: Quartz
+      APP_ENV: local
+      APP_DEBUG: "true"
+      APP_URL: ${APP_URL:-http://localhost:8080}
+      APP_KEY: ${APP_KEY:-}
+      APP_LOCALE: en
+      APP_FALLBACK_LOCALE: en
+      LOG_CHANNEL: stderr
+      LOG_LEVEL: debug
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: quartz
+      DB_USERNAME: quartz
+      DB_PASSWORD: ${DB_PASSWORD:-quartz_secret}
+      CACHE_STORE: redis
+      SESSION_DRIVER: redis
+      QUEUE_CONNECTION: redis
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      MAIL_MAILER: log
+      MAIL_FROM_ADDRESS: noreply@quartz.local
+      MAIL_FROM_NAME: Quartz Solutions
+      VITE_HMR_HOST: localhost
     volumes:
-      # Bind the whole project so host edits appear instantly in the container.
+      # Source code — live edits on host appear in container.
       - .:/var/www/html
-      # Preserve image-built deps so host doesn't shadow them.
-      - /var/www/html/node_modules
+      # Container-owned directories (anonymous volumes seeded from the image).
       - /var/www/html/vendor
-      - storage:/var/www/html/storage/app/public
+      - /var/www/html/node_modules
+      - /var/www/html/bootstrap/cache
+      - /var/www/html/storage/framework
+      - /var/www/html/storage/logs
+      # Named volume for user-uploaded media, survives rebuilds.
+      - storage_public:/var/www/html/storage/app/public
     depends_on:
       db:
         condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1/up"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
 
   db:
     image: mysql:8.0
     container_name: quartz-db
     restart: unless-stopped
     environment:
-      - MYSQL_DATABASE=quartz
-      - MYSQL_USER=quartz
-      - MYSQL_PASSWORD=${DB_PASSWORD:-quartz_secret}
-      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD:-root_secret}
+      MYSQL_DATABASE: quartz
+      MYSQL_USER: quartz
+      MYSQL_PASSWORD: ${DB_PASSWORD:-quartz_secret}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root_secret}
     volumes:
       - dbdata:/var/lib/mysql
-    ports:
-      - "3306:3306"
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 5s
       timeout: 5s
       retries: 10
 
+  redis:
+    image: redis:7-alpine
+    container_name: quartz-redis
+    restart: unless-stopped
+    command: redis-server --maxmemory 128mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
 volumes:
   dbdata:
-  storage:
+  redisdata:
+  storage_public:

@@ -279,6 +279,144 @@
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
 }
 
+/*
+ * ================================================================
+ * PUBLIC MARKETING THEME (Quartz redesign 2026-04)
+ * ================================================================
+ *
+ * Scoped override applied only to the `.public-theme` container
+ * wrapping PublicLayout children. Admin and auth surfaces are
+ * unaffected and keep the original teal + Instrument Sans theme.
+ *
+ * Palette: navy #0B2545 (primary) + orange #F97316 (accent)
+ * Fonts:   Inter (Latin) + IBM Plex Sans Arabic (RTL)
+ */
+.public-theme {
+    /* Canonical tokens (inherited by shadcn primitives still referencing --primary, --accent, …) */
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.195 0.041 257);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.195 0.041 257);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.195 0.041 257);
+
+    --primary: oklch(0.237 0.064 264);
+    --primary-foreground: oklch(0.985 0.005 247);
+
+    --secondary: oklch(0.976 0.003 247);
+    --secondary-foreground: oklch(0.237 0.064 264);
+
+    --accent: oklch(0.706 0.19 42);
+    --accent-foreground: oklch(0.985 0.005 247);
+
+    --muted: oklch(0.976 0.003 247);
+    --muted-foreground: oklch(0.446 0.037 257);
+
+    --border: oklch(0.907 0.014 247);
+    --input: oklch(0.838 0.024 245);
+    --ring: oklch(0.706 0.19 42);
+
+    --sidebar: oklch(1 0 0);
+    --sidebar-foreground: oklch(0.195 0.041 257);
+    --sidebar-primary: oklch(0.237 0.064 264);
+    --sidebar-primary-foreground: oklch(0.985 0.005 247);
+    --sidebar-accent: oklch(0.976 0.003 247);
+    --sidebar-accent-foreground: oklch(0.237 0.064 264);
+    --sidebar-border: oklch(0.907 0.014 247);
+    --sidebar-ring: oklch(0.706 0.19 42);
+
+    /* Tailwind v4 resolves --color-* from @theme at :root statically. We must
+       re-emit them here so utility classes like bg-primary/text-accent pick up
+       the overridden values inside this scope. */
+    --color-background: oklch(1 0 0);
+    --color-foreground: oklch(0.195 0.041 257);
+    --color-card: oklch(1 0 0);
+    --color-card-foreground: oklch(0.195 0.041 257);
+    --color-popover: oklch(1 0 0);
+    --color-popover-foreground: oklch(0.195 0.041 257);
+    --color-primary: oklch(0.237 0.064 264);
+    --color-primary-foreground: oklch(0.985 0.005 247);
+    --color-secondary: oklch(0.976 0.003 247);
+    --color-secondary-foreground: oklch(0.237 0.064 264);
+    --color-accent: oklch(0.706 0.19 42);
+    --color-accent-foreground: oklch(0.985 0.005 247);
+    --color-muted: oklch(0.976 0.003 247);
+    --color-muted-foreground: oklch(0.446 0.037 257);
+    --color-border: oklch(0.907 0.014 247);
+    --color-input: oklch(0.838 0.024 245);
+    --color-ring: oklch(0.706 0.19 42);
+
+    --font-sans:
+        'Inter Variable', ui-sans-serif, system-ui, sans-serif,
+        'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+        'Noto Color Emoji';
+    --font-display:
+        'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+    --font-arabic:
+        'Almarai', 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+
+    font-family: var(--font-sans);
+}
+
+.dark .public-theme {
+    --background: oklch(0.165 0.04 260);
+    --foreground: oklch(0.98 0.005 247);
+    --card: oklch(0.21 0.04 260);
+    --card-foreground: oklch(0.98 0.005 247);
+    --popover: oklch(0.21 0.04 260);
+    --popover-foreground: oklch(0.98 0.005 247);
+
+    --primary: oklch(0.78 0.05 258);
+    --primary-foreground: oklch(0.165 0.04 260);
+
+    --secondary: oklch(0.25 0.03 258);
+    --secondary-foreground: oklch(0.98 0.005 247);
+
+    --accent: oklch(0.72 0.19 42);
+    --accent-foreground: oklch(0.165 0.04 260);
+
+    --muted: oklch(0.25 0.03 258);
+    --muted-foreground: oklch(0.72 0.02 252);
+
+    --border: oklch(0.3 0.03 258);
+    --input: oklch(0.3 0.03 258);
+    --ring: oklch(0.72 0.19 42);
+
+    /* Re-emit Tailwind v4 --color-* aliases for dark-mode scope */
+    --color-background: oklch(0.165 0.04 260);
+    --color-foreground: oklch(0.98 0.005 247);
+    --color-card: oklch(0.21 0.04 260);
+    --color-card-foreground: oklch(0.98 0.005 247);
+    --color-popover: oklch(0.21 0.04 260);
+    --color-popover-foreground: oklch(0.98 0.005 247);
+    --color-primary: oklch(0.78 0.05 258);
+    --color-primary-foreground: oklch(0.165 0.04 260);
+    --color-secondary: oklch(0.25 0.03 258);
+    --color-secondary-foreground: oklch(0.98 0.005 247);
+    --color-accent: oklch(0.72 0.19 42);
+    --color-accent-foreground: oklch(0.165 0.04 260);
+    --color-muted: oklch(0.25 0.03 258);
+    --color-muted-foreground: oklch(0.72 0.02 252);
+    --color-border: oklch(0.3 0.03 258);
+    --color-input: oklch(0.3 0.03 258);
+    --color-ring: oklch(0.72 0.19 42);
+
+    --sidebar: oklch(0.21 0.04 260);
+    --sidebar-foreground: oklch(0.98 0.005 247);
+    --sidebar-primary: oklch(0.78 0.05 258);
+    --sidebar-primary-foreground: oklch(0.165 0.04 260);
+    --sidebar-accent: oklch(0.25 0.03 258);
+    --sidebar-accent-foreground: oklch(0.98 0.005 247);
+    --sidebar-border: oklch(0.3 0.03 258);
+    --sidebar-ring: oklch(0.72 0.19 42);
+}
+
+/* Public-only RTL typography — IBM Plex Sans Arabic takes over inside .public-theme */
+.public-theme[dir="rtl"],
+[dir="rtl"] .public-theme {
+    font-family: var(--font-arabic);
+}
+
 /* Arabic typography (INTL-05, D-08) */
 [dir="rtl"] {
     font-family: var(--font-arabic);

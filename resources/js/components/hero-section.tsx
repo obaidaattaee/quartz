@@ -85,15 +85,25 @@ export default function HeroSection() {
                 <motion.div
                     variants={fadeInUp}
                     transition={{ ...heroTransition, delay: 0.4 }}
-                    className="mt-10"
+                    className="mt-10 flex flex-wrap items-center gap-3"
                 >
                     <Button
                         size="lg"
                         asChild
-                        className="shadow-lg shadow-primary/25 hover:shadow-primary/40"
+                        className="bg-accent text-accent-foreground shadow-lg shadow-accent/20 hover:bg-accent/90 hover:shadow-accent/30"
                     >
                         <Link href={`/${locale}/contact`}>
                             {t('hero.cta')}
+                        </Link>
+                    </Button>
+                    <Button
+                        size="lg"
+                        variant="outline"
+                        asChild
+                        className="border-primary/20"
+                    >
+                        <Link href={`/${locale}/portfolio`}>
+                            {t('hero.secondaryCta')}
                         </Link>
                     </Button>
                 </motion.div>
