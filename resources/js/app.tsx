@@ -5,6 +5,13 @@ import '@fontsource/almarai/arabic-300.css';
 import '@fontsource/almarai/arabic-400.css';
 import '@fontsource/almarai/arabic-700.css';
 import '@fontsource/almarai/arabic-800.css';
+import '@fontsource/fraunces/400.css';
+import '@fontsource/fraunces/400-italic.css';
+import '@fontsource/fraunces/500.css';
+import '@fontsource/fraunces/600.css';
+import '@fontsource/fraunces/700.css';
+import '@fontsource/jetbrains-mono/400.css';
+import '@fontsource/jetbrains-mono/500.css';
 
 import { createInertiaApp } from '@inertiajs/react';
 import { TooltipProvider } from '@/components/ui/tooltip';

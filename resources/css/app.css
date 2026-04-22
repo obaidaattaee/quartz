@@ -281,134 +281,186 @@
 
 /*
  * ================================================================
- * PUBLIC MARKETING THEME (Quartz redesign 2026-04)
+ * PUBLIC MARKETING THEME — Direction B "Editorial Mono"
  * ================================================================
  *
  * Scoped override applied only to the `.public-theme` container
  * wrapping PublicLayout children. Admin and auth surfaces are
- * unaffected and keep the original teal + Instrument Sans theme.
+ * unaffected and keep their existing theme.
  *
- * Palette: navy #0B2545 (primary) + orange #F97316 (accent)
- * Fonts:   Inter (Latin) + IBM Plex Sans Arabic (RTL)
+ * Palette:  #0e0d0b bg · #e8a84a amber accent · #ece4d3 cream ink
+ * Type:     Fraunces (serif display) + Inter (body) + JetBrains Mono (labels)
+ * Feel:     warm near-black canvas, magazine editorial
  */
 .public-theme {
-    /* Canonical tokens (inherited by shadcn primitives still referencing --primary, --accent, …) */
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.195 0.041 257);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.195 0.041 257);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.195 0.041 257);
+    /* Direction B raw tokens (consumed directly via var(--q-*)) */
+    --q-bg: #0e0d0b;
+    --q-bg-elev: #151310;
+    --q-bg-deep: #0a0908;
+    --q-cream: #ece4d3;
+    --q-dim: rgba(236, 228, 211, 0.62);
+    --q-faint: rgba(236, 228, 211, 0.22);
+    --q-line: rgba(236, 228, 211, 0.12);
+    --q-line-strong: rgba(236, 228, 211, 0.22);
+    --q-accent: #e8a84a;
+    --q-accent-soft: rgba(232, 168, 74, 0.12);
 
-    --primary: oklch(0.237 0.064 264);
-    --primary-foreground: oklch(0.985 0.005 247);
+    /* Canonical shadcn tokens remapped to Direction B */
+    --background: #0e0d0b;
+    --foreground: #ece4d3;
+    --card: #151310;
+    --card-foreground: #ece4d3;
+    --popover: #151310;
+    --popover-foreground: #ece4d3;
 
-    --secondary: oklch(0.976 0.003 247);
-    --secondary-foreground: oklch(0.237 0.064 264);
+    --primary: #ece4d3;
+    --primary-foreground: #0e0d0b;
 
-    --accent: oklch(0.706 0.19 42);
-    --accent-foreground: oklch(0.985 0.005 247);
+    --secondary: #151310;
+    --secondary-foreground: #ece4d3;
 
-    --muted: oklch(0.976 0.003 247);
-    --muted-foreground: oklch(0.446 0.037 257);
+    --accent: #e8a84a;
+    --accent-foreground: #0e0d0b;
 
-    --border: oklch(0.907 0.014 247);
-    --input: oklch(0.838 0.024 245);
-    --ring: oklch(0.706 0.19 42);
+    --muted: #151310;
+    --muted-foreground: rgba(236, 228, 211, 0.62);
 
-    --sidebar: oklch(1 0 0);
-    --sidebar-foreground: oklch(0.195 0.041 257);
-    --sidebar-primary: oklch(0.237 0.064 264);
-    --sidebar-primary-foreground: oklch(0.985 0.005 247);
-    --sidebar-accent: oklch(0.976 0.003 247);
-    --sidebar-accent-foreground: oklch(0.237 0.064 264);
-    --sidebar-border: oklch(0.907 0.014 247);
-    --sidebar-ring: oklch(0.706 0.19 42);
+    --border: rgba(236, 228, 211, 0.12);
+    --input: rgba(236, 228, 211, 0.22);
+    --ring: #e8a84a;
 
-    /* Tailwind v4 resolves --color-* from @theme at :root statically. We must
-       re-emit them here so utility classes like bg-primary/text-accent pick up
-       the overridden values inside this scope. */
-    --color-background: oklch(1 0 0);
-    --color-foreground: oklch(0.195 0.041 257);
-    --color-card: oklch(1 0 0);
-    --color-card-foreground: oklch(0.195 0.041 257);
-    --color-popover: oklch(1 0 0);
-    --color-popover-foreground: oklch(0.195 0.041 257);
-    --color-primary: oklch(0.237 0.064 264);
-    --color-primary-foreground: oklch(0.985 0.005 247);
-    --color-secondary: oklch(0.976 0.003 247);
-    --color-secondary-foreground: oklch(0.237 0.064 264);
-    --color-accent: oklch(0.706 0.19 42);
-    --color-accent-foreground: oklch(0.985 0.005 247);
-    --color-muted: oklch(0.976 0.003 247);
-    --color-muted-foreground: oklch(0.446 0.037 257);
-    --color-border: oklch(0.907 0.014 247);
-    --color-input: oklch(0.838 0.024 245);
-    --color-ring: oklch(0.706 0.19 42);
+    --sidebar: #151310;
+    --sidebar-foreground: #ece4d3;
+    --sidebar-primary: #ece4d3;
+    --sidebar-primary-foreground: #0e0d0b;
+    --sidebar-accent: #e8a84a;
+    --sidebar-accent-foreground: #0e0d0b;
+    --sidebar-border: rgba(236, 228, 211, 0.12);
+    --sidebar-ring: #e8a84a;
+
+    /* Tailwind v4 re-emit so bg, text and border utilities pick up new values */
+    --color-background: #0e0d0b;
+    --color-foreground: #ece4d3;
+    --color-card: #151310;
+    --color-card-foreground: #ece4d3;
+    --color-popover: #151310;
+    --color-popover-foreground: #ece4d3;
+    --color-primary: #ece4d3;
+    --color-primary-foreground: #0e0d0b;
+    --color-secondary: #151310;
+    --color-secondary-foreground: #ece4d3;
+    --color-accent: #e8a84a;
+    --color-accent-foreground: #0e0d0b;
+    --color-muted: #151310;
+    --color-muted-foreground: rgba(236, 228, 211, 0.62);
+    --color-border: rgba(236, 228, 211, 0.12);
+    --color-input: rgba(236, 228, 211, 0.22);
+    --color-ring: #e8a84a;
 
     --font-sans:
-        'Inter Variable', ui-sans-serif, system-ui, sans-serif,
+        'Inter', ui-sans-serif, system-ui, sans-serif,
         'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
         'Noto Color Emoji';
     --font-display:
-        'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+        'Fraunces', 'Inter', ui-serif, Georgia, serif;
+    --font-mono-brand:
+        'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
     --font-arabic:
-        'Almarai', 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+        'Fraunces', 'Almarai', 'Inter', ui-sans-serif, system-ui, sans-serif;
 
     font-family: var(--font-sans);
+    background-color: var(--q-bg);
+    color: var(--q-cream);
 }
 
+/* In Direction B the palette is already dark; the .dark class just re-emits
+   the same tokens so toggle doesn't yank contrast around. */
 .dark .public-theme {
-    --background: oklch(0.165 0.04 260);
-    --foreground: oklch(0.98 0.005 247);
-    --card: oklch(0.21 0.04 260);
-    --card-foreground: oklch(0.98 0.005 247);
-    --popover: oklch(0.21 0.04 260);
-    --popover-foreground: oklch(0.98 0.005 247);
+    --background: #0e0d0b;
+    --foreground: #ece4d3;
+    --card: #151310;
+    --card-foreground: #ece4d3;
+    --popover: #151310;
+    --popover-foreground: #ece4d3;
 
-    --primary: oklch(0.78 0.05 258);
-    --primary-foreground: oklch(0.165 0.04 260);
+    --primary: #ece4d3;
+    --primary-foreground: #0e0d0b;
 
-    --secondary: oklch(0.25 0.03 258);
-    --secondary-foreground: oklch(0.98 0.005 247);
+    --secondary: #151310;
+    --secondary-foreground: #ece4d3;
 
-    --accent: oklch(0.72 0.19 42);
-    --accent-foreground: oklch(0.165 0.04 260);
+    --accent: #e8a84a;
+    --accent-foreground: #0e0d0b;
 
-    --muted: oklch(0.25 0.03 258);
-    --muted-foreground: oklch(0.72 0.02 252);
+    --muted: #151310;
+    --muted-foreground: rgba(236, 228, 211, 0.62);
 
-    --border: oklch(0.3 0.03 258);
-    --input: oklch(0.3 0.03 258);
-    --ring: oklch(0.72 0.19 42);
+    --border: rgba(236, 228, 211, 0.12);
+    --input: rgba(236, 228, 211, 0.22);
+    --ring: #e8a84a;
 
-    /* Re-emit Tailwind v4 --color-* aliases for dark-mode scope */
-    --color-background: oklch(0.165 0.04 260);
-    --color-foreground: oklch(0.98 0.005 247);
-    --color-card: oklch(0.21 0.04 260);
-    --color-card-foreground: oklch(0.98 0.005 247);
-    --color-popover: oklch(0.21 0.04 260);
-    --color-popover-foreground: oklch(0.98 0.005 247);
-    --color-primary: oklch(0.78 0.05 258);
-    --color-primary-foreground: oklch(0.165 0.04 260);
-    --color-secondary: oklch(0.25 0.03 258);
-    --color-secondary-foreground: oklch(0.98 0.005 247);
-    --color-accent: oklch(0.72 0.19 42);
-    --color-accent-foreground: oklch(0.165 0.04 260);
-    --color-muted: oklch(0.25 0.03 258);
-    --color-muted-foreground: oklch(0.72 0.02 252);
-    --color-border: oklch(0.3 0.03 258);
-    --color-input: oklch(0.3 0.03 258);
-    --color-ring: oklch(0.72 0.19 42);
+    --color-background: #0e0d0b;
+    --color-foreground: #ece4d3;
+    --color-card: #151310;
+    --color-card-foreground: #ece4d3;
+    --color-popover: #151310;
+    --color-popover-foreground: #ece4d3;
+    --color-primary: #ece4d3;
+    --color-primary-foreground: #0e0d0b;
+    --color-secondary: #151310;
+    --color-secondary-foreground: #ece4d3;
+    --color-accent: #e8a84a;
+    --color-accent-foreground: #0e0d0b;
+    --color-muted: #151310;
+    --color-muted-foreground: rgba(236, 228, 211, 0.62);
+    --color-border: rgba(236, 228, 211, 0.12);
+    --color-input: rgba(236, 228, 211, 0.22);
+    --color-ring: #e8a84a;
 
-    --sidebar: oklch(0.21 0.04 260);
-    --sidebar-foreground: oklch(0.98 0.005 247);
-    --sidebar-primary: oklch(0.78 0.05 258);
-    --sidebar-primary-foreground: oklch(0.165 0.04 260);
-    --sidebar-accent: oklch(0.25 0.03 258);
-    --sidebar-accent-foreground: oklch(0.98 0.005 247);
-    --sidebar-border: oklch(0.3 0.03 258);
-    --sidebar-ring: oklch(0.72 0.19 42);
+    --sidebar: #151310;
+    --sidebar-foreground: #ece4d3;
+    --sidebar-primary: #ece4d3;
+    --sidebar-primary-foreground: #0e0d0b;
+    --sidebar-accent: #e8a84a;
+    --sidebar-accent-foreground: #0e0d0b;
+    --sidebar-border: rgba(236, 228, 211, 0.12);
+    --sidebar-ring: #e8a84a;
+}
+
+/* Direction B display typography inside the public theme */
+.public-theme h1,
+.public-theme h2,
+.public-theme h3,
+.public-theme .q-serif {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+}
+
+.public-theme .q-mono {
+    font-family: var(--font-mono-brand);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-size: 11px;
+    color: var(--q-dim);
+}
+
+.public-theme .q-mono-accent {
+    color: var(--q-accent);
+}
+
+@keyframes q-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+}
+
+@keyframes q-marquee {
+    to { transform: translateX(-50%); }
+}
+
+/* RTL: flip the marquee scroll direction */
+.public-theme[dir='rtl'] .q-marquee-track,
+[dir='rtl'] .public-theme .q-marquee-track {
+    animation-direction: reverse;
 }
 
 /* Public-only RTL typography — IBM Plex Sans Arabic takes over inside .public-theme */

@@ -1,25 +1,23 @@
 import { usePage } from '@inertiajs/react';
-import { Bot, Code2, Globe, Lock, ShieldCheck, Smartphone } from 'lucide-react';
+import type { ReactNode } from 'react';
 
-import AwardsRow from '@/components/awards-row';
-import DarkCtaBand from '@/components/dark-cta-band';
-import FeaturedCaseCard, {
-    type FeaturedCaseData,
-} from '@/components/featured-case-card';
-import HeroSection from '@/components/hero-section';
-import IndustryTabs from '@/components/industry-tabs';
+import { useLandingData } from '@/components/landing-b/data';
+import LandingCases from '@/components/landing-b/landing-cases';
+import LandingContact from '@/components/landing-b/landing-contact';
+import LandingFaq from '@/components/landing-b/landing-faq';
+import LandingFeaturedCase, {
+    type FeaturedCase,
+} from '@/components/landing-b/landing-featured-case';
+import LandingHero from '@/components/landing-b/landing-hero';
+import LandingLogos from '@/components/landing-b/landing-logos';
+import LandingProcess from '@/components/landing-b/landing-process';
+import LandingProducts from '@/components/landing-b/landing-products';
+import LandingServices from '@/components/landing-b/landing-services';
+import LandingTestimonials from '@/components/landing-b/landing-testimonials';
 import JsonLd from '@/components/json-ld';
-import ProcessStrip from '@/components/process-strip';
-import ScrollReveal from '@/components/scroll-reveal';
 import SeoHead from '@/components/seo-head';
 import type { SeoData } from '@/components/seo-head';
-import ServiceCard from '@/components/service-card';
-import StatisticsSection from '@/components/statistics-section';
-import TestimonialCard from '@/components/testimonial-card';
-import TrustBar from '@/components/trust-bar';
-import { useLocale } from '@/hooks/use-locale';
-import PublicLayout from '@/layouts/public-layout';
-import type { IndustryDetail } from '@/types/industry';
+import LandingBLayout from '@/layouts/landing-b-layout';
 
 type Testimonial = {
     id: number;
@@ -36,24 +34,15 @@ type Testimonial = {
 };
 
 type HomeProps = {
-    testimonials: Testimonial[];
-    industries: Pick<
-        IndustryDetail,
-        | 'id'
-        | 'slug'
-        | 'title_en'
-        | 'title_ar'
-        | 'solutions_en'
-        | 'solutions_ar'
-    >[];
-    featuredCase: FeaturedCaseData;
     seo: SeoData;
+    testimonials: Testimonial[];
+    featuredCase: FeaturedCase;
 };
 
 export default function Home() {
-    const { locale, t } = useLocale();
-    const { testimonials, industries, featuredCase, seo } =
+    const { seo, testimonials, featuredCase } =
         usePage<HomeProps>().props;
+    const { faqs } = useLandingData();
 
     const origin =
         typeof window !== 'undefined' ? window.location.origin : '';
@@ -64,135 +53,48 @@ export default function Home() {
         name: 'Quartz Solutions',
         url: origin,
         description:
-            'Enterprise software development, automation, QA, and cybersecurity.',
+            'Enterprise software development, QA, cybersecurity and automation. Built to outlast the trend cycle.',
+        foundingDate: '2013',
         contactPoint: {
             '@type': 'ContactPoint',
             contactType: 'customer service',
         },
     };
 
+    const faqSchema =
+        faqs.length > 0
+            ? {
+                  '@context': 'https://schema.org',
+                  '@type': 'FAQPage',
+                  mainEntity: faqs.map((f) => ({
+                      '@type': 'Question',
+                      name: f.q,
+                      acceptedAnswer: {
+                          '@type': 'Answer',
+                          text: f.a,
+                      },
+                  })),
+              }
+            : null;
+
     return (
         <>
             <SeoHead seo={seo} />
             <JsonLd data={orgSchema} />
+            {faqSchema && <JsonLd data={faqSchema} />}
 
-            {/* 1. Hero */}
-            <HeroSection />
-
-            {/* 2. Trust bar */}
-            <TrustBar />
-
-            {/* 3. Service pillars (6) */}
-            <section className="py-20 md:py-28">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <ScrollReveal>
-                        <div className="mx-auto max-w-2xl text-center">
-                            <p className="text-accent text-xs font-semibold uppercase tracking-[0.16em]">
-                                {t('nav.services')}
-                            </p>
-                            <h2 className="text-foreground mt-3 text-3xl font-bold md:text-4xl">
-                                {t('services.overview.title')}
-                            </h2>
-                            <p className="text-muted-foreground mt-4 text-lg">
-                                {t('services.overview.subtitle')}
-                            </p>
-                        </div>
-                    </ScrollReveal>
-
-                    <ScrollReveal
-                        variant="stagger"
-                        as="div"
-                        className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
-                    >
-                        <ServiceCard
-                            icon={Code2}
-                            titleKey="nav.services.dev"
-                            briefKey="nav.services.dev.brief"
-                            href={`/${locale}/services/development`}
-                        />
-                        <ServiceCard
-                            icon={Globe}
-                            titleKey="nav.services.web"
-                            briefKey="nav.services.web.brief"
-                            href={`/${locale}/services/web-development`}
-                        />
-                        <ServiceCard
-                            icon={Smartphone}
-                            titleKey="nav.services.mobile"
-                            briefKey="nav.services.mobile.brief"
-                            href={`/${locale}/services/mobile-apps`}
-                        />
-                        <ServiceCard
-                            icon={Bot}
-                            titleKey="nav.services.automation"
-                            briefKey="nav.services.automation.brief"
-                            href={`/${locale}/services/automation`}
-                        />
-                        <ServiceCard
-                            icon={ShieldCheck}
-                            titleKey="nav.services.qa"
-                            briefKey="nav.services.qa.brief"
-                            href={`/${locale}/services/qa`}
-                        />
-                        <ServiceCard
-                            icon={Lock}
-                            titleKey="nav.services.cybersecurity"
-                            briefKey="nav.services.cybersecurity.brief"
-                            href={`/${locale}/services/cybersecurity`}
-                        />
-                    </ScrollReveal>
-                </div>
-            </section>
-
-            {/* 4. Industries tabs */}
-            <IndustryTabs industries={industries} />
-
-            {/* 5. Featured case study */}
-            <FeaturedCaseCard featuredCase={featuredCase} />
-
-            {/* 6. Stats band */}
-            <StatisticsSection />
-
-            {/* 7. Process strip */}
-            <ProcessStrip />
-
-            {/* 8. Testimonials */}
-            {testimonials.length > 0 && (
-                <section className="py-20 md:py-28">
-                    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                        <ScrollReveal>
-                            <div className="mx-auto max-w-2xl text-center">
-                                <h2 className="text-foreground text-3xl font-bold md:text-4xl">
-                                    {t('testimonials.title')}
-                                </h2>
-                            </div>
-                        </ScrollReveal>
-
-                        <ScrollReveal
-                            variant="stagger"
-                            as="div"
-                            className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3"
-                        >
-                            {testimonials.map((testimonial) => (
-                                <TestimonialCard
-                                    key={testimonial.id}
-                                    testimonial={testimonial}
-                                />
-                            ))}
-                        </ScrollReveal>
-                    </div>
-                </section>
-            )}
-
-            {/* 9. Awards / certifications */}
-            <AwardsRow />
-
-            {/* 10. Final dark CTA */}
-            <DarkCtaBand />
+            <LandingHero />
+            <LandingServices />
+            <LandingProducts />
+            <LandingProcess />
+            <LandingLogos />
+            <LandingCases />
+            <LandingFeaturedCase featuredCase={featuredCase} />
+            <LandingTestimonials testimonials={testimonials ?? []} />
+            <LandingFaq />
+            <LandingContact />
         </>
     );
 }
 
-Home.layout = (page: React.ReactNode) => (
-    <PublicLayout>{page}</PublicLayout>
-);
+Home.layout = (page: ReactNode) => <LandingBLayout>{page}</LandingBLayout>;

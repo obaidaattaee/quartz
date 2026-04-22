@@ -2,8 +2,9 @@ import { Head, Link, usePage } from '@inertiajs/react';
 import type { ReactNode } from 'react';
 import { useEffect } from 'react';
 
-import SiteFooter from '@/components/site-footer';
-import SiteHeader from '@/components/site-header';
+import LandingFooter from '@/components/landing-b/landing-footer';
+import LandingNav from '@/components/landing-b/landing-nav';
+import { B } from '@/components/landing-b/tokens';
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -26,7 +27,6 @@ export default function PublicLayout({ children, breadcrumbs = [] }: Props) {
         siteSettings: Record<string, string>;
     }>().props;
 
-    // Apply site settings color overrides via CSS custom properties
     useEffect(() => {
         if (siteSettings?.primary_color) {
             document.documentElement.style.setProperty(
@@ -91,7 +91,14 @@ export default function PublicLayout({ children, breadcrumbs = [] }: Props) {
             : null;
 
     return (
-        <div className="public-theme flex min-h-screen flex-col bg-background text-foreground">
+        <div
+            className="public-theme flex min-h-screen flex-col"
+            style={{
+                background: B.bg,
+                color: B.cream,
+                fontFamily: B.sans,
+            }}
+        >
             {breadcrumbSchema && (
                 <Head>
                     <script
@@ -102,16 +109,28 @@ export default function PublicLayout({ children, breadcrumbs = [] }: Props) {
                     />
                 </Head>
             )}
-            <SiteHeader />
 
-            {/* Breadcrumbs -- only on inner pages (D-12, NAV-02) */}
+            <LandingNav />
+
             {breadcrumbs.length > 0 && (
-                <div className="mx-auto w-full max-w-7xl px-4 pt-20 sm:px-6 lg:px-8">
+                <div
+                    className="mx-auto w-full max-w-7xl px-6 pt-8 sm:px-10 lg:px-12"
+                    style={{
+                        fontFamily: B.mono,
+                        color: B.dim,
+                        fontSize: 12,
+                        letterSpacing: '0.12em',
+                        textTransform: 'uppercase',
+                    }}
+                >
                     <Breadcrumb>
                         <BreadcrumbList>
                             <BreadcrumbItem>
                                 <BreadcrumbLink asChild>
-                                    <Link href={`/${locale}`}>
+                                    <Link
+                                        href={`/${locale}`}
+                                        style={{ color: B.dim }}
+                                    >
                                         {t('breadcrumb.home')}
                                     </Link>
                                 </BreadcrumbLink>
@@ -120,14 +139,18 @@ export default function PublicLayout({ children, breadcrumbs = [] }: Props) {
                                 <span key={index} className="contents">
                                     <BreadcrumbSeparator />
                                     <BreadcrumbItem>
-                                        {index ===
-                                        breadcrumbs.length - 1 ? (
-                                            <BreadcrumbPage>
+                                        {index === breadcrumbs.length - 1 ? (
+                                            <BreadcrumbPage
+                                                style={{ color: B.cream }}
+                                            >
                                                 {item.title}
                                             </BreadcrumbPage>
                                         ) : (
                                             <BreadcrumbLink asChild>
-                                                <Link href={item.href}>
+                                                <Link
+                                                    href={item.href}
+                                                    style={{ color: B.dim }}
+                                                >
                                                     {item.title}
                                                 </Link>
                                             </BreadcrumbLink>
@@ -140,16 +163,9 @@ export default function PublicLayout({ children, breadcrumbs = [] }: Props) {
                 </div>
             )}
 
-            {/* Main content area -- pt-16 to account for fixed header */}
-            <main
-                className={
-                    breadcrumbs.length > 0 ? 'flex-1' : 'flex-1 pt-16'
-                }
-            >
-                {children}
-            </main>
+            <main className="flex-1">{children}</main>
 
-            <SiteFooter />
+            <LandingFooter />
         </div>
     );
 }

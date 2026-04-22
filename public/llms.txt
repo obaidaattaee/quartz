@@ -1,0 +1,47 @@
+# Quartz Solutions
+
+> Enterprise software development, quality assurance, cybersecurity,
+> and business automation. Built to outlast the trend cycle.
+> Est. 2013 — rebranded Quartz Solutions in 2026.
+
+Quartz Solutions designs, builds, secures and operates the
+line-of-business systems behind retail, finance, logistics,
+healthcare, education and government clients worldwide
+(Europe, North Africa, the Gulf, SE Asia, and the Americas).
+
+## Services
+- [Custom Software Development](https://quartz-solutions.net/en/services/development) — line-of-business platforms, internal tools, APIs, integrations.
+- [Web Development](https://quartz-solutions.net/en/services/web-development) — modern, accessible, SEO-first marketing and product web.
+- [Mobile Apps](https://quartz-solutions.net/en/services/mobile-apps) — native and cross-platform apps for iOS/Android.
+- [Quality Assurance](https://quartz-solutions.net/en/services/qa) — E2E, load, regression, CI-integrated testing.
+- [Cybersecurity](https://quartz-solutions.net/en/services/cybersecurity) — pentest, SOC augmentation, human-risk training.
+- [Business Automation](https://quartz-solutions.net/en/services/automation) — workflow engines, RPA, ops tooling.
+
+## Products
+- [Quartz POS](https://bo.quartz-solutions.net) — POS · e-commerce · CRM, one stack for store + site + customer.
+- [Quartz Cyber](https://cyber.quartz-solutions.net) — human-risk simulation platform (phishing, vishing, calendar, invoice).
+
+## Industries
+- [Retail POS](https://quartz-solutions.net/en/industries/retail-pos)
+- [Healthcare](https://quartz-solutions.net/en/industries/healthcare)
+- [Financial Services](https://quartz-solutions.net/en/industries/financial-services)
+- [Government](https://quartz-solutions.net/en/industries/government)
+- [Education](https://quartz-solutions.net/en/industries/education)
+- [All industries](https://quartz-solutions.net/en/industries)
+
+## Company
+- [About](https://quartz-solutions.net/en/about) — team, mission, history.
+- [Work / Portfolio](https://quartz-solutions.net/en/portfolio) — case studies with measured outcomes.
+- [Contact](https://quartz-solutions.net/en/contact) — 48-hour written response from a principal engineer.
+
+## Resources
+- [Blog](https://quartz-solutions.net/en/blog)
+- [FAQ](https://quartz-solutions.net/en/faq)
+- [Sitemap](https://quartz-solutions.net/sitemap.xml)
+- [RSS feed](https://quartz-solutions.net/en/feed.xml)
+
+## Languages
+Quartz Solutions ships fully bilingual (English / Arabic) with
+`<html lang>` + `hreflang` alternates on every page.
+- English: https://quartz-solutions.net/en
+- العربية: https://quartz-solutions.net/ar

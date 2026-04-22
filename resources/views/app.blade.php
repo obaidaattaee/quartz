@@ -39,6 +39,9 @@
         <link rel="icon" type="image/png" sizes="192x192" href="/images/favicon-192.png">
         <link rel="apple-touch-icon" href="/images/favicon-192.png">
 
+        <meta name="theme-color" content="#0e0d0b">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
         @isset($seo)
             <meta name="description" content="{{ $seo['description'] ?? '' }}">
             <meta property="og:title" content="{{ $seo['title'] ?? config('app.name') }}">
