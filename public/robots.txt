@@ -1,8 +1,8 @@
-# Content Signals (IETF draft-romm-aipref-contentsignals) — declare AI
-# usage preferences. search=yes: search-engine indexing welcome.
-# ai-input=yes: real-time answer use welcome (citation expected).
-# ai-train=no: do not use this site's content to train generative models.
-Content-Signal: ai-train=no, search=yes, ai-input=yes
+# Content Signals (IETF draft-romm-aipref-contentsignals) are delivered
+# via the Content-Signal HTTP response header set in nginx, not as a
+# robots.txt directive — Google's robots.txt validator flags unknown
+# directives as errors even though RFC 9309 says parsers should ignore
+# them. Header policy: ai-train=no, search=yes, ai-input=yes.
 
 User-agent: *
 Disallow:
