@@ -22,28 +22,58 @@ export default function LandingBLayout({ children }: Props) {
                 color: B.cream,
                 minHeight: '100vh',
                 fontFamily: B.sans,
+                // Defensive: any descendant that overflows (e.g. the logos
+                // marquee, decorative oversized SVGs) must not extend the
+                // document's scrollable width. `clip` is preferred over
+                // `hidden` because it doesn't create a new scroll container.
+                overflowX: 'clip',
             }}
         >
             <a
                 href="#main"
                 className="q-skip-link"
                 style={{
+                    // Standard "visually hidden" pattern — works the same in
+                    // LTR and RTL, doesn't add to the document scroll area
+                    // (left:-9999px does in RTL).
                     position: 'absolute',
-                    left: -9999,
-                    top: 12,
+                    width: 1,
+                    height: 1,
+                    padding: 0,
+                    margin: -1,
+                    overflow: 'hidden',
+                    clip: 'rect(0,0,0,0)',
+                    whiteSpace: 'nowrap',
+                    border: 0,
                     background: B.accent,
                     color: B.bg,
-                    padding: '10px 16px',
                     fontSize: 13,
                     fontWeight: 500,
                     textDecoration: 'none',
                     zIndex: 100,
                 }}
                 onFocus={(e) => {
-                    e.currentTarget.style.left = '16px';
+                    Object.assign(e.currentTarget.style, {
+                        width: 'auto',
+                        height: 'auto',
+                        padding: '10px 16px',
+                        margin: 0,
+                        overflow: 'visible',
+                        clip: 'auto',
+                        insetInlineStart: '16px',
+                        top: '12px',
+                    });
                 }}
                 onBlur={(e) => {
-                    e.currentTarget.style.left = '-9999px';
+                    Object.assign(e.currentTarget.style, {
+                        width: '1px',
+                        height: '1px',
+                        padding: '0',
+                        margin: '-1px',
+                        overflow: 'hidden',
+                        clip: 'rect(0,0,0,0)',
+                        insetInlineStart: 'auto',
+                    });
                 }}
             >
                 {skipLabel}

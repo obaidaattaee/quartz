@@ -11,6 +11,7 @@ use App\Models\LandingProduct;
 use App\Models\LandingService;
 use App\Models\PortfolioItem;
 use App\Models\Testimonial;
+use App\Services\CriticalAssetService;
 use App\Services\SeoService;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -82,25 +83,64 @@ class HomeController extends Controller
             ->get()
             ->map(fn ($l) => $ar ? $l->label_ar : $l->label_en);
 
+        // Project to the active locale only. Frontend ternaries (`isRTL ? _ar : _en`)
+        // keep working because the other-locale field is just blanked, but we save
+        // ~40% on this section of the Inertia JSON — Arabic Unicode escapes are
+        // especially expensive when serving an English page.
         $testimonials = Testimonial::where('is_visible', true)
             ->orderBy('sort_order')
-            ->get();
+            ->get()
+            ->map(fn ($t) => [
+                'id' => $t->id,
+                'quote_en' => $ar ? '' : $t->quote_en,
+                'quote_ar' => $ar ? $t->quote_ar : '',
+                'author_name_en' => $ar ? '' : $t->author_name_en,
+                'author_name_ar' => $ar ? $t->author_name_ar : '',
+                'author_title_en' => $ar ? '' : $t->author_title_en,
+                'author_title_ar' => $ar ? $t->author_title_ar : '',
+                'company_en' => $ar ? '' : $t->company_en,
+                'company_ar' => $ar ? $t->company_ar : '',
+            ]);
 
         $industries = Industry::visible()
             ->ordered()
-            ->get([
-                'id',
-                'slug',
-                'title_en',
-                'title_ar',
-                'solutions_en',
-                'solutions_ar',
+            ->get(['id', 'slug', 'title_en', 'title_ar', 'solutions_en', 'solutions_ar'])
+            ->map(fn ($i) => [
+                'id' => $i->id,
+                'slug' => $i->slug,
+                'title_en' => $ar ? '' : $i->title_en,
+                'title_ar' => $ar ? $i->title_ar : '',
+                'solutions_en' => $ar ? [] : $i->solutions_en,
+                'solutions_ar' => $ar ? $i->solutions_ar : [],
             ]);
 
-        $featuredCase = PortfolioItem::published()
+        $featuredCaseModel = PortfolioItem::published()
             ->orderBy('sort_order')
             ->with('featuredImage')
             ->first();
+
+        $featuredCase = $featuredCaseModel ? [
+            'id' => $featuredCaseModel->id,
+            'slug' => $featuredCaseModel->slug,
+            'title_en' => $ar ? '' : $featuredCaseModel->title_en,
+            'title_ar' => $ar ? $featuredCaseModel->title_ar : '',
+            'description_en' => $ar ? '' : $featuredCaseModel->description_en,
+            'description_ar' => $ar ? $featuredCaseModel->description_ar : '',
+            'client_name' => $featuredCaseModel->client_name,
+            'service_category' => $featuredCaseModel->service_category,
+            'featured_image' => $featuredCaseModel->featuredImage ? [
+                'url' => $featuredCaseModel->featuredImage->url,
+                'alt_text' => $featuredCaseModel->featuredImage->alt_text ?? null,
+            ] : null,
+        ] : null;
+
+        // The H1 LCP element uses Fraunces serif (regular + italic). Preloading
+        // these lets the browser fetch them in parallel with the CSS instead of
+        // discovering them only after the bundled font CSS parses.
+        $criticalFonts = CriticalAssetService::findInManifest([
+            'fraunces-latin-400-normal',
+            'fraunces-latin-400-italic',
+        ], 'woff2');
 
         return Inertia::render('public/home', [
             'landing' => [
@@ -115,6 +155,9 @@ class HomeController extends Controller
             'industries' => $industries,
             'featuredCase' => $featuredCase,
             'seo' => $seo,
-        ])->withViewData(['seo' => $seo]);
+        ])->withViewData([
+            'seo' => $seo,
+            'criticalFonts' => $criticalFonts,
+        ]);
     }
 }

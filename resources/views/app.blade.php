@@ -65,6 +65,21 @@
 
         <link rel="preload" as="font" type="font/woff2" href="{{ Vite::asset('resources/fonts/SpaceGrotesk-Variable.woff2') }}" crossorigin>
 
+        {{-- Additional critical font preloads (LCP). Controllers can set
+             $criticalFonts via ->withViewData() to start font fetches
+             in parallel with CSS rather than after CSS parses. --}}
+        @isset($criticalFonts)
+            @foreach($criticalFonts as $fontUrl)
+                <link rel="preload" as="font" type="font/woff2" href="{{ $fontUrl }}" crossorigin>
+            @endforeach
+        @endisset
+
+        {{-- LCP image preload — for pages whose largest paint is an image
+             (e.g. service pages, blog posts with hero photos). --}}
+        @isset($lcpImage)
+            <link rel="preload" as="image" href="{{ $lcpImage }}" fetchpriority="high">
+        @endisset
+
         @viteReactRefresh
         @vite(['resources/css/app.css', 'resources/js/app.tsx', "resources/js/pages/{$page['component']}.tsx"])
         <x-inertia::head>

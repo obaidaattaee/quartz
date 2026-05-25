@@ -15,7 +15,7 @@ ENV COMPOSER_ALLOW_SUPERUSER=1 \
 
 # ---- System packages + PHP extensions --------------------------------------
 RUN apk add --no-cache \
-        nginx supervisor curl \
+        nginx nginx-mod-http-brotli supervisor curl \
         libpng libjpeg-turbo freetype libzip icu oniguruma libxml2 mysql-client \
     && apk add --no-cache --virtual .build-deps \
         libpng-dev libjpeg-turbo-dev freetype-dev libzip-dev \

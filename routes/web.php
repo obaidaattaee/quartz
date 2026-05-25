@@ -11,15 +11,20 @@ use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\RssFeedController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Middleware\SetLocale;
+use App\Http\Middleware\SetPublicCacheHeaders;
 use Illuminate\Support\Facades\Route;
 
-// Root redirect to default locale
-Route::redirect('/', '/en');
+// Render the default-locale home directly at `/` to avoid the extra round
+// trip from a 302 redirect. The canonical URL still points at `/en` so
+// search engines treat `/en` as the source of truth.
+Route::get('/', [HomeController::class, 'index'])
+    ->middleware([SetLocale::class, SetPublicCacheHeaders::class])
+    ->name('home.root');
 
 // All public routes under locale prefix
 Route::prefix('{locale}')
     ->where(['locale' => 'en|ar'])
-    ->middleware(SetLocale::class)
+    ->middleware([SetLocale::class, SetPublicCacheHeaders::class])
     ->group(function () {
         Route::get('/', [HomeController::class, 'index'])->name('home');
 
