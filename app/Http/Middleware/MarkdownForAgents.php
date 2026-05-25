@@ -23,22 +23,52 @@ class MarkdownForAgents
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if (! $this->wantsMarkdown($request)) {
-            return $next($request);
+        $wantsMarkdown = $this->wantsMarkdown($request);
+        $hasMarkdownRendering = $this->routeHasMarkdownRendering($request);
+
+        if ($wantsMarkdown && $hasMarkdownRendering) {
+            $body = $this->renderMarkdown($request);
+
+            if ($body !== null) {
+                return new IlluminateResponse($body, 200, [
+                    'Content-Type' => 'text/markdown; charset=utf-8',
+                    'Vary' => 'Accept',
+                    'X-Markdown-Tokens' => (string) str_word_count(strip_tags($body)),
+                ]);
+            }
         }
 
-        $body = $this->renderMarkdown($request);
+        $response = $next($request);
 
-        if ($body === null) {
-            // No markdown rendering for this route — fall through to HTML.
-            return $next($request);
+        // Even when serving HTML, advertise that the response varies by
+        // Accept on routes that *could* serve markdown — otherwise a shared
+        // cache might hand the HTML to an agent that asked for markdown.
+        if ($hasMarkdownRendering) {
+            $existing = $response->headers->get('Vary');
+            $merged = $existing ? $existing.', Accept' : 'Accept';
+
+            if (! str_contains((string) $existing, 'Accept')) {
+                $response->headers->set('Vary', $merged);
+            }
         }
 
-        return new IlluminateResponse($body, 200, [
-            'Content-Type' => 'text/markdown; charset=utf-8',
-            'Vary' => 'Accept',
-            'X-Markdown-Tokens' => (string) str_word_count(strip_tags($body)),
-        ]);
+        return $response;
+    }
+
+    private function routeHasMarkdownRendering(Request $request): bool
+    {
+        $route = $request->route();
+
+        if ($route === null) {
+            return false;
+        }
+
+        return in_array($route->getName(), [
+            'home', 'home.root',
+            'services.show',
+            'blog.show', 'blog.posts.show',
+            'portfolio.show',
+        ], true);
     }
 
     private function wantsMarkdown(Request $request): bool
@@ -62,7 +92,7 @@ class MarkdownForAgents
         $slug = $route->parameter('slug');
 
         return match ($name) {
-            'home' => $this->homepageMarkdown(),
+            'home', 'home.root' => $this->homepageMarkdown(),
             'services.show' => $slug ? $this->serviceMarkdown($slug, $locale) : null,
             'blog.show', 'blog.posts.show' => $slug ? $this->blogMarkdown($slug, $locale) : null,
             'portfolio.show' => $slug ? $this->portfolioMarkdown($slug, $locale) : null,

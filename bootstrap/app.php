@@ -52,10 +52,16 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->web(append: [
             HandleAppearance::class,
+            // MarkdownForAgents must run *outside* HandleInertiaRequests so
+            // (a) it can short-circuit before Inertia spins up when an agent
+            //     requests text/markdown, and (b) on the response path it runs
+            //     last and can append `Accept` to the Vary header Inertia sets
+            //     to `X-Inertia` — otherwise shared caches could serve HTML to
+            //     an agent that asked for markdown.
+            MarkdownForAgents::class,
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
             AgentLinkHeaders::class,
-            MarkdownForAgents::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
