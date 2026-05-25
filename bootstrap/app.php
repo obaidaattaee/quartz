@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\AgentDiscoveryController;
 use App\Http\Controllers\SitemapController;
+use App\Http\Middleware\AgentLinkHeaders;
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Middleware\MarkdownForAgents;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -21,6 +24,15 @@ return Application::configure(basePath: dirname(__DIR__))
 
             // Sitemap — no session, no Inertia, no CSRF (Google needs clean XML)
             Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
+
+            // Agent discovery endpoints (RFC 9727 API catalog, agent-skills
+            // index, MCP server card). Universal, no session, no locale.
+            Route::get('/.well-known/api-catalog', [AgentDiscoveryController::class, 'apiCatalog'])
+                ->name('agent.api-catalog');
+            Route::get('/.well-known/agent-skills/index.json', [AgentDiscoveryController::class, 'agentSkillsIndex'])
+                ->name('agent.skills-index');
+            Route::get('/.well-known/mcp/server-card.json', [AgentDiscoveryController::class, 'mcpServerCard'])
+                ->name('agent.mcp-card');
         },
     )
     ->withMiddleware(function (Middleware $middleware): void {
@@ -42,6 +54,8 @@ return Application::configure(basePath: dirname(__DIR__))
             HandleAppearance::class,
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
+            AgentLinkHeaders::class,
+            MarkdownForAgents::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

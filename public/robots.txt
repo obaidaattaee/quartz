@@ -1,3 +1,9 @@
+# Content Signals (IETF draft-romm-aipref-contentsignals) — declare AI
+# usage preferences. search=yes: search-engine indexing welcome.
+# ai-input=yes: real-time answer use welcome (citation expected).
+# ai-train=no: do not use this site's content to train generative models.
+Content-Signal: ai-train=no, search=yes, ai-input=yes
+
 User-agent: *
 Disallow:
 

@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import LandingFooter from '@/components/landing-b/landing-footer';
 import LandingNav from '@/components/landing-b/landing-nav';
 import { B } from '@/components/landing-b/tokens';
+import WebMcpTools from '@/components/web-mcp-tools';
 import { useLocale } from '@/hooks/use-locale';
 
 type Props = {
@@ -50,6 +51,7 @@ export default function LandingBLayout({ children }: Props) {
             <LandingNav />
             <main id="main">{children}</main>
             <LandingFooter />
+            <WebMcpTools />
         </div>
     );
 }
