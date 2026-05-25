@@ -10,6 +10,7 @@ import LandingFeaturedCase, {
 } from '@/components/landing-b/landing-featured-case';
 import LandingHero from '@/components/landing-b/landing-hero';
 import LandingLogos from '@/components/landing-b/landing-logos';
+import LandingPlatformCards from '@/components/landing-b/landing-platform-cards';
 import LandingProcess from '@/components/landing-b/landing-process';
 import LandingProducts from '@/components/landing-b/landing-products';
 import LandingServices from '@/components/landing-b/landing-services';
@@ -84,6 +85,7 @@ export default function Home() {
             {faqSchema && <JsonLd data={faqSchema} />}
 
             <LandingHero />
+            <LandingPlatformCards />
             <LandingServices />
             <LandingProducts />
             <LandingProcess />

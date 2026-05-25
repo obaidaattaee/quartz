@@ -4,11 +4,13 @@ namespace Database\Seeders;
 
 use App\Models\BlogPost;
 use App\Models\Category;
+use App\Models\Media;
 use App\Models\PortfolioItem;
 use App\Models\SeoMetadata;
 use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
 class Phase04VerificationSeeder extends Seeder
@@ -25,6 +27,8 @@ class Phase04VerificationSeeder extends Seeder
         $this->seedTags();
         $this->seedBlogPosts();
         $this->seedPortfolioItems();
+        $this->seedPortfolioFeaturedImages();
+        $this->seedQuartzPosCaseStudy();
         $this->seedSeoMetadata();
     }
 
@@ -290,6 +294,114 @@ class Phase04VerificationSeeder extends Seeder
         }
 
         $this->command->info('Seeded 3 published portfolio items.');
+    }
+
+    /**
+     * Attach featured images to the seeded portfolio items. Source assets ship
+     * under database/seeders/assets/portfolio/ and are installed into
+     * storage/app/public/portfolio/ so the Media model's /storage/{path} URL
+     * resolves through the storage symlink.
+     */
+    private function seedPortfolioFeaturedImages(): void
+    {
+        $assignments = [
+            // slug => [filename, mime]
+            'ecommerce-platform-redesign' => ['ecommerce-platform-redesign.webp', 'image/webp'],
+            'devops-pipeline-automation' => ['devops-pipeline-automation.webp', 'image/webp'],
+            'security-audit-hardening' => ['security-audit-hardening.webp', 'image/webp'],
+        ];
+
+        foreach ($assignments as $slug => [$filename, $mime]) {
+            $media = $this->installPortfolioMedia($filename, $mime);
+
+            if ($media === null) {
+                continue;
+            }
+
+            PortfolioItem::where('slug', $slug)->update([
+                'featured_image_id' => $media->id,
+            ]);
+
+            $this->command->info('Attached '.$filename.' to portfolio item ['.$slug.'].');
+        }
+    }
+
+    /**
+     * Seed the featured "Quartz POS Platform" case study with its dashboard
+     * screenshot — adds the portfolio item AND wires its featured_image.
+     */
+    private function seedQuartzPosCaseStudy(): void
+    {
+        $media = $this->installPortfolioMedia('quartz-pos-dashboard.png', 'image/png');
+
+        if ($media === null) {
+            return;
+        }
+
+        PortfolioItem::updateOrCreate(
+            ['slug' => 'quartz-pos-platform'],
+            [
+                'title_en' => 'Quartz POS Platform',
+                'title_ar' => 'منصة كوارتز لنقاط البيع',
+                'description_en' => 'A unified point-of-sale and back-office platform covering registers, catalog, inventory, sales and pricing, orders and fulfillment, customers, loyalty, marketing, storefront, shipping, payments, reports, and localization.',
+                'description_ar' => 'منصة موحدة لنقاط البيع والإدارة الخلفية تغطي السجلات والكتالوج والمخزون والمبيعات والتسعير والطلبات والشحن والعملاء والولاء والتسويق والواجهة الإلكترونية والمدفوعات والتقارير والترجمة.',
+                'outcome_headline_en' => 'A complete retail operating system, built end-to-end',
+                'outcome_headline_ar' => 'نظام تشغيل متكامل لتجارة التجزئة، مبني من البداية إلى النهاية',
+                'service_category' => 'Software Development',
+                'client_name' => 'Quartz',
+                'status' => 'published',
+                'sort_order' => 0,
+                'featured_image_id' => $media->id,
+            ],
+        );
+
+        $this->command->info('Seeded Quartz POS Platform case study (media #'.$media->id.').');
+    }
+
+    /**
+     * Copy a portfolio asset from database/seeders/assets/portfolio/ into the
+     * public storage volume and upsert the Media row. Returns null if the
+     * source asset is missing.
+     */
+    private function installPortfolioMedia(string $filename, string $mime): ?Media
+    {
+        $source = database_path('seeders/assets/portfolio/'.$filename);
+
+        if (! File::exists($source)) {
+            $this->command->warn('Skipped portfolio asset: source missing at '.$source);
+
+            return null;
+        }
+
+        $relativePath = 'portfolio/'.$filename;
+        $destination = storage_path('app/public/'.$relativePath);
+
+        File::ensureDirectoryExists(dirname($destination));
+
+        if (! File::exists($destination) || File::size($destination) !== File::size($source)) {
+            File::copy($source, $destination);
+        }
+
+        $width = null;
+        $height = null;
+
+        // getimagesize() doesn't read WebP on every PHP build — fall back to null dimensions.
+        $info = @getimagesize($destination);
+
+        if (is_array($info)) {
+            [$width, $height] = $info;
+        }
+
+        return Media::updateOrCreate(
+            ['path' => $relativePath],
+            [
+                'filename' => $filename,
+                'mime_type' => $mime,
+                'size' => File::size($destination),
+                'width' => $width,
+                'height' => $height,
+            ],
+        );
     }
 
     /**

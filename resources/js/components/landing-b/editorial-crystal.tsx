@@ -2,11 +2,15 @@ import { useRafTime } from '@/hooks/use-raf-time';
 
 type Props = {
     accent?: string;
+    speed?: number;
 };
 
-export default function EditorialCrystal({ accent = '#e8a84a' }: Props) {
+export default function EditorialCrystal({
+    accent = '#e8a84a',
+    speed = 12,
+}: Props) {
     const t = useRafTime();
-    const rot = t * 12;
+    const rot = t * speed;
 
     const facets = [
         {

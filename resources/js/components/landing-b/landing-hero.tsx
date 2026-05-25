@@ -4,7 +4,7 @@ import { useLocale } from '@/hooks/use-locale';
 import { useRafTime } from '@/hooks/use-raf-time';
 
 import CountUp from './count-up';
-import EditorialCrystal from './editorial-crystal';
+import EditorialStackDiagram from './editorial-stack-diagram';
 import { B, monoStyle } from './tokens';
 
 export default function LandingHero() {
@@ -176,8 +176,13 @@ export default function LandingHero() {
                             {isRTL ? '← ٤ تخصّصات' : '→ 4 disciplines'}
                         </span>
                     </div>
-                    <div style={{ width: '80%', height: '80%' }}>
-                        <EditorialCrystal accent={B.accent} />
+                    <div
+                        style={{
+                            position: 'absolute',
+                            inset: 32,
+                        }}
+                    >
+                        <EditorialStackDiagram />
                     </div>
                 </div>
             </div>

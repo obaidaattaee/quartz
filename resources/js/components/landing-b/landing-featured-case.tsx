@@ -65,10 +65,10 @@ export default function LandingFeaturedCase({ featuredCase }: Props) {
                     {featuredCase.featured_image ? (
                         <div
                             style={{
-                                aspectRatio: '4 / 3',
                                 background: B.bg,
                                 border: `1px solid ${B.line}`,
                                 overflow: 'hidden',
+                                minWidth: 0,
                             }}
                         >
                             <img
@@ -80,10 +80,9 @@ export default function LandingFeaturedCase({ featuredCase }: Props) {
                                 loading="lazy"
                                 style={{
                                     width: '100%',
-                                    height: '100%',
-                                    objectFit: 'cover',
+                                    height: 'auto',
+                                    objectFit: 'contain',
                                     display: 'block',
-                                    filter: 'grayscale(0.2) contrast(0.95)',
                                 }}
                             />
                         </div>
@@ -93,10 +92,11 @@ export default function LandingFeaturedCase({ featuredCase }: Props) {
                                 aspectRatio: '4 / 3',
                                 background: B.bg,
                                 border: `1px solid ${B.line}`,
+                                minWidth: 0,
                             }}
                         />
                     )}
-                    <div>
+                    <div style={{ minWidth: 0 }}>
                         {featuredCase.service_category && (
                             <div style={monoStyle}>
                                 {featuredCase.service_category}

@@ -12,7 +12,6 @@ import {
 } from '@/components/ui/sheet';
 import { useLocale } from '@/hooks/use-locale';
 
-import QuartzMark from './quartz-mark';
 import { B } from './tokens';
 
 type NavLink = {
@@ -79,21 +78,17 @@ export default function LandingNav() {
         >
             <Link
                 href={`/${locale}`}
-                className="flex shrink-0 items-center gap-3"
+                className="flex shrink-0 items-center"
                 aria-label="Quartz Solutions — home"
                 style={{ color: B.cream, textDecoration: 'none' }}
             >
-                <QuartzMark size={24} color={B.cream} />
-                <span
-                    style={{
-                        fontFamily: B.serif,
-                        fontSize: 22,
-                        fontWeight: 500,
-                        letterSpacing: '-0.01em',
-                    }}
-                >
-                    Quartz
-                </span>
+                <img
+                    src="/logo.svg"
+                    alt="Quartz"
+                    width={132}
+                    height={34}
+                    style={{ height: 30, width: 'auto', display: 'block' }}
+                />
             </Link>
 
             <div
