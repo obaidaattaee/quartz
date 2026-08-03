@@ -1,11 +1,12 @@
 # ============================================================================
 # Quartz — Production stack
 # ----------------------------------------------------------------------------
-#   app        PHP-FPM + nginx + baked assets  (port 80)
-#   queue      php artisan queue:work          (no port)
-#   scheduler  loop schedule:run every 60s     (no port)
-#   db         MySQL 8                         (no port)
-#   redis      Redis 7                         (no port)
+#   app        PHP-FPM + nginx + queue worker + scheduler  (port 80)
+#   db         MySQL 8                                     (no port)
+#   redis      Redis 7                                     (no port)
+#
+# The queue worker and scheduler run as supervisor programs inside the app
+# container (see docker/prod/supervisord.conf), not as separate services.
 #
 # Source is baked into the image — no bind mounts, no host dependencies.
 # Usage:
@@ -72,40 +73,6 @@ services:
       timeout: 5s
       retries: 3
       start_period: 30s
-
-  queue:
-    <<: *app_build
-    container_name: quartz-queue
-    restart: always
-    environment: *app_env
-    command: php artisan queue:work --sleep=3 --tries=3 --max-time=3600
-    entrypoint: ["/bin/sh", "-c"]
-    volumes:
-      - storage_public:/var/www/html/storage/app/public
-      - storage_logs:/var/www/html/storage/logs
-    depends_on:
-      app:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-
-  scheduler:
-    <<: *app_build
-    container_name: quartz-scheduler
-    restart: always
-    environment: *app_env
-    command: >
-      sh -c "while true; do
-        php artisan schedule:run --verbose --no-interaction;
-        sleep 60;
-      done"
-    entrypoint: ["/bin/sh", "-c"]
-    volumes:
-      - storage_public:/var/www/html/storage/app/public
-      - storage_logs:/var/www/html/storage/logs
-    depends_on:
-      app:
-        condition: service_healthy
 
   db:
     image: mysql:8.0
