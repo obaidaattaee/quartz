@@ -6,6 +6,23 @@ import laravel from 'laravel-vite-plugin';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
+    server: {
+        // The dev container starts Vite with `--host 0.0.0.0` so it is
+        // reachable from outside the container. Laravel writes the resolved
+        // dev-server address into `public/hot`, and without an explicit hmr
+        // host that address is the bind address — so the browser is told to
+        // load assets from `http://0.0.0.0:5173`, which is not a reachable
+        // origin and collides with anything else serving that port. Advertise
+        // a browser-reachable host instead; VITE_HMR_HOST is already set by
+        // docker-compose, and VITE_HMR_CLIENT_PORT covers the case where the
+        // container port is published on a different host port.
+        hmr: {
+            host: process.env.VITE_HMR_HOST || 'localhost',
+            ...(process.env.VITE_HMR_CLIENT_PORT
+                ? { clientPort: Number(process.env.VITE_HMR_CLIENT_PORT) }
+                : {}),
+        },
+    },
     plugins: [
         laravel({
             input: ['resources/css/app.css', 'resources/js/app.tsx'],

@@ -20,9 +20,11 @@ services:
       dockerfile: docker/dev/Dockerfile
     container_name: quartz-app
     restart: unless-stopped
+    # Published ports are overridable so the stack can run alongside another
+    # project already holding 8080/5173: APP_PORT=8081 VITE_PORT=5174 docker compose up
     ports:
-      - "8080:80"      # Laravel
-      - "5173:5173"    # Vite HMR
+      - "${APP_PORT:-8080}:80"        # Laravel
+      - "${VITE_PORT:-5173}:5173"     # Vite HMR
     environment:
       APP_NAME: Quartz
       APP_ENV: local
@@ -47,7 +49,10 @@ services:
       MAIL_MAILER: log
       MAIL_FROM_ADDRESS: noreply@quartz.local
       MAIL_FROM_NAME: Quartz Solutions
-      VITE_HMR_HOST: localhost
+      VITE_HMR_HOST: ${VITE_HMR_HOST:-localhost}
+      # Host-side port the browser must reach, which differs from the
+      # container's 5173 whenever VITE_PORT is remapped.
+      VITE_HMR_CLIENT_PORT: ${VITE_PORT:-5173}
     volumes:
       # Source code — live edits on host appear in container.
       - .:/var/www/html
