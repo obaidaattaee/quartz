@@ -8,6 +8,7 @@ import {
     Mail,
     MessageSquare,
     Newspaper,
+    Scale,
     Settings,
     Shield,
     Users,
@@ -48,6 +49,7 @@ const websiteNavItems: NavItem[] = [
         icon: MessageSquare,
     },
     { title: 'Team Members', href: '/admin/team', icon: Users },
+    { title: 'Legal Pages', href: '/admin/legal', icon: Scale },
 ];
 
 const communicationNavItems: NavItem[] = [

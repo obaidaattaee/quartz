@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BlogPost;
+use App\Models\LegalPage;
 use App\Models\PortfolioItem;
 use Illuminate\Http\Response;
 
@@ -29,6 +30,12 @@ class SitemapController extends Controller
             '/services/cybersecurity' => ['changefreq' => 'monthly', 'priority' => '0.8'],
         ];
 
+        // Legal documents change rarely but must stay discoverable: app
+        // store and OAuth reviewers look for a crawlable policy URL.
+        foreach (LegalPage::published()->pluck('slug') as $slug) {
+            $staticPages['/'.$slug] = ['changefreq' => 'yearly', 'priority' => '0.3'];
+        }
+
         $blogPosts = BlogPost::published()->select('slug', 'updated_at')->get();
         $portfolioItems = PortfolioItem::published()->select('slug', 'updated_at')->get();
 
@@ -41,12 +48,12 @@ class SitemapController extends Controller
         foreach ($staticPages as $path => $meta) {
             foreach ($locales as $locale) {
                 $xml .= '<url>';
-                $xml .= '<loc>' . $baseUrl . '/' . $locale . $path . '</loc>';
-                $xml .= '<changefreq>' . $meta['changefreq'] . '</changefreq>';
-                $xml .= '<priority>' . $meta['priority'] . '</priority>';
+                $xml .= '<loc>'.$baseUrl.'/'.$locale.$path.'</loc>';
+                $xml .= '<changefreq>'.$meta['changefreq'].'</changefreq>';
+                $xml .= '<priority>'.$meta['priority'].'</priority>';
 
                 foreach ($locales as $altLocale) {
-                    $xml .= '<xhtml:link rel="alternate" hreflang="' . $altLocale . '" href="' . $baseUrl . '/' . $altLocale . $path . '" />';
+                    $xml .= '<xhtml:link rel="alternate" hreflang="'.$altLocale.'" href="'.$baseUrl.'/'.$altLocale.$path.'" />';
                 }
 
                 $xml .= '</url>';
@@ -57,13 +64,13 @@ class SitemapController extends Controller
         foreach ($blogPosts as $post) {
             foreach ($locales as $locale) {
                 $xml .= '<url>';
-                $xml .= '<loc>' . $baseUrl . '/' . $locale . '/blog/' . $post->slug . '</loc>';
-                $xml .= '<lastmod>' . $post->updated_at->toW3cString() . '</lastmod>';
+                $xml .= '<loc>'.$baseUrl.'/'.$locale.'/blog/'.$post->slug.'</loc>';
+                $xml .= '<lastmod>'.$post->updated_at->toW3cString().'</lastmod>';
                 $xml .= '<changefreq>weekly</changefreq>';
                 $xml .= '<priority>0.7</priority>';
 
                 foreach ($locales as $altLocale) {
-                    $xml .= '<xhtml:link rel="alternate" hreflang="' . $altLocale . '" href="' . $baseUrl . '/' . $altLocale . '/blog/' . $post->slug . '" />';
+                    $xml .= '<xhtml:link rel="alternate" hreflang="'.$altLocale.'" href="'.$baseUrl.'/'.$altLocale.'/blog/'.$post->slug.'" />';
                 }
 
                 $xml .= '</url>';
@@ -74,13 +81,13 @@ class SitemapController extends Controller
         foreach ($portfolioItems as $item) {
             foreach ($locales as $locale) {
                 $xml .= '<url>';
-                $xml .= '<loc>' . $baseUrl . '/' . $locale . '/portfolio/' . $item->slug . '</loc>';
-                $xml .= '<lastmod>' . $item->updated_at->toW3cString() . '</lastmod>';
+                $xml .= '<loc>'.$baseUrl.'/'.$locale.'/portfolio/'.$item->slug.'</loc>';
+                $xml .= '<lastmod>'.$item->updated_at->toW3cString().'</lastmod>';
                 $xml .= '<changefreq>monthly</changefreq>';
                 $xml .= '<priority>0.7</priority>';
 
                 foreach ($locales as $altLocale) {
-                    $xml .= '<xhtml:link rel="alternate" hreflang="' . $altLocale . '" href="' . $baseUrl . '/' . $altLocale . '/portfolio/' . $item->slug . '" />';
+                    $xml .= '<xhtml:link rel="alternate" hreflang="'.$altLocale.'" href="'.$baseUrl.'/'.$altLocale.'/portfolio/'.$item->slug.'" />';
                 }
 
                 $xml .= '</url>';

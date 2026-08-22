@@ -19,8 +19,8 @@ class SeoService
     ): array {
         $meta = SeoMetadata::where('page_key', $pageKey)->first();
 
-        $titleField = 'meta_title_' . $locale;
-        $descField = 'meta_description_' . $locale;
+        $titleField = 'meta_title_'.$locale;
+        $descField = 'meta_description_'.$locale;
 
         $siteName = config('app.name', 'Quartz');
         $baseUrl = rtrim(config('app.url'), '/');
@@ -35,29 +35,37 @@ class SeoService
             'blog' => $locale === 'en' ? 'Blog' : 'المدونة',
             'portfolio' => $locale === 'en' ? 'Work' : 'أعمالنا',
             'industries' => $locale === 'en' ? 'Industries' : 'القطاعات',
+            'privacy' => $locale === 'en' ? 'Privacy Policy' : 'سياسة الخصوصية',
+            'terms' => $locale === 'en' ? 'Terms of Service' : 'شروط الخدمة',
         ];
 
         $descriptionDefaults = [
             'industries' => $locale === 'en'
                 ? 'Software solutions shaped to the operating reality of your sector — retail, healthcare, finance, government, education.'
                 : 'حلول برمجية مُصاغة لواقع قطاعك — التجزئة، الرعاية الصحية، المال، الحكومة، التعليم.',
+            'privacy' => $locale === 'en'
+                ? 'How Quartz collects, uses, shares, and protects personal data across our website, products, and client engagements.'
+                : 'كيف تجمع Quartz البيانات الشخصية وتستخدمها وتشاركها وتحميها عبر موقعنا ومنتجاتنا ومشاريع عملائنا.',
+            'terms' => $locale === 'en'
+                ? 'The terms that govern your use of the Quartz website, products, and services.'
+                : 'الشروط التي تحكم استخدامك لموقع Quartz ومنتجاتها وخدماتها.',
         ];
 
         $resolvedTitle = $overrideTitle ?? ($pageTitles[$pageKey] ?? $siteName);
-        $title = $meta?->$titleField ?? $resolvedTitle . ' | ' . $siteName;
+        $title = $meta?->$titleField ?? $resolvedTitle.' | '.$siteName;
         $description = $meta?->$descField ?? ($descriptionDefaults[$pageKey] ?? '');
 
         // Path resolution: explicit override wins, otherwise derive from pageKey.
         $path = $overridePath
-            ?? ('/' . $locale . ($pageKey === 'home' ? '' : '/' . $pageKey));
-        $pageUrl = $baseUrl . $path;
+            ?? ('/'.$locale.($pageKey === 'home' ? '' : '/'.$pageKey));
+        $pageUrl = $baseUrl.$path;
 
         // Hreflang alternates swap the locale segment, keeping the rest of the path.
         $hreflang = [];
         foreach (['en', 'ar'] as $lang) {
-            $hreflang[$lang] = $baseUrl . preg_replace(
+            $hreflang[$lang] = $baseUrl.preg_replace(
                 '#^/(en|ar)(/|$)#',
-                '/' . $lang . '$2',
+                '/'.$lang.'$2',
                 $path,
             );
         }
@@ -65,7 +73,7 @@ class SeoService
         return [
             'title' => $title,
             'description' => $description,
-            'image' => $meta?->ogImage?->path ? $baseUrl . '/storage/' . $meta->ogImage->path : null,
+            'image' => $meta?->ogImage?->path ? $baseUrl.'/storage/'.$meta->ogImage->path : null,
             'url' => $pageUrl,
             'canonical' => $pageUrl,
             'hreflang' => $hreflang,
@@ -77,31 +85,31 @@ class SeoService
      */
     public static function forBlogPost(BlogPost $post, string $locale): array
     {
-        $titleField = 'meta_title_' . $locale;
-        $descField = 'meta_description_' . $locale;
-        $postTitleField = 'title_' . $locale;
-        $postExcerptField = 'excerpt_' . $locale;
+        $titleField = 'meta_title_'.$locale;
+        $descField = 'meta_description_'.$locale;
+        $postTitleField = 'title_'.$locale;
+        $postExcerptField = 'excerpt_'.$locale;
 
         $siteName = config('app.name', 'Quartz');
         $baseUrl = rtrim(config('app.url'), '/');
 
-        $title = $post->$titleField ?? $post->$postTitleField . ' | ' . $siteName;
+        $title = $post->$titleField ?? $post->$postTitleField.' | '.$siteName;
         $description = $post->$descField ?? $post->$postExcerptField ?? '';
 
-        $postUrl = $baseUrl . '/' . $locale . '/blog/' . $post->slug;
+        $postUrl = $baseUrl.'/'.$locale.'/blog/'.$post->slug;
 
         return [
             'title' => $title,
             'description' => $description,
             'image' => $post->ogImage?->path
-                ? $baseUrl . '/storage/' . $post->ogImage->path
-                : ($post->featuredImage?->path ? $baseUrl . '/storage/' . $post->featuredImage->path : null),
+                ? $baseUrl.'/storage/'.$post->ogImage->path
+                : ($post->featuredImage?->path ? $baseUrl.'/storage/'.$post->featuredImage->path : null),
             'url' => $postUrl,
             'type' => 'article',
             'canonical' => $postUrl,
             'hreflang' => [
-                'en' => $baseUrl . '/en/blog/' . $post->slug,
-                'ar' => $baseUrl . '/ar/blog/' . $post->slug,
+                'en' => $baseUrl.'/en/blog/'.$post->slug,
+                'ar' => $baseUrl.'/ar/blog/'.$post->slug,
             ],
         ];
     }
@@ -111,30 +119,30 @@ class SeoService
      */
     public static function forPortfolioItem(PortfolioItem $item, string $locale): array
     {
-        $titleField = 'meta_title_' . $locale;
-        $descField = 'meta_description_' . $locale;
-        $itemTitleField = 'title_' . $locale;
-        $itemDescField = 'description_' . $locale;
+        $titleField = 'meta_title_'.$locale;
+        $descField = 'meta_description_'.$locale;
+        $itemTitleField = 'title_'.$locale;
+        $itemDescField = 'description_'.$locale;
 
         $siteName = config('app.name', 'Quartz');
         $baseUrl = rtrim(config('app.url'), '/');
 
-        $title = $item->$titleField ?? $item->$itemTitleField . ' | ' . $siteName;
+        $title = $item->$titleField ?? $item->$itemTitleField.' | '.$siteName;
         $description = $item->$descField ?? $item->$itemDescField ?? '';
 
-        $itemUrl = $baseUrl . '/' . $locale . '/portfolio/' . $item->slug;
+        $itemUrl = $baseUrl.'/'.$locale.'/portfolio/'.$item->slug;
 
         return [
             'title' => $title,
             'description' => $description,
             'image' => $item->ogImage?->path
-                ? $baseUrl . '/storage/' . $item->ogImage->path
-                : ($item->featuredImage?->path ? $baseUrl . '/storage/' . $item->featuredImage->path : null),
+                ? $baseUrl.'/storage/'.$item->ogImage->path
+                : ($item->featuredImage?->path ? $baseUrl.'/storage/'.$item->featuredImage->path : null),
             'url' => $itemUrl,
             'canonical' => $itemUrl,
             'hreflang' => [
-                'en' => $baseUrl . '/en/portfolio/' . $item->slug,
-                'ar' => $baseUrl . '/ar/portfolio/' . $item->slug,
+                'en' => $baseUrl.'/en/portfolio/'.$item->slug,
+                'ar' => $baseUrl.'/ar/portfolio/'.$item->slug,
             ],
         ];
     }

@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ContactLeadController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\IndustryController;
+use App\Http\Controllers\Admin\LegalPageController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\NewsletterController;
 use App\Http\Controllers\Admin\PortfolioItemController;
@@ -62,6 +63,9 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
 
         // Industries (edit-only; 5 seeded rows, admin can toggle visibility + edit content)
         Route::resource('industries', IndustryController::class)->only(['index', 'edit', 'update']);
+
+        // Legal documents (edit-only; privacy policy + terms of service)
+        Route::resource('legal', LegalPageController::class)->only(['index', 'edit', 'update']);
 
         // Site settings (branding, colors, contact, social)
         Route::get('settings', [SiteSettingController::class, 'index'])->name('settings.index');

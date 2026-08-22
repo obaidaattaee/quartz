@@ -352,5 +352,13 @@
     "blog.share.whatsapp": "Share on WhatsApp",
 
     "common.previous": "Previous",
-    "common.next": "Next"
+    "common.next": "Next",
+
+    "legal.eyebrow": "Legal",
+    "legal.effective": "Effective",
+    "legal.version": "Version",
+    "legal.print": "Print or save as PDF",
+    "legal.contents": "Contents",
+    "legal.questions": "Questions about this document?",
+    "legal.contactUs": "Contact us"
 }

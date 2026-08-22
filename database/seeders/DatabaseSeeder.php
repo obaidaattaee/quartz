@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             SiteSettingsSeeder::class,
             ContentSeeder::class,
             LandingContentSeeder::class,
+            LegalPageSeeder::class,
             Phase04VerificationSeeder::class,
         ]);
     }

@@ -5,7 +5,7 @@ import { useLocale } from '@/hooks/use-locale';
 import { B, monoStyle } from './tokens';
 
 export default function LandingFooter() {
-    const { locale } = useLocale();
+    const { locale, t } = useLocale();
     const year = new Date().getFullYear();
 
     const columns: Array<[string, { label: string; href: string }[]]> = [
@@ -49,6 +49,8 @@ export default function LandingFooter() {
                 { label: 'Work', href: `/${locale}/portfolio` },
                 { label: 'Industries', href: `/${locale}/industries` },
                 { label: 'Contact', href: `/${locale}/contact` },
+                { label: 'Privacy', href: `/${locale}/privacy` },
+                { label: 'Terms', href: `/${locale}/terms` },
             ],
         ],
         [
@@ -176,7 +178,27 @@ export default function LandingFooter() {
                     }}
                 >
                     <span>© {year} Quartz Solutions</span>
-                    <span>quartz-solutions.net</span>
+                    <span
+                        style={{
+                            display: 'flex',
+                            gap: 20,
+                            flexWrap: 'wrap',
+                        }}
+                    >
+                        <Link
+                            href={`/${locale}/privacy`}
+                            style={{ color: B.dim, textDecoration: 'none' }}
+                        >
+                            {t('footer.privacy')}
+                        </Link>
+                        <Link
+                            href={`/${locale}/terms`}
+                            style={{ color: B.dim, textDecoration: 'none' }}
+                        >
+                            {t('footer.terms')}
+                        </Link>
+                        <span>quartz-solutions.net</span>
+                    </span>
                 </div>
             </div>
             <style>{`

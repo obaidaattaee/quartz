@@ -6,6 +6,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IndustryController;
+use App\Http\Controllers\LegalController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\RssFeedController;
@@ -70,6 +71,11 @@ Route::prefix('{locale}')
         // Portfolio routes
         Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio.index');
         Route::get('/portfolio/{slug}', [PortfolioController::class, 'show'])->name('portfolio.show');
+
+        // Legal documents (database-backed, admin editable)
+        Route::get('/{slug}', [LegalController::class, 'show'])
+            ->where('slug', 'privacy|terms')
+            ->name('legal.show');
 
         // RSS feed
         Route::get('/feed.xml', RssFeedController::class)->name('feed');
