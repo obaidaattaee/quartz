@@ -30,7 +30,9 @@ services:
       APP_ENV: local
       APP_DEBUG: "true"
       APP_URL: ${APP_URL:-http://localhost:8080}
-      APP_KEY: ${APP_KEY:-}
+      # APP_KEY is deliberately not set here: an empty value would shadow the
+      # key in .env (Laravel never overrides an existing env var). The
+      # entrypoint generates one into .env when missing.
       APP_LOCALE: en
       APP_FALLBACK_LOCALE: en
       LOG_CHANNEL: stderr
