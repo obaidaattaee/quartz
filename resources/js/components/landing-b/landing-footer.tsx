@@ -130,14 +130,25 @@ export default function LandingFooter() {
                             >
                                 {items.map((l) => {
                                     const external = l.href.startsWith('http');
+                                    // Files like the RSS feed aren't Inertia pages: an
+                                    // Inertia <Link> would XHR them and show an error.
+                                    const file = /\.(xml|pdf)$/.test(l.href);
 
-                                    if (external) {
+                                    if (external || file) {
                                         return (
                                             <a
                                                 key={l.label}
                                                 href={l.href}
-                                                target="_blank"
-                                                rel="noreferrer"
+                                                target={
+                                                    external
+                                                        ? '_blank'
+                                                        : undefined
+                                                }
+                                                rel={
+                                                    external
+                                                        ? 'noreferrer'
+                                                        : undefined
+                                                }
                                                 style={{
                                                     color: B.cream,
                                                     fontSize: 14,
