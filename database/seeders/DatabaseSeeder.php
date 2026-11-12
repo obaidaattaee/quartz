@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             LandingContentSeeder::class,
             LegalPageSeeder::class,
             Phase04VerificationSeeder::class,
+            IndustryContentSeeder::class,
         ]);
     }
 }

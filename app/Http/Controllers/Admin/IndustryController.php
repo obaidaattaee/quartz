@@ -3,14 +3,19 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\IndustryController as PublicIndustryController;
+use App\Http\Requests\Admin\UpdateIndustryRequest;
 use App\Models\Industry;
+use App\Models\ServicePage;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class IndustryController extends Controller
 {
+    /**
+     * List every industry row (visible or hidden) in display order.
+     */
     public function index(): Response
     {
         $industries = Industry::ordered()->get();
@@ -24,39 +29,32 @@ class IndustryController extends Controller
     {
         return Inertia::render('admin/industries/edit', [
             'industry' => $industry,
+            'services' => self::serviceOptions(),
         ]);
     }
 
-    public function update(Request $request, Industry $industry): RedirectResponse
+    public function update(UpdateIndustryRequest $request, Industry $industry): RedirectResponse
     {
-        $validated = $request->validate([
-            'title_en' => ['required', 'string', 'max:255'],
-            'title_ar' => ['required', 'string', 'max:255'],
-            'hero_blurb_en' => ['required', 'string'],
-            'hero_blurb_ar' => ['required', 'string'],
-            'challenges_en' => ['required', 'array'],
-            'challenges_en.*.title' => ['required', 'string', 'max:255'],
-            'challenges_en.*.description' => ['required', 'string'],
-            'challenges_ar' => ['required', 'array'],
-            'challenges_ar.*.title' => ['required', 'string', 'max:255'],
-            'challenges_ar.*.description' => ['required', 'string'],
-            'solutions_en' => ['required', 'array'],
-            'solutions_en.*.title' => ['required', 'string', 'max:255'],
-            'solutions_en.*.description' => ['required', 'string'],
-            'solutions_ar' => ['required', 'array'],
-            'solutions_ar.*.title' => ['required', 'string', 'max:255'],
-            'solutions_ar.*.description' => ['required', 'string'],
-            'compliance_note_en' => ['nullable', 'string'],
-            'compliance_note_ar' => ['nullable', 'string'],
-            'cover_image' => ['nullable', 'string'],
-            'sort_order' => ['required', 'integer'],
-            'is_visible' => ['required', 'boolean'],
-        ]);
-
-        $industry->update($validated);
+        $industry->update($request->validated());
 
         return redirect()
             ->route('admin.industries.index')
-            ->with('status', 'Industry updated.');
+            ->with('success', 'Industry page updated.');
+    }
+
+    /**
+     * Services a solution card or the hero button can point to.
+     *
+     * @return list<array{value: string, label: string}>
+     */
+    private static function serviceOptions(): array
+    {
+        $titles = ServicePage::whereIn('slug', PublicIndustryController::SERVICES)
+            ->pluck('title_en', 'slug');
+
+        return array_map(
+            fn (string $slug) => ['value' => $slug, 'label' => $titles[$slug] ?? $slug],
+            PublicIndustryController::SERVICES,
+        );
     }
 }
