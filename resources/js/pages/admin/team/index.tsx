@@ -1,8 +1,9 @@
 import { Head, Link, router } from '@inertiajs/react';
-import { Pencil, Plus, Trash2, User } from 'lucide-react';
+import { Eye, EyeOff, Pencil, Plus, Trash2, User } from 'lucide-react';
 import { useCallback, useState } from 'react';
 
 import SortableList from '@/components/admin/sortable-list';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -13,6 +14,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@/components/ui/dialog';
+import { Switch } from '@/components/ui/switch';
 import type { TeamMemberData } from '@/types';
 
 type Props = {
@@ -20,8 +22,9 @@ type Props = {
 };
 
 export default function TeamIndex({ members }: Props) {
-    const [deleteTarget, setDeleteTarget] =
-        useState<TeamMemberData | null>(null);
+    const [deleteTarget, setDeleteTarget] = useState<TeamMemberData | null>(
+        null,
+    );
 
     const handleReorder = useCallback(
         (id: number, direction: 'up' | 'down') => {
@@ -33,6 +36,23 @@ export default function TeamIndex({ members }: Props) {
         },
         [],
     );
+
+    const handleVisibilityToggle = useCallback((item: TeamMemberData) => {
+        router.put(
+            `/admin/team/${item.id}`,
+            {
+                name_en: item.name_en,
+                name_ar: item.name_ar,
+                role_en: item.role_en,
+                role_ar: item.role_ar,
+                bio_en: item.bio_en,
+                bio_ar: item.bio_ar,
+                photo_id: item.photo_id,
+                is_visible: !item.is_visible,
+            },
+            { preserveScroll: true },
+        );
+    }, []);
 
     const handleDelete = useCallback(() => {
         if (!deleteTarget) {
@@ -71,8 +91,7 @@ export default function TeamIndex({ members }: Props) {
                                     <div className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-full">
                                         <img
                                             src={
-                                                item.photo
-                                                    .thumbnail_sm_url ||
+                                                item.photo.thumbnail_sm_url ||
                                                 item.photo.url
                                             }
                                             alt={item.name_en}
@@ -80,28 +99,51 @@ export default function TeamIndex({ members }: Props) {
                                         />
                                     </div>
                                 ) : (
-                                    <div className="bg-muted flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full">
-                                        <User className="text-muted-foreground h-5 w-5" />
+                                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-muted">
+                                        <User className="h-5 w-5 text-muted-foreground" />
                                     </div>
                                 )}
                                 <div className="min-w-0">
-                                    <p className="truncate text-sm font-medium">
-                                        {item.name_en}
-                                    </p>
-                                    <p className="text-muted-foreground truncate text-xs">
+                                    <div className="flex items-center gap-2">
+                                        <p className="truncate text-sm font-medium">
+                                            {item.name_en}
+                                        </p>
+                                        {!item.is_visible && (
+                                            <Badge
+                                                variant="secondary"
+                                                className="text-[10px]"
+                                            >
+                                                Hidden
+                                            </Badge>
+                                        )}
+                                    </div>
+                                    <p className="truncate text-xs text-muted-foreground">
                                         {item.role_en}
                                     </p>
                                 </div>
                             </div>
                             <div className="flex items-center gap-2">
-                                <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    asChild
-                                >
-                                    <Link
-                                        href={`/admin/team/${item.id}/edit`}
-                                    >
+                                <div className="flex items-center gap-1.5">
+                                    {item.is_visible ? (
+                                        <Eye className="h-3.5 w-3.5 text-muted-foreground" />
+                                    ) : (
+                                        <EyeOff className="h-3.5 w-3.5 text-muted-foreground" />
+                                    )}
+                                    <Switch
+                                        checked={item.is_visible}
+                                        onCheckedChange={() =>
+                                            handleVisibilityToggle(item)
+                                        }
+                                        size="sm"
+                                        aria-label={
+                                            item.is_visible
+                                                ? `Hide ${item.name_en} on website`
+                                                : `Show ${item.name_en} on website`
+                                        }
+                                    />
+                                </div>
+                                <Button variant="ghost" size="sm" asChild>
+                                    <Link href={`/admin/team/${item.id}/edit`}>
                                         <Pencil className="h-4 w-4" />
                                     </Link>
                                 </Button>
@@ -110,7 +152,7 @@ export default function TeamIndex({ members }: Props) {
                                     size="sm"
                                     onClick={() => setDeleteTarget(item)}
                                 >
-                                    <Trash2 className="text-destructive h-4 w-4" />
+                                    <Trash2 className="h-4 w-4 text-destructive" />
                                 </Button>
                             </div>
                         </div>
@@ -127,18 +169,15 @@ export default function TeamIndex({ members }: Props) {
                         <DialogTitle>Delete Team Member</DialogTitle>
                         <DialogDescription>
                             Are you sure you want to delete &ldquo;
-                            {deleteTarget?.name_en}&rdquo;? This action
-                            cannot be undone.
+                            {deleteTarget?.name_en}&rdquo;? This action cannot
+                            be undone.
                         </DialogDescription>
                     </DialogHeader>
                     <DialogFooter>
                         <DialogClose asChild>
                             <Button variant="outline">Cancel</Button>
                         </DialogClose>
-                        <Button
-                            variant="destructive"
-                            onClick={handleDelete}
-                        >
+                        <Button variant="destructive" onClick={handleDelete}>
                             Delete
                         </Button>
                     </DialogFooter>

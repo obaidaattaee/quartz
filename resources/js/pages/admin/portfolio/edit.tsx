@@ -33,8 +33,9 @@ export default function PortfolioEdit({ item }: Props) {
     const [afterImage, setAfterImage] = useState<MediaItem | null>(
         item.after_image ?? null,
     );
-    const [selectedOgImage, setSelectedOgImage] =
-        useState<MediaItem | null>(item.og_image ?? null);
+    const [selectedOgImage, setSelectedOgImage] = useState<MediaItem | null>(
+        item.og_image ?? null,
+    );
     const [seoExpanded, setSeoExpanded] = useState(false);
 
     const { data, setData, put, processing, errors } = useForm({
@@ -48,7 +49,8 @@ export default function PortfolioEdit({ item }: Props) {
         service_category: item.service_category,
         featured_image_id: item.featured_image_id,
         client_name: item.client_name ?? '',
-        results_metrics: item.results_metrics ?? ([] as { label: string; value: string }[]),
+        results_metrics:
+            item.results_metrics ?? ([] as { label: string; value: string }[]),
         status: item.status,
         before_image_id: item.before_image_id,
         after_image_id: item.after_image_id,
@@ -166,16 +168,19 @@ export default function PortfolioEdit({ item }: Props) {
                             <Select
                                 value={data.status}
                                 onValueChange={(value) =>
-                                    setData('status', value)
+                                    setData(
+                                        'status',
+                                        value === 'published'
+                                            ? 'published'
+                                            : 'draft',
+                                    )
                                 }
                             >
                                 <SelectTrigger className="w-full">
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="draft">
-                                        Draft
-                                    </SelectItem>
+                                    <SelectItem value="draft">Draft</SelectItem>
                                     <SelectItem value="published">
                                         Published
                                     </SelectItem>
@@ -191,10 +196,7 @@ export default function PortfolioEdit({ item }: Props) {
                             value={selectedImage}
                             onChange={(media) => {
                                 setSelectedImage(media);
-                                setData(
-                                    'featured_image_id',
-                                    media?.id ?? null,
-                                );
+                                setData('featured_image_id', media?.id ?? null);
                             }}
                         />
                         <InputError message={errors.featured_image_id} />
@@ -250,9 +252,7 @@ export default function PortfolioEdit({ item }: Props) {
                                             }
                                             placeholder="Enter title in English"
                                         />
-                                        <InputError
-                                            message={errors.title_en}
-                                        />
+                                        <InputError message={errors.title_en} />
                                     </div>
 
                                     <div className="space-y-2">
@@ -311,9 +311,7 @@ export default function PortfolioEdit({ item }: Props) {
                                             placeholder="Enter title in Arabic"
                                             dir="rtl"
                                         />
-                                        <InputError
-                                            message={errors.title_ar}
-                                        />
+                                        <InputError message={errors.title_ar} />
                                     </div>
 
                                     <div className="space-y-2">
@@ -374,7 +372,7 @@ export default function PortfolioEdit({ item }: Props) {
                         </div>
 
                         {data.results_metrics.length === 0 && (
-                            <p className="text-muted-foreground text-sm">
+                            <p className="text-sm text-muted-foreground">
                                 No metrics added yet. Click &quot;Add
                                 Metric&quot; to add results like &quot;Revenue
                                 Increase: 45%&quot;.
@@ -382,10 +380,7 @@ export default function PortfolioEdit({ item }: Props) {
                         )}
 
                         {data.results_metrics.map((metric, index) => (
-                            <div
-                                key={index}
-                                className="flex items-start gap-2"
-                            >
+                            <div key={index} className="flex items-start gap-2">
                                 <div className="flex-1 space-y-1">
                                     <Input
                                         value={metric.label}
@@ -450,7 +445,7 @@ export default function PortfolioEdit({ item }: Props) {
                                 SEO Settings
                             </span>
                             <ChevronDown
-                                className={`text-muted-foreground h-4 w-4 transition-transform ${
+                                className={`h-4 w-4 text-muted-foreground transition-transform ${
                                     seoExpanded ? 'rotate-180' : ''
                                 }`}
                             />
@@ -477,11 +472,9 @@ export default function PortfolioEdit({ item }: Props) {
                                         />
                                         <div className="flex items-center justify-between">
                                             <InputError
-                                                message={
-                                                    errors.meta_title_en
-                                                }
+                                                message={errors.meta_title_en}
                                             />
-                                            <span className="text-muted-foreground text-xs">
+                                            <span className="text-xs text-muted-foreground">
                                                 {data.meta_title_en.length}
                                                 /70
                                             </span>
@@ -506,11 +499,9 @@ export default function PortfolioEdit({ item }: Props) {
                                         />
                                         <div className="flex items-center justify-between">
                                             <InputError
-                                                message={
-                                                    errors.meta_title_ar
-                                                }
+                                                message={errors.meta_title_ar}
                                             />
-                                            <span className="text-muted-foreground text-xs">
+                                            <span className="text-xs text-muted-foreground">
                                                 {data.meta_title_ar.length}
                                                 /70
                                             </span>
@@ -542,7 +533,7 @@ export default function PortfolioEdit({ item }: Props) {
                                                     errors.meta_description_en
                                                 }
                                             />
-                                            <span className="text-muted-foreground text-xs">
+                                            <span className="text-xs text-muted-foreground">
                                                 {
                                                     data.meta_description_en
                                                         .length
@@ -575,7 +566,7 @@ export default function PortfolioEdit({ item }: Props) {
                                                     errors.meta_description_ar
                                                 }
                                             />
-                                            <span className="text-muted-foreground text-xs">
+                                            <span className="text-xs text-muted-foreground">
                                                 {
                                                     data.meta_description_ar
                                                         .length
@@ -598,9 +589,7 @@ export default function PortfolioEdit({ item }: Props) {
                                             );
                                         }}
                                     />
-                                    <InputError
-                                        message={errors.og_image_id}
-                                    />
+                                    <InputError message={errors.og_image_id} />
                                 </div>
                             </div>
                         )}

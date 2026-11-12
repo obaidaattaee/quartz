@@ -5,14 +5,10 @@ import {
     FolderOpen,
     Mail,
     MessageSquare,
+    Users,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { AdminMetrics, RecentLead } from '@/types';
 
 type MetricCardProps = {
@@ -26,17 +22,13 @@ function MetricCard({ title, value, subtitle, icon: Icon }: MetricCardProps) {
     return (
         <Card className="border-sidebar-border/70 dark:border-sidebar-border">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                    {title}
-                </CardTitle>
-                <Icon className="text-muted-foreground h-4 w-4" />
+                <CardTitle className="text-sm font-medium">{title}</CardTitle>
+                <Icon className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
                 <div className="text-2xl font-bold">{value}</div>
                 {subtitle && (
-                    <p className="text-muted-foreground text-xs">
-                        {subtitle}
-                    </p>
+                    <p className="text-xs text-muted-foreground">{subtitle}</p>
                 )}
             </CardContent>
         </Card>
@@ -66,7 +58,7 @@ export default function Dashboard({ metrics, recent_leads }: Props) {
         <>
             <Head title="Admin Dashboard" />
             <div className="flex h-full flex-1 flex-col gap-6 overflow-x-auto p-4">
-                <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-5">
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-6">
                     <MetricCard
                         title="Total Leads"
                         value={metrics.total_leads}
@@ -79,19 +71,27 @@ export default function Dashboard({ metrics, recent_leads }: Props) {
                     />
                     <MetricCard
                         title="Blog Posts"
-                        value={metrics.blog_posts}
-                        subtitle={`${metrics.published_posts} published`}
+                        value={metrics.published_posts}
+                        subtitle={`published · ${metrics.blog_posts} total`}
                         icon={FileText}
                     />
                     <MetricCard
                         title="Portfolio Items"
-                        value={metrics.portfolio_items}
+                        value={metrics.published_portfolio_items}
+                        subtitle={`published · ${metrics.portfolio_items} total`}
                         icon={FolderOpen}
                     />
                     <MetricCard
                         title="Testimonials"
-                        value={metrics.testimonials}
+                        value={metrics.visible_testimonials}
+                        subtitle={`visible · ${metrics.testimonials} total`}
                         icon={MessageSquare}
+                    />
+                    <MetricCard
+                        title="Team Members"
+                        value={metrics.visible_team_members}
+                        subtitle={`visible · ${metrics.team_members} total`}
+                        icon={Users}
                     />
                 </div>
 
@@ -101,24 +101,24 @@ export default function Dashboard({ metrics, recent_leads }: Props) {
                     </CardHeader>
                     <CardContent>
                         {recent_leads.length === 0 ? (
-                            <p className="text-muted-foreground text-sm">
+                            <p className="text-sm text-muted-foreground">
                                 No contact leads yet.
                             </p>
                         ) : (
                             <div className="overflow-x-auto">
                                 <table className="w-full text-sm">
                                     <thead>
-                                        <tr className="text-muted-foreground border-b text-left">
-                                            <th className="pb-2 pr-4 font-medium">
+                                        <tr className="border-b text-left text-muted-foreground">
+                                            <th className="pr-4 pb-2 font-medium">
                                                 Name
                                             </th>
-                                            <th className="pb-2 pr-4 font-medium">
+                                            <th className="pr-4 pb-2 font-medium">
                                                 Email
                                             </th>
-                                            <th className="pb-2 pr-4 font-medium">
+                                            <th className="pr-4 pb-2 font-medium">
                                                 Service
                                             </th>
-                                            <th className="pb-2 pr-4 font-medium">
+                                            <th className="pr-4 pb-2 font-medium">
                                                 Status
                                             </th>
                                             <th className="pb-2 font-medium">

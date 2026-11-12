@@ -1,10 +1,22 @@
+import type { NavItem } from '@/types/navigation';
+import type {
+    ProcessStep,
+    ServiceEngagement,
+    ServiceFaq,
+    ServicePain,
+} from '@/types/service';
+
 export type AdminMetrics = {
     total_leads: number;
     new_leads: number;
     blog_posts: number;
     published_posts: number;
     portfolio_items: number;
+    published_portfolio_items: number;
     testimonials: number;
+    visible_testimonials: number;
+    team_members: number;
+    visible_team_members: number;
 };
 
 export type RecentLead = {
@@ -111,14 +123,25 @@ export type ServicePageData = {
     title_ar: string;
     subtitle_en: string | null;
     subtitle_ar: string | null;
+    tagline_en: string | null;
+    tagline_ar: string | null;
+    audience_en: string | null;
+    audience_ar: string | null;
     problem_en: string;
     problem_ar: string;
+    pains_en: ServicePain[] | null;
+    pains_ar: ServicePain[] | null;
     approach_en: string;
     approach_ar: string;
-    process_steps_en: { title: string; description: string }[];
-    process_steps_ar: { title: string; description: string }[];
+    process_steps_en: ProcessStep[];
+    process_steps_ar: ProcessStep[];
     deliverables_en: string[];
     deliverables_ar: string[];
+    engagements_en: ServiceEngagement[] | null;
+    engagements_ar: ServiceEngagement[] | null;
+    tools: string[] | null;
+    faqs_en: ServiceFaq[] | null;
+    faqs_ar: ServiceFaq[] | null;
     cta_text_en: string | null;
     cta_text_ar: string | null;
     created_at: string;
@@ -136,6 +159,7 @@ export type TeamMemberData = {
     photo_id: number | null;
     photo?: MediaItem | null;
     sort_order: number;
+    is_visible: boolean;
     created_at: string;
     updated_at: string;
 };
@@ -189,5 +213,5 @@ export type SeoMetadataItem = {
 
 export type NavGroup = {
     label: string;
-    items: import('@/types/navigation').NavItem[];
+    items: NavItem[];
 };

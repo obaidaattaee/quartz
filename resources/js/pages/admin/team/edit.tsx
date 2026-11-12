@@ -4,14 +4,10 @@ import BilingualTabs from '@/components/admin/bilingual-tabs';
 import ImagePickerField from '@/components/admin/image-picker-field';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import type { MediaItem, TeamMemberData } from '@/types';
 
@@ -29,6 +25,7 @@ export default function TeamEdit({ member }: Props) {
         bio_ar: member.bio_ar || '',
         photo_id: member.photo_id,
         photo: (member.photo as MediaItem | null) ?? null,
+        is_visible: member.is_visible,
     });
 
     function handleSubmit(e: React.FormEvent) {
@@ -56,9 +53,7 @@ export default function TeamEdit({ member }: Props) {
                                 {(locale) => (
                                     <div className="space-y-4 pt-4">
                                         <div className="space-y-2">
-                                            <Label
-                                                htmlFor={`name_${locale}`}
-                                            >
+                                            <Label htmlFor={`name_${locale}`}>
                                                 Name (
                                                 {locale === 'en'
                                                     ? 'English'
@@ -95,9 +90,7 @@ export default function TeamEdit({ member }: Props) {
                                             />
                                         </div>
                                         <div className="space-y-2">
-                                            <Label
-                                                htmlFor={`role_${locale}`}
-                                            >
+                                            <Label htmlFor={`role_${locale}`}>
                                                 Role (
                                                 {locale === 'en'
                                                     ? 'English'
@@ -134,9 +127,7 @@ export default function TeamEdit({ member }: Props) {
                                             />
                                         </div>
                                         <div className="space-y-2">
-                                            <Label
-                                                htmlFor={`bio_${locale}`}
-                                            >
+                                            <Label htmlFor={`bio_${locale}`}>
                                                 Bio (optional)
                                             </Label>
                                             <Textarea
@@ -191,6 +182,31 @@ export default function TeamEdit({ member }: Props) {
                                 }}
                                 label="Member Photo"
                             />
+                        </CardContent>
+                    </Card>
+
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Visibility</CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-2">
+                            <div className="flex items-center gap-3">
+                                <Switch
+                                    id="is_visible"
+                                    checked={data.is_visible}
+                                    onCheckedChange={(checked) =>
+                                        setData('is_visible', checked)
+                                    }
+                                />
+                                <Label htmlFor="is_visible">
+                                    Show on website
+                                </Label>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Hidden members stay in the admin but are not
+                                shown on the About page.
+                            </p>
+                            <InputError message={errors.is_visible} />
                         </CardContent>
                     </Card>
 

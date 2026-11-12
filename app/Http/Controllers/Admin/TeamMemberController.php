@@ -52,22 +52,25 @@ class TeamMemberController extends Controller
 
     /**
      * Show the form for editing the specified team member.
+     *
+     * Resource routes bind the member as {team}, so the parameter must be
+     * named $team for implicit model binding to resolve it.
      */
-    public function edit(TeamMember $teamMember)
+    public function edit(TeamMember $team)
     {
-        $teamMember->load('photo');
+        $team->load('photo');
 
         return Inertia::render('admin/team/edit', [
-            'member' => $teamMember,
+            'member' => $team,
         ]);
     }
 
     /**
      * Update the specified team member.
      */
-    public function update(UpdateTeamMemberRequest $request, TeamMember $teamMember)
+    public function update(UpdateTeamMemberRequest $request, TeamMember $team)
     {
-        $teamMember->update($request->validated());
+        $team->update($request->validated());
 
         return redirect()->route('admin.team.index')
             ->with('success', 'Team member updated.');
@@ -76,9 +79,9 @@ class TeamMemberController extends Controller
     /**
      * Remove the specified team member.
      */
-    public function destroy(TeamMember $teamMember)
+    public function destroy(TeamMember $team)
     {
-        $teamMember->delete();
+        $team->delete();
 
         return redirect()->route('admin.team.index')
             ->with('success', 'Team member deleted.');

@@ -39,8 +39,6 @@ class SiteSettingController extends Controller
         $validated = $request->validate([
             'site_name' => ['nullable', 'string', 'max:255'],
             'logo_media_id' => ['nullable', 'integer', 'exists:media,id'],
-            'primary_color' => ['nullable', 'string', 'regex:/^#[0-9A-Fa-f]{6}$/'],
-            'secondary_color' => ['nullable', 'string', 'regex:/^#[0-9A-Fa-f]{6}$/'],
             'contact_phone' => ['nullable', 'string', 'max:50'],
             'contact_email' => ['nullable', 'email', 'max:255'],
             'contact_whatsapp' => ['nullable', 'string', 'max:50'],

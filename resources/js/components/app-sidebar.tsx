@@ -1,16 +1,20 @@
 import { Link, usePage } from '@inertiajs/react';
 import {
     Briefcase,
+    Building2,
     FileText,
     FolderOpen,
     Image,
     LayoutDashboard,
+    LayoutTemplate,
     Mail,
     MessageSquare,
     Newspaper,
     Scale,
+    Search,
     Settings,
     Shield,
+    Tags,
     Users,
 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
@@ -36,13 +40,18 @@ const dashboardItem: NavItem[] = [
     },
 ];
 
+// Content routes are open to editors as well as admins.
 const contentNavItems: NavItem[] = [
     { title: 'Blog Posts', href: '/admin/blog', icon: FileText },
+    { title: 'Categories', href: '/admin/categories', icon: Tags },
     { title: 'Portfolio', href: '/admin/portfolio', icon: FolderOpen },
 ];
 
+// Everything below is behind the role:admin middleware.
 const websiteNavItems: NavItem[] = [
+    { title: 'Homepage', href: '/admin/landing', icon: LayoutTemplate },
     { title: 'Services', href: '/admin/services', icon: Briefcase },
+    { title: 'Industries', href: '/admin/industries', icon: Building2 },
     {
         title: 'Testimonials',
         href: '/admin/testimonials',
@@ -59,6 +68,8 @@ const communicationNavItems: NavItem[] = [
 
 const systemNavItems: NavItem[] = [
     { title: 'Site Settings', href: '/admin/settings', icon: Settings },
+    // GET /admin/seo is registered twice; the role:admin copy wins.
+    { title: 'SEO', href: '/admin/seo', icon: Search },
     { title: 'Media Library', href: '/admin/media', icon: Image },
     { title: 'Users & Roles', href: '/admin/users', icon: Shield },
 ];
@@ -86,31 +97,18 @@ export function AppSidebar() {
             <SidebarContent>
                 <NavMain items={dashboardItem} label="Admin" />
                 <NavMain items={contentNavItems} label="Content" />
-                {isAdmin && (
-                    <NavMain
-                        items={websiteNavItems}
-                        label="Website"
-                    />
-                )}
+                {isAdmin && <NavMain items={websiteNavItems} label="Website" />}
                 {isAdmin && (
                     <NavMain
                         items={communicationNavItems}
                         label="Communication"
                     />
                 )}
-                {isAdmin && (
-                    <NavMain
-                        items={systemNavItems}
-                        label="System"
-                    />
-                )}
+                {isAdmin && <NavMain items={systemNavItems} label="System" />}
             </SidebarContent>
 
             <SidebarFooter>
-                <NavFooter
-                    items={[]}
-                    className="mt-auto"
-                />
+                <NavFooter items={[]} className="mt-auto" />
                 <NavUser />
             </SidebarFooter>
         </Sidebar>

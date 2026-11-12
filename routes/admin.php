@@ -5,6 +5,11 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ContactLeadController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\IndustryController;
+use App\Http\Controllers\Admin\LandingCaseStudyController;
+use App\Http\Controllers\Admin\LandingFaqController;
+use App\Http\Controllers\Admin\LandingOverviewController;
+use App\Http\Controllers\Admin\LandingProcessStepController;
+use App\Http\Controllers\Admin\LandingServiceController;
 use App\Http\Controllers\Admin\LegalPageController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\NewsletterController;
@@ -63,6 +68,30 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
 
         // Industries (edit-only; 5 seeded rows, admin can toggle visibility + edit content)
         Route::resource('industries', IndustryController::class)->only(['index', 'edit', 'update']);
+
+        // Homepage content (landing_* tables read by HomeController)
+        Route::prefix('landing')->name('landing.')->group(function () {
+            Route::get('/', [LandingOverviewController::class, 'index'])->name('index');
+
+            $sections = [
+                'services' => LandingServiceController::class,
+                'process-steps' => LandingProcessStepController::class,
+                'case-studies' => LandingCaseStudyController::class,
+                'faqs' => LandingFaqController::class,
+            ];
+
+            foreach ($sections as $section => $controller) {
+                Route::resource($section, $controller)
+                    ->except(['show'])
+                    ->parameters([$section => 'item']);
+                Route::post("{$section}/{item}/reorder", [$controller, 'reorder'])->name("{$section}.reorder");
+            }
+
+            // Only these tables have an is_visible column.
+            foreach (['case-studies' => LandingCaseStudyController::class, 'faqs' => LandingFaqController::class] as $section => $controller) {
+                Route::patch("{$section}/{item}/visibility", [$controller, 'toggleVisibility'])->name("{$section}.visibility");
+            }
+        });
 
         // Legal documents (edit-only; privacy policy + terms of service)
         Route::resource('legal', LegalPageController::class)->only(['index', 'edit', 'update']);

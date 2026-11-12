@@ -1,11 +1,6 @@
 import type { ReactNode } from 'react';
 
-import {
-    Tabs,
-    TabsContent,
-    TabsList,
-    TabsTrigger,
-} from '@/components/ui/tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 type Props = {
     children: (locale: 'en' | 'ar') => ReactNode;
@@ -18,10 +13,11 @@ export default function BilingualTabs({
     errors,
     defaultLocale = 'en',
 }: Props) {
+    // Matches "title_en" as well as nested repeater keys like "faqs_en.0.answer".
     const hasEnErrors =
-        errors && Object.keys(errors).some((k) => k.endsWith('_en'));
+        errors && Object.keys(errors).some((k) => /_en(\.|$)/.test(k));
     const hasArErrors =
-        errors && Object.keys(errors).some((k) => k.endsWith('_ar'));
+        errors && Object.keys(errors).some((k) => /_ar(\.|$)/.test(k));
 
     return (
         <Tabs defaultValue={defaultLocale}>
@@ -29,13 +25,13 @@ export default function BilingualTabs({
                 <TabsTrigger value="en">
                     English
                     {hasEnErrors && (
-                        <span className="bg-destructive ml-1.5 h-2 w-2 rounded-full" />
+                        <span className="ml-1.5 h-2 w-2 rounded-full bg-destructive" />
                     )}
                 </TabsTrigger>
                 <TabsTrigger value="ar">
                     Arabic
                     {hasArErrors && (
-                        <span className="bg-destructive ml-1.5 h-2 w-2 rounded-full" />
+                        <span className="ml-1.5 h-2 w-2 rounded-full bg-destructive" />
                     )}
                 </TabsTrigger>
             </TabsList>

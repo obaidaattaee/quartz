@@ -123,4 +123,17 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Seeded Admin Password
+    |--------------------------------------------------------------------------
+    |
+    | Password given to admin@quartz.com when the database seeder first
+    | creates that account. Leave it empty outside local/testing and the
+    | seeder generates a random one and prints it once.
+    |
+    */
+
+    'admin_seed_password' => env('ADMIN_SEED_PASSWORD'),
+
 ];

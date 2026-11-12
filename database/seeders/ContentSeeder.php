@@ -8,6 +8,7 @@ use App\Models\Testimonial;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class ContentSeeder extends Seeder
 {
@@ -158,17 +159,44 @@ class ContentSeeder extends Seeder
     }
 
     /**
-     * Seed default admin user.
+     * Create the default admin user once. An existing account is never
+     * touched, so re-seeding cannot reset a password that was changed.
      */
     private function seedAdminUser(): void
     {
-        User::updateOrCreate(
-            ['email' => 'admin@quartz.com'],
-            [
-                'name' => 'Admin',
-                'password' => Hash::make('password'),
-                'role' => 'admin',
-            ]
-        );
+        if (User::where('email', 'admin@quartz.com')->exists()) {
+            return;
+        }
+
+        User::create([
+            'email' => 'admin@quartz.com',
+            'name' => 'Admin',
+            'password' => Hash::make($this->adminSeedPassword()),
+            'role' => 'admin',
+        ]);
+    }
+
+    /**
+     * ADMIN_SEED_PASSWORD when set; the well-known dev password in
+     * local/testing; otherwise a random password printed once.
+     */
+    private function adminSeedPassword(): string
+    {
+        $password = config('app.admin_seed_password');
+
+        if (is_string($password) && $password !== '') {
+            return $password;
+        }
+
+        if (app()->environment(['local', 'testing'])) {
+            return 'password';
+        }
+
+        $password = Str::password(20);
+
+        $this->command?->warn("Admin account admin@quartz.com created with password: {$password}");
+        $this->command?->warn('Store it now; it will not be shown again.');
+
+        return $password;
     }
 }
