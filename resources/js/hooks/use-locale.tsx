@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
 import { usePage } from '@inertiajs/react';
+import { useEffect } from 'react';
 
 import { t as translate } from '@/lib/i18n';
 import type { Direction, Locale } from '@/types';
@@ -16,24 +16,25 @@ export function useLocale(): UseLocaleReturn {
     const { url, props } = usePage();
     const locale = (props.locale as Locale) ?? 'en';
     const direction = (props.direction as Direction) ?? 'ltr';
-    const translations =
-        (props.translations as Record<string, string>) ?? {};
+    const translations = (props.translations as Record<string, string>) ?? {};
 
     // Sync <html> dir and lang on Inertia client-side navigation
     useEffect(() => {
         document.documentElement.dir = direction;
         document.documentElement.lang = locale;
-        document.body.className = document.body.className
-            .replace(/font-(arabic|sans)/g, '')
-            .trim()
-            + ' ' + (locale === 'ar' ? 'font-arabic' : 'font-sans');
+        document.body.className =
+            document.body.className.replace(/font-(arabic|sans)/g, '').trim() +
+            ' ' +
+            (locale === 'ar' ? 'font-arabic' : 'font-sans');
     }, [locale, direction]);
 
     const targetLocale = locale === 'en' ? 'ar' : 'en';
-    const switchLocaleUrl = url.replace(
-        new RegExp(`^/${locale}(/|$)`),
-        `/${targetLocale}$1`,
-    );
+    const prefix = new RegExp(`^/${locale}(/|$|\\?)`);
+    // The bare root "/" (and any unprefixed URL) has no locale segment to
+    // swap, so prepend the target instead of returning the same URL.
+    const switchLocaleUrl = prefix.test(url)
+        ? url.replace(prefix, `/${targetLocale}$1`)
+        : `/${targetLocale}${url === '/' ? '' : url}`;
 
     return {
         locale,
