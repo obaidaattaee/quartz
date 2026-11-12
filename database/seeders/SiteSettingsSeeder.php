@@ -31,12 +31,12 @@ class SiteSettingsSeeder extends Seeder
             // and terms of service at render time. Replace the bracketed
             // values with the real ones before publishing.
             'legal_entity_name' => 'Quartz Solutions',
-            'legal_registered_address' => '[REGISTERED ADDRESS — TO BE SPECIFIED]',
+            'legal_registered_address' => '',
             'legal_privacy_email' => 'privacy@quartz-solutions.net',
             'legal_contact_email' => 'legal@quartz-solutions.net',
-            'legal_governing_law' => '[GOVERNING LAW — TO BE SPECIFIED]',
-            'legal_dispute_venue' => '[DISPUTE VENUE — TO BE SPECIFIED]',
-            'legal_liability_cap' => '[LIABILITY CAP — TO BE SPECIFIED]',
+            'legal_governing_law' => '',
+            'legal_dispute_venue' => '',
+            'legal_liability_cap' => '',
         ]);
     }
 }

@@ -30,7 +30,7 @@ class LegalContentService
             'privacy_email' => (string) (SettingsService::get('legal_privacy_email') ?: $contactEmail),
             'legal_email' => (string) (SettingsService::get('legal_contact_email') ?: $contactEmail),
             'address' => $contactAddress,
-            'registered_address' => (string) (SettingsService::get('legal_registered_address') ?: $contactAddress),
+            'registered_address' => (string) (SettingsService::get('legal_registered_address') ?: $contactAddress ?: '[REGISTERED ADDRESS — TO BE SPECIFIED]'),
             'governing_law' => (string) (SettingsService::get('legal_governing_law') ?: '[GOVERNING LAW — TO BE SPECIFIED]'),
             'dispute_venue' => (string) (SettingsService::get('legal_dispute_venue') ?: '[DISPUTE VENUE — TO BE SPECIFIED]'),
             'liability_cap' => (string) (SettingsService::get('legal_liability_cap') ?: '[LIABILITY CAP — TO BE SPECIFIED]'),

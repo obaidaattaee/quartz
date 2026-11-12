@@ -47,6 +47,13 @@ class SiteSettingController extends Controller
             'social_twitter' => ['nullable', 'url', 'max:500'],
             'social_github' => ['nullable', 'url', 'max:500'],
             'social_instagram' => ['nullable', 'url', 'max:500'],
+            'legal_entity_name' => ['nullable', 'string', 'max:255'],
+            'legal_registered_address' => ['nullable', 'string', 'max:500'],
+            'legal_privacy_email' => ['nullable', 'email', 'max:255'],
+            'legal_contact_email' => ['nullable', 'email', 'max:255'],
+            'legal_governing_law' => ['nullable', 'string', 'max:255'],
+            'legal_dispute_venue' => ['nullable', 'string', 'max:255'],
+            'legal_liability_cap' => ['nullable', 'string', 'max:500'],
         ]);
 
         SettingsService::setMany($validated);

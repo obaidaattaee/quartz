@@ -26,7 +26,72 @@ export default function SettingsIndex({ settings, logo }: Props) {
         social_twitter: (settings.social_twitter as string) ?? '',
         social_github: (settings.social_github as string) ?? '',
         social_instagram: (settings.social_instagram as string) ?? '',
+        legal_entity_name: (settings.legal_entity_name as string) ?? '',
+        legal_registered_address:
+            (settings.legal_registered_address as string) ?? '',
+        legal_privacy_email: (settings.legal_privacy_email as string) ?? '',
+        legal_contact_email: (settings.legal_contact_email as string) ?? '',
+        legal_governing_law: (settings.legal_governing_law as string) ?? '',
+        legal_dispute_venue: (settings.legal_dispute_venue as string) ?? '',
+        legal_liability_cap: (settings.legal_liability_cap as string) ?? '',
     });
+
+    // Company details inserted into the published privacy policy and terms.
+    // Empty fields show a "[… TO BE SPECIFIED]" marker on those pages.
+    const legalFields: {
+        key:
+            | 'legal_entity_name'
+            | 'legal_registered_address'
+            | 'legal_privacy_email'
+            | 'legal_contact_email'
+            | 'legal_governing_law'
+            | 'legal_dispute_venue'
+            | 'legal_liability_cap';
+        label: string;
+        placeholder: string;
+        type?: 'email';
+        multiline?: boolean;
+    }[] = [
+        {
+            key: 'legal_entity_name',
+            label: 'Legal entity name',
+            placeholder: 'Quartz Solutions LLC',
+        },
+        {
+            key: 'legal_registered_address',
+            label: 'Registered address',
+            placeholder: 'Street, city, postcode, country',
+            multiline: true,
+        },
+        {
+            key: 'legal_privacy_email',
+            label: 'Privacy contact email',
+            placeholder: 'privacy@quartz-solutions.net',
+            type: 'email',
+        },
+        {
+            key: 'legal_contact_email',
+            label: 'Legal contact email',
+            placeholder: 'legal@quartz-solutions.net',
+            type: 'email',
+        },
+        {
+            key: 'legal_governing_law',
+            label: 'Governing law',
+            placeholder: 'e.g. the laws of the State of Delaware, USA',
+        },
+        {
+            key: 'legal_dispute_venue',
+            label: 'Dispute venue',
+            placeholder: 'e.g. the courts of Wilmington, Delaware',
+        },
+        {
+            key: 'legal_liability_cap',
+            label: 'Liability cap',
+            placeholder: 'e.g. the fees paid in the 12 months before the claim',
+            multiline: true,
+        },
+    ];
 
     function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
@@ -40,7 +105,8 @@ export default function SettingsIndex({ settings, logo }: Props) {
                 <div>
                     <h2 className="text-lg font-semibold">Site Settings</h2>
                     <p className="text-sm text-muted-foreground">
-                        Manage branding, contact information, and social links.
+                        Manage branding, contact information, social links, and
+                        the company details used in the legal pages.
                     </p>
                 </div>
 
@@ -209,6 +275,56 @@ export default function SettingsIndex({ settings, logo }: Props) {
                                 />
                                 <InputError message={errors.social_instagram} />
                             </div>
+                        </CardContent>
+                    </Card>
+
+                    {/* Legal & company details */}
+                    <Card className="border-sidebar-border/70 dark:border-sidebar-border">
+                        <CardHeader>
+                            <CardTitle>Legal &amp; company details</CardTitle>
+                            <p className="text-sm text-muted-foreground">
+                                Used in the published Privacy Policy and Terms
+                                of Service. Empty fields appear there as
+                                &ldquo;[… TO BE SPECIFIED]&rdquo;, so fill them
+                                in before launch.
+                            </p>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            {legalFields.map((field) => (
+                                <div key={field.key} className="space-y-2">
+                                    <Label htmlFor={field.key}>
+                                        {field.label}
+                                    </Label>
+                                    {field.multiline ? (
+                                        <Textarea
+                                            id={field.key}
+                                            value={data[field.key]}
+                                            onChange={(e) =>
+                                                setData(
+                                                    field.key,
+                                                    e.target.value,
+                                                )
+                                            }
+                                            placeholder={field.placeholder}
+                                            rows={2}
+                                        />
+                                    ) : (
+                                        <Input
+                                            id={field.key}
+                                            type={field.type ?? 'text'}
+                                            value={data[field.key]}
+                                            onChange={(e) =>
+                                                setData(
+                                                    field.key,
+                                                    e.target.value,
+                                                )
+                                            }
+                                            placeholder={field.placeholder}
+                                        />
+                                    )}
+                                    <InputError message={errors[field.key]} />
+                                </div>
+                            ))}
                         </CardContent>
                     </Card>
 
