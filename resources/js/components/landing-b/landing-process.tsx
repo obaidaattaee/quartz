@@ -160,25 +160,29 @@ export default function LandingProcess() {
                                 paddingTop: 24,
                                 borderTop: `1px solid ${B.line}`,
                                 display: 'grid',
-                                gridTemplateColumns: 'repeat(2, 1fr)',
+                                gridTemplateColumns: current.duration
+                                    ? 'repeat(2, 1fr)'
+                                    : '1fr',
                                 gap: 24,
                             }}
                         >
-                            <div>
-                                <div style={monoStyle}>
-                                    {isRTL
-                                        ? 'المدة المعتادة'
-                                        : 'Typical duration'}
+                            {current.duration && (
+                                <div>
+                                    <div style={monoStyle}>
+                                        {isRTL
+                                            ? 'المدة المعتادة'
+                                            : 'Typical duration'}
+                                    </div>
+                                    <div
+                                        style={{
+                                            fontSize: 20,
+                                            marginTop: 6,
+                                        }}
+                                    >
+                                        {current.duration}
+                                    </div>
                                 </div>
-                                <div
-                                    style={{
-                                        fontSize: 20,
-                                        marginTop: 6,
-                                    }}
-                                >
-                                    {current.duration}
-                                </div>
-                            </div>
+                            )}
                             <div>
                                 <div style={monoStyle}>
                                     {isRTL ? 'المُخرَج' : 'Deliverable'}

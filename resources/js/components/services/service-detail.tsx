@@ -161,8 +161,18 @@ export default function ServiceDetail() {
                             <p className="sv-starts">
                                 {t('services.page.startsWith')}{' '}
                                 <strong>{first.title}</strong>
-                                {listJoin(locale)}
-                                {first.duration}
+                                {first.duration && (
+                                    <>
+                                        {listJoin(locale)}
+                                        {/* Mid-sentence after "starts with X," */}
+                                        {locale === 'en'
+                                            ? first.duration
+                                                  .charAt(0)
+                                                  .toLowerCase() +
+                                              first.duration.slice(1)
+                                            : first.duration}
+                                    </>
+                                )}
                             </p>
                         )}
                     </div>
@@ -321,9 +331,11 @@ export default function ServiceDetail() {
                                         </span>
                                     )}
                                     <h3 className="sv-h3">{e.title}</h3>
-                                    <span className="sv-option-dur">
-                                        {e.duration}
-                                    </span>
+                                    {e.duration && (
+                                        <span className="sv-option-dur">
+                                            {e.duration}
+                                        </span>
+                                    )}
                                     <p className="sv-body">{e.description}</p>
                                     {e.best_for && (
                                         <p className="sv-option-best">
@@ -460,7 +472,7 @@ export default function ServiceDetail() {
     );
 }
 
-// "Product diagnostic, 2 weeks" — the comma differs in Arabic.
+// Join the engagement title and its scope wording for each locale.
 function listJoin(locale: string): string {
     return locale === 'ar' ? '، ' : ', ';
 }

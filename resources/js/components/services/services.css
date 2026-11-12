@@ -1097,7 +1097,7 @@
         var(--q-line) 1px,
         transparent 1px
     );
-    background-size: calc(100% / 12) 100%;
+    background-size: calc(100% / 4) 100%;
 }
 
 [dir='rtl'] .sv-gantt-track {
@@ -1134,8 +1134,10 @@
 }
 
 .sv-gantt-axis > span:last-child {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 4px;
+    text-align: center;
 }
 
 .sv-gantt figcaption {

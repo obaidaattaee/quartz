@@ -50,7 +50,18 @@ class ServicePagesTest extends TestCase
                 ->where('service.pains', fn ($pains) => count($pains) >= 3 && count($pains) <= 4)
                 ->has('service.pains.0.problem')
                 ->has('service.pains.0.solution')
-                ->where('service.steps.0.duration', fn ($v) => is_string($v) && $v !== '')
+                ->where('service.steps', function ($steps) {
+                    foreach ($steps as $step) {
+                        $this->assertSame('', $step['duration']);
+                    }
+
+                    return true;
+                })
+                ->where('service', function ($service) {
+                    $this->assertProjectBasedCopy($service);
+
+                    return true;
+                })
                 ->has('service.engagements', 3)
                 ->has('service.engagements.0.best_for')
                 ->where('service.faqs', fn ($faqs) => count($faqs) >= 4 && count($faqs) <= 5)
@@ -120,6 +131,55 @@ class ServicePagesTest extends TestCase
         foreach (['%', 'ISO 27001', 'certified partner', 'testimonial', 'WhatsApp us'] as $banned) {
             $this->assertStringNotContainsStringIgnoringCase($banned, $blob);
         }
+    }
+
+    public function test_service_and_faq_translations_use_project_based_copy(): void
+    {
+        $translations = [];
+
+        foreach (['en', 'ar'] as $locale) {
+            $translations[$locale] = json_decode(
+                file_get_contents(resource_path("lang/{$locale}.json")),
+                true,
+                512,
+                JSON_THROW_ON_ERROR,
+            );
+
+            foreach ($translations[$locale] as $key => $value) {
+                if (str_starts_with($key, 'services.') || str_starts_with($key, 'faq.')) {
+                    $this->assertProjectBasedCopy($value, "{$locale}.{$key}");
+                }
+            }
+        }
+
+        $englishKeys = array_keys($translations['en']);
+        $arabicKeys = array_keys($translations['ar']);
+        sort($englishKeys);
+        sort($arabicKeys);
+        $this->assertSame($englishKeys, $arabicKeys);
+    }
+
+    private function assertProjectBasedCopy(mixed $value, string $path = 'service'): void
+    {
+        if (is_iterable($value)) {
+            foreach ($value as $key => $child) {
+                $this->assertProjectBasedCopy($child, "{$path}.{$key}");
+            }
+
+            return;
+        }
+
+        if (! is_string($value)) {
+            return;
+        }
+
+        $this->assertDoesNotMatchRegularExpression(
+            '/\b\d+\s*(?:[-–]\s*\d+\s*)?(?:weeks?|months?|days?)\b/i',
+            $value,
+            $path,
+        );
+        $this->assertDoesNotMatchRegularExpression('/(أسبوع|أسابيع|أسبوعين|أسبوعان|أشهر|شهرين|أيام)/u', $value, $path);
+        $this->assertDoesNotMatchRegularExpression('/mada|مدى|Apple Pay|HyperPay|Moyasar|Stripe|\bTap\b/iu', $value, $path);
     }
 
     public function test_unknown_service_is_not_found(): void

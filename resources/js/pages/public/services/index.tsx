@@ -41,12 +41,14 @@ const GUIDE: ServiceSlug[] = [
     'cybersecurity',
 ];
 
-// Illustrative 12-week project: when each discipline is active.
+// Illustrative project stages: when each discipline is active.
+const PHASES = ['discover', 'build', 'release', 'run'] as const;
+
 const GANTT: { key: string; from: number; to: number; soft?: boolean }[] = [
-    { key: 'build', from: 0, to: 12 },
-    { key: 'test', from: 1, to: 12, soft: true },
-    { key: 'secure', from: 1, to: 12, soft: true },
-    { key: 'automate', from: 6, to: 12 },
+    { key: 'build', from: 0, to: 3 },
+    { key: 'test', from: 1, to: 4, soft: true },
+    { key: 'secure', from: 0, to: 4, soft: true },
+    { key: 'automate', from: 1, to: 4 },
 ];
 
 function Arrow({ size = 18 }: { size?: number }) {
@@ -366,26 +368,23 @@ export default function ServicesIndex() {
                                                 row.soft && 'is-soft',
                                             )}
                                             style={{
-                                                insetInlineStart: `${(row.from / 12) * 100}%`,
-                                                insetInlineEnd: `${100 - (row.to / 12) * 100}%`,
+                                                insetInlineStart: `${(row.from / PHASES.length) * 100}%`,
+                                                insetInlineEnd: `${100 - (row.to / PHASES.length) * 100}%`,
                                             }}
                                         />
                                     </span>
                                 </div>
                             ))}
-                            <div className="sv-gantt-axis" aria-hidden="true">
+                            <div className="sv-gantt-axis">
                                 <span />
                                 <span>
-                                    <span>
-                                        {t('services.index.combine.week', {
-                                            n: '1',
-                                        })}
-                                    </span>
-                                    <span>
-                                        {t('services.index.combine.week', {
-                                            n: '12',
-                                        })}
-                                    </span>
+                                    {PHASES.map((phase) => (
+                                        <span key={phase}>
+                                            {t(
+                                                `services.index.combine.phase.${phase}`,
+                                            )}
+                                        </span>
+                                    ))}
                                 </span>
                             </div>
                             <figcaption>
