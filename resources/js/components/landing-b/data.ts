@@ -51,7 +51,6 @@ export type LandingData = {
     processSteps: ProcessStep[];
     cases: CaseStudy[];
     faqs: Faq[];
-    logos: string[];
 };
 
 export function useLandingData(): LandingData {
@@ -64,7 +63,6 @@ export function useLandingData(): LandingData {
             processSteps: [],
             cases: [],
             faqs: [],
-            logos: [],
         }
     );
 }

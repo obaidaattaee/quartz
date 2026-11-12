@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Industry;
 use App\Models\LandingCaseStudy;
-use App\Models\LandingClientLogo;
 use App\Models\LandingFaq;
 use App\Models\LandingProcessStep;
 use App\Models\LandingProduct;
@@ -79,10 +78,6 @@ class HomeController extends Controller
             ],
         );
 
-        $logos = LandingClientLogo::orderBy('sort_order')
-            ->get()
-            ->map(fn ($l) => $ar ? $l->label_ar : $l->label_en);
-
         // Project to the active locale only. Frontend ternaries (`isRTL ? _ar : _en`)
         // keep working because the other-locale field is just blanked, but we save
         // ~40% on this section of the Inertia JSON — Arabic Unicode escapes are
@@ -149,7 +144,6 @@ class HomeController extends Controller
                 'processSteps' => $processSteps,
                 'cases' => $cases,
                 'faqs' => $faqs,
-                'logos' => $logos,
             ],
             'testimonials' => $testimonials,
             'industries' => $industries,
