@@ -47,6 +47,12 @@ class HandleInertiaRequests extends Middleware
             'direction' => fn () => app()->getLocale() === 'ar' ? 'rtl' : 'ltr',
             'translations' => fn () => $this->loadTranslations(app()->getLocale()),
             'siteSettings' => fn () => SettingsService::all(),
+            // Admin controllers redirect ->with('success'|'error', …); without
+            // sharing them here those messages never reach the page.
+            'flash' => fn () => [
+                'success' => $request->session()->get('success'),
+                'error' => $request->session()->get('error'),
+            ],
         ];
     }
 
