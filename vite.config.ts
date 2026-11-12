@@ -23,6 +23,14 @@ export default defineConfig({
                 : {}),
         },
     },
+    // Inertia pages are lazy-loaded via import.meta.glob, so Vite's dep scan
+    // only sees app.tsx. Each first visit to a page with a new dependency
+    // (tiptap, react-colorful, radix-ui…) then triggers a re-optimise and a
+    // forced reload, and until it lands two React copies run side by side:
+    // "Invalid hook call", dead clicks. Scan every page up front instead.
+    optimizeDeps: {
+        entries: ['resources/js/app.tsx', 'resources/js/pages/**/*.tsx'],
+    },
     plugins: [
         laravel({
             input: ['resources/css/app.css', 'resources/js/app.tsx'],
