@@ -1,4 +1,4 @@
-import { usePage } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { motion } from 'motion/react';
 import type { ReactNode } from 'react';
 
@@ -6,18 +6,14 @@ import ScrollReveal from '@/components/scroll-reveal';
 import SeoHead from '@/components/seo-head';
 import type { SeoData } from '@/components/seo-head';
 import TeamCard from '@/components/team-card';
+import { Button } from '@/components/ui/button';
 import { useLocale } from '@/hooks/use-locale';
-import { fadeInUp } from '@/lib/animations';
 import PublicLayout from '@/layouts/public-layout';
+import { fadeInUp } from '@/lib/animations';
 
-const CERTIFICATIONS = [
-    { key: 'iso', src: '/images/certifications/iso.svg' },
-    { key: 'aws', src: '/images/certifications/aws.svg' },
-    { key: 'microsoft', src: '/images/certifications/microsoft.svg' },
-    { key: 'google', src: '/images/certifications/google-cloud.svg' },
-    { key: 'istqb', src: '/images/certifications/istqb.svg' },
-    { key: 'ceh', src: '/images/certifications/ceh.svg' },
-];
+// The only verified proof points. Do not add figures here that cannot be
+// backed up (founding year, headcount, certifications, partner tiers).
+const NUMBERS = ['products', 'users', 'disciplines'] as const;
 
 type TeamMember = {
     id: number;
@@ -40,16 +36,15 @@ type AboutProps = {
 };
 
 export default function About() {
-    const { t } = useLocale();
-    const { teamMembers, seo } =
-        usePage<AboutProps>().props as AboutProps;
+    const { locale, t } = useLocale();
+    const { teamMembers, seo } = usePage<AboutProps>().props as AboutProps;
 
     return (
         <>
             <SeoHead seo={seo} />
 
             {/* Company story hero section */}
-            <section className="relative bg-primary/5 py-20 dark:bg-primary/10 md:py-28">
+            <section className="relative bg-primary/5 py-20 md:py-28 dark:bg-primary/10">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <ScrollReveal variant="hero">
                         <h1 className="text-3xl font-bold md:text-5xl">
@@ -76,66 +71,77 @@ export default function About() {
                 </div>
             </section>
 
-            {/* Team section (database-backed) */}
+            {/* By the numbers — verified proof only */}
             <section className="bg-muted/30 py-16 md:py-24">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <ScrollReveal>
                         <h2 className="text-2xl font-bold md:text-3xl">
-                            {t('about.team.title')}
+                            {t('about.numbers.title')}
                         </h2>
                         <p className="mt-2 text-lg text-muted-foreground">
-                            {t('about.team.subtitle')}
+                            {t('about.numbers.subtitle')}
                         </p>
                     </ScrollReveal>
                     <ScrollReveal
                         variant="stagger"
                         as="div"
-                        className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4"
+                        className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-3"
                     >
-                        {teamMembers.map((member) => (
-                            <TeamCard
-                                key={member.id}
-                                member={member}
-                            />
+                        {NUMBERS.map((key) => (
+                            <motion.dl
+                                key={key}
+                                variants={fadeInUp}
+                                className="rounded-lg border border-border/60 p-6"
+                            >
+                                <dt className="text-sm text-muted-foreground">
+                                    {t(`about.numbers.${key}.label`)}
+                                </dt>
+                                <dd className="mt-2 text-4xl font-bold tracking-tight">
+                                    <bdi>{t(`about.numbers.${key}.value`)}</bdi>
+                                </dd>
+                            </motion.dl>
                         ))}
                     </ScrollReveal>
                 </div>
             </section>
 
-            {/* Certifications section */}
+            {/* Team section — only rendered once real members are published */}
+            {teamMembers.length > 0 && (
+                <section className="py-16 md:py-24">
+                    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                        <ScrollReveal>
+                            <h2 className="text-2xl font-bold md:text-3xl">
+                                {t('about.team.title')}
+                            </h2>
+                            <p className="mt-2 text-lg text-muted-foreground">
+                                {t('about.team.subtitle')}
+                            </p>
+                        </ScrollReveal>
+                        <ScrollReveal
+                            variant="stagger"
+                            as="div"
+                            className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4"
+                        >
+                            {teamMembers.map((member) => (
+                                <TeamCard key={member.id} member={member} />
+                            ))}
+                        </ScrollReveal>
+                    </div>
+                </section>
+            )}
+
+            {/* Call to action */}
             <section className="py-16 md:py-24">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
                     <ScrollReveal>
-                        <h2 className="text-2xl font-bold md:text-3xl">
-                            {t('about.certifications.title')}
+                        <h2 className="text-2xl font-bold">
+                            {t('about.cta.title')}
                         </h2>
-                        <p className="mt-2 text-lg text-muted-foreground">
-                            {t('about.certifications.subtitle')}
-                        </p>
-                    </ScrollReveal>
-                    <ScrollReveal
-                        variant="stagger"
-                        as="div"
-                        className="mt-12 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-6"
-                    >
-                        {CERTIFICATIONS.map((cert) => (
-                            <motion.div
-                                key={cert.key}
-                                variants={fadeInUp}
-                                className="flex flex-col items-center gap-3 rounded-lg bg-muted/50 p-4 transition-all duration-300 hover:bg-primary/10"
-                            >
-                                <img
-                                    src={cert.src}
-                                    alt={t(`about.certifications.${cert.key}`)}
-                                    className="h-16 w-16 rounded-lg object-contain"
-                                />
-                                <span className="text-center text-sm font-medium">
-                                    {t(
-                                        `about.certifications.${cert.key}`,
-                                    )}
-                                </span>
-                            </motion.div>
-                        ))}
+                        <Button size="lg" asChild className="mt-6">
+                            <Link href={`/${locale}/contact`}>
+                                {t('about.cta.button')}
+                            </Link>
+                        </Button>
                     </ScrollReveal>
                 </div>
             </section>
@@ -147,7 +153,7 @@ About.layout = (page: ReactNode) => (
     <PublicLayout
         breadcrumbs={[
             {
-                title: 'About',
+                title: 'breadcrumb.about',
                 href: '',
             },
         ]}

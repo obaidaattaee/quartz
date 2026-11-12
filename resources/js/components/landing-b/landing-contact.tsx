@@ -1,97 +1,174 @@
-import { useState } from 'react';
+import { useForm } from '@inertiajs/react';
+import { useId, useState } from 'react';
 
 import { useLocale } from '@/hooks/use-locale';
-
 import { B, monoStyle } from './tokens';
 
-type FormState = {
+type Service =
+    | 'development'
+    | 'qa'
+    | 'cybersecurity'
+    | 'automation'
+    | 'general';
+
+type FormData = {
     name: string;
-    company: string;
     email: string;
-    scope: string;
-    msg: string;
+    service: Service;
+    message: string;
+    _honeypot: string;
 };
+
+const inputStyle: React.CSSProperties = {
+    width: '100%',
+    marginTop: 10,
+    background: 'transparent',
+    color: B.cream,
+    border: 'none',
+    padding: '4px 0',
+    fontFamily: B.serif,
+    fontSize: 22,
+    fontWeight: 400,
+    minHeight: 44,
+};
+
+function FieldError({ id, message }: { id: string; message?: string }) {
+    if (!message) {
+        return null;
+    }
+
+    return (
+        <p
+            id={id}
+            role="alert"
+            style={{ margin: '8px 0 0', fontSize: 13, color: B.accent }}
+        >
+            {message}
+        </p>
+    );
+}
 
 function Field({
     label,
     value,
     onChange,
+    error,
     type = 'text',
+    required = false,
+    autoComplete,
 }: {
     label: string;
     value: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    error?: string;
     type?: string;
+    required?: boolean;
+    autoComplete?: string;
 }) {
+    const id = useId();
+    const errorId = `${id}-error`;
+
     return (
         <div
             style={{
                 padding: '16px 0',
-                borderBottom: `1px solid ${B.line}`,
+                borderBottom: `1px solid ${error ? B.accent : B.line}`,
             }}
         >
-            <div style={monoStyle}>{label}</div>
+            <label htmlFor={id} style={{ ...monoStyle, display: 'block' }}>
+                {label}
+            </label>
             <input
+                id={id}
                 type={type}
                 value={value}
                 onChange={onChange}
-                placeholder="—"
-                style={{
-                    width: '100%',
-                    marginTop: 10,
-                    background: 'transparent',
-                    color: B.cream,
-                    border: 'none',
-                    padding: '4px 0',
-                    fontFamily: B.serif,
-                    fontSize: 22,
-                    outline: 'none',
-                    fontWeight: 400,
-                }}
+                required={required}
+                autoComplete={autoComplete}
+                aria-invalid={error ? true : undefined}
+                aria-describedby={error ? errorId : undefined}
+                className="q-contact-input"
+                style={inputStyle}
             />
+            <FieldError id={errorId} message={error} />
         </div>
     );
 }
 
 export default function LandingContact() {
-    const { isRTL } = useLocale();
-    const defaultScope = isRTL ? 'بناء برمجيات' : 'Software build';
+    const { locale, isRTL } = useLocale();
+    const tr = (en: string, ar: string) => (isRTL ? ar : en);
+    const [company, setCompany] = useState('');
     const [sent, setSent] = useState(false);
-    const [form, setForm] = useState<FormState>({
+    const scopeLabelId = useId();
+    const messageId = useId();
+
+    const form = useForm<FormData>({
         name: '',
-        company: '',
         email: '',
-        scope: defaultScope,
-        msg: '',
+        service: 'development',
+        message: '',
+        _honeypot: '',
     });
+    const { data, setData, processing, errors } = form;
 
-    const set =
-        (k: keyof FormState) =>
-        (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-            setForm({ ...form, [k]: e.target.value });
+    // Server messages are English-only; show localized copy per field.
+    const fieldErrors: Partial<Record<keyof FormData, string>> = {
+        name: errors.name
+            ? tr('Please enter your name.', 'يرجى كتابة اسمك.')
+            : undefined,
+        email: errors.email
+            ? tr(
+                  'Please enter a valid email address.',
+                  'يرجى كتابة بريد إلكتروني صحيح.',
+              )
+            : undefined,
+        service: errors.service
+            ? tr('Please choose a scope.', 'يرجى اختيار النطاق.')
+            : undefined,
+        message: errors.message
+            ? tr(
+                  'Please describe what you need (at least 10 characters).',
+                  'يرجى وصف ما تحتاجه (10 أحرف على الأقل).',
+              )
+            : undefined,
+    };
 
-    const scopes = isRTL
-        ? [
-              'بناء برمجيات',
-              'جودة واختبار',
-              'أمن سيبراني',
-              'أتمتة',
-              'Quartz POS',
-              'Quartz Cyber',
-          ]
-        : [
-              'Software build',
-              'QA & testing',
-              'Cybersecurity',
-              'Automation',
-              'Quartz POS',
-              'Quartz Cyber',
-          ];
+    const scopes: Array<[Service, string]> = [
+        ['development', tr('Software build', 'بناء برمجيات')],
+        ['qa', tr('QA & testing', 'جودة واختبار')],
+        ['cybersecurity', tr('Cybersecurity', 'أمن سيبراني')],
+        ['automation', tr('Automation', 'أتمتة')],
+        ['general', tr('Not sure yet', 'لم أحدّد بعد')],
+    ];
+
+    function submit(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+
+        // The contacts table has no company column; carry it in the message.
+        const companyName = company.trim();
+        form.transform((d) => ({
+            ...d,
+            message:
+                companyName && d.message.trim()
+                    ? `${tr('Company', 'الشركة')}: ${companyName}\n\n${d.message}`
+                    : d.message,
+        }));
+        form.post(`/${locale}/contact`, {
+            preserveScroll: true,
+            onSuccess: () => {
+                form.reset();
+                setCompany('');
+                setSent(true);
+            },
+        });
+    }
 
     return (
         <section
+            id="contact"
+            className="q-sec"
             style={{
-                padding: '100px 48px',
                 background: B.bgElev,
                 borderTop: `1px solid ${B.line}`,
             }}
@@ -108,9 +185,7 @@ export default function LandingContact() {
                 >
                     <div>
                         <div style={monoStyle}>
-                            {isRTL
-                                ? 'سادساً.\u00a0\u00a0\u00a0لنبدأ الحديث'
-                                : 'VI.\u00a0\u00a0\u00a0Start a conversation'}
+                            {tr('Start a conversation', 'لنبدأ الحديث')}
                         </div>
                         <h2
                             style={{
@@ -146,8 +221,8 @@ export default function LandingContact() {
                             }}
                         >
                             {isRTL
-                                ? 'ردّ كتابي خلال 48 ساعة — بالنطاق والملاءمة، ومع مهندس رئيسي معيّن بالاسم. دون التزام.'
-                                : 'A written response in 48h — with scope, fit, and a named principal engineer. No obligation.'}
+                                ? 'ردّ كتابي خلال 24 ساعة — بالنطاق والملاءمة، ومع مهندس رئيسي معيّن بالاسم. دون التزام.'
+                                : 'A written response within 24 hours — with scope, fit, and a named principal engineer. No obligation.'}
                         </p>
                         <div
                             style={{
@@ -172,7 +247,10 @@ export default function LandingContact() {
                                       ],
                                   ]
                                 : [
-                                      ['01', 'We read your brief within 24h.'],
+                                      [
+                                          '01',
+                                          'We read your brief within 24 hours.',
+                                      ],
                                       [
                                           '02',
                                           'A principal engineer replies — not a BD rep.',
@@ -221,24 +299,24 @@ export default function LandingContact() {
                     </div>
 
                     <form
-                        onSubmit={(e) => {
-                            e.preventDefault();
-                            setSent(true);
-                        }}
+                        onSubmit={submit}
+                        aria-label={tr('Project brief', 'طلب مشروع')}
+                        className="q-contact-form"
                         style={{
                             border: `1px solid ${B.line}`,
-                            padding: 36,
                             background: B.bg,
                         }}
                     >
                         {sent ? (
                             <div
+                                role="status"
                                 style={{
                                     padding: 40,
                                     textAlign: 'center',
                                 }}
                             >
                                 <div
+                                    aria-hidden="true"
                                     style={{
                                         fontSize: 56,
                                         color: B.accent,
@@ -255,7 +333,7 @@ export default function LandingContact() {
                                         fontWeight: 400,
                                     }}
                                 >
-                                    {isRTL ? 'تمّ الاستلام.' : 'Received.'}
+                                    {tr('Received.', 'تمّ الاستلام.')}
                                 </h3>
                                 <p
                                     style={{
@@ -264,32 +342,43 @@ export default function LandingContact() {
                                         margin: 0,
                                     }}
                                 >
-                                    {isRTL
-                                        ? 'سيتواصل معك مهندس رئيسي خلال 24 ساعة.'
-                                        : 'A principal engineer will reach out within 24h.'}
+                                    {tr(
+                                        'A principal engineer will reach out within 24 hours.',
+                                        'سيتواصل معك مهندس رئيسي خلال 24 ساعة.',
+                                    )}
                                 </p>
                             </div>
                         ) : (
                             <>
                                 <Field
-                                    label={isRTL ? 'اسمك' : 'Your name'}
-                                    value={form.name}
-                                    onChange={set('name')}
-                                />
-                                <Field
-                                    label={isRTL ? 'الشركة' : 'Company'}
-                                    value={form.company}
-                                    onChange={set('company')}
-                                />
-                                <Field
-                                    label={
-                                        isRTL
-                                            ? 'بريد العمل'
-                                            : 'Work email'
+                                    label={tr('Your name', 'اسمك')}
+                                    value={data.name}
+                                    onChange={(e) =>
+                                        setData('name', e.target.value)
                                     }
-                                    value={form.email}
-                                    onChange={set('email')}
+                                    error={fieldErrors.name}
+                                    autoComplete="name"
+                                    required
+                                />
+                                <Field
+                                    label={tr(
+                                        'Company (optional)',
+                                        'الشركة (اختياري)',
+                                    )}
+                                    value={company}
+                                    onChange={(e) => setCompany(e.target.value)}
+                                    autoComplete="organization"
+                                />
+                                <Field
+                                    label={tr('Work email', 'بريد العمل')}
+                                    value={data.email}
+                                    onChange={(e) =>
+                                        setData('email', e.target.value)
+                                    }
+                                    error={fieldErrors.email}
                                     type="email"
+                                    autoComplete="email"
+                                    required
                                 />
                                 <div
                                     style={{
@@ -297,10 +386,12 @@ export default function LandingContact() {
                                         borderBottom: `1px solid ${B.line}`,
                                     }}
                                 >
-                                    <div style={monoStyle}>
-                                        {isRTL ? 'النطاق' : 'Scope'}
+                                    <div id={scopeLabelId} style={monoStyle}>
+                                        {tr('Scope', 'النطاق')}
                                     </div>
                                     <div
+                                        role="radiogroup"
+                                        aria-labelledby={scopeLabelId}
                                         style={{
                                             display: 'flex',
                                             flexWrap: 'wrap',
@@ -308,76 +399,140 @@ export default function LandingContact() {
                                             marginTop: 12,
                                         }}
                                     >
-                                        {scopes.map((s) => (
-                                            <button
-                                                key={s}
-                                                type="button"
-                                                onClick={() =>
-                                                    setForm({
-                                                        ...form,
-                                                        scope: s,
-                                                    })
-                                                }
-                                                style={{
-                                                    padding: '8px 14px',
-                                                    background:
-                                                        form.scope === s
+                                        {scopes.map(([value, label]) => {
+                                            const on = data.service === value;
+
+                                            return (
+                                                <button
+                                                    key={value}
+                                                    type="button"
+                                                    role="radio"
+                                                    aria-checked={on}
+                                                    onClick={() =>
+                                                        setData(
+                                                            'service',
+                                                            value,
+                                                        )
+                                                    }
+                                                    className="q-contact-chip"
+                                                    style={{
+                                                        minHeight: 40,
+                                                        padding: '8px 14px',
+                                                        background: on
                                                             ? B.accent
                                                             : 'transparent',
-                                                    color:
-                                                        form.scope === s
+                                                        color: on
                                                             ? B.bg
                                                             : B.cream,
-                                                    border: `1px solid ${form.scope === s ? B.accent : B.line}`,
-                                                    fontSize: 12,
-                                                    cursor: 'pointer',
-                                                    borderRadius: 999,
-                                                }}
-                                            >
-                                                {s}
-                                            </button>
-                                        ))}
+                                                        border: `1px solid ${on ? B.accent : B.line}`,
+                                                        fontSize: 13,
+                                                        cursor: 'pointer',
+                                                        borderRadius: 999,
+                                                    }}
+                                                >
+                                                    {label}
+                                                </button>
+                                            );
+                                        })}
                                     </div>
+                                    <FieldError
+                                        id={`${scopeLabelId}-error`}
+                                        message={fieldErrors.service}
+                                    />
                                 </div>
                                 <div style={{ padding: '16px 0' }}>
-                                    <div style={monoStyle}>
-                                        {isRTL
-                                            ? 'ما الذي تحتاج بناءه أو تأمينه؟'
-                                            : 'What do you need built or secured?'}
-                                    </div>
+                                    <label
+                                        htmlFor={messageId}
+                                        style={{
+                                            ...monoStyle,
+                                            display: 'block',
+                                        }}
+                                    >
+                                        {tr(
+                                            'What do you need built or secured?',
+                                            'ما الذي تحتاج بناءه أو تأمينه؟',
+                                        )}
+                                    </label>
                                     <textarea
-                                        value={form.msg}
-                                        onChange={set('msg')}
+                                        id={messageId}
+                                        value={data.message}
+                                        onChange={(e) =>
+                                            setData('message', e.target.value)
+                                        }
                                         rows={4}
+                                        required
+                                        minLength={10}
+                                        maxLength={4800}
+                                        aria-invalid={
+                                            fieldErrors.message
+                                                ? true
+                                                : undefined
+                                        }
+                                        aria-describedby={
+                                            fieldErrors.message
+                                                ? `${messageId}-error`
+                                                : undefined
+                                        }
+                                        className="q-contact-input"
                                         style={{
                                             width: '100%',
                                             marginTop: 12,
                                             background: 'transparent',
                                             color: B.cream,
-                                            border: `1px solid ${B.line}`,
+                                            border: `1px solid ${fieldErrors.message ? B.accent : B.line}`,
                                             padding: 14,
                                             fontFamily: B.sans,
                                             fontSize: 15,
                                             resize: 'vertical',
                                         }}
                                     />
+                                    <FieldError
+                                        id={`${messageId}-error`}
+                                        message={fieldErrors.message}
+                                    />
                                 </div>
+                                {/* Spam trap: hidden from people and assistive tech. */}
+                                <input
+                                    type="text"
+                                    name="_honeypot"
+                                    value={data._honeypot}
+                                    onChange={(e) =>
+                                        setData('_honeypot', e.target.value)
+                                    }
+                                    tabIndex={-1}
+                                    autoComplete="off"
+                                    aria-hidden="true"
+                                    style={{
+                                        position: 'absolute',
+                                        width: 1,
+                                        height: 1,
+                                        opacity: 0,
+                                        pointerEvents: 'none',
+                                        insetInlineStart: -9999,
+                                    }}
+                                />
                                 <button
                                     type="submit"
+                                    disabled={processing}
+                                    aria-busy={processing || undefined}
                                     style={{
                                         marginTop: 12,
+                                        minHeight: 48,
                                         background: B.accent,
                                         color: B.bg,
                                         border: 'none',
-                                        padding: '16px 24px',
+                                        padding: '14px 24px',
                                         fontSize: 14,
                                         fontWeight: 500,
-                                        cursor: 'pointer',
+                                        cursor: processing
+                                            ? 'progress'
+                                            : 'pointer',
+                                        opacity: processing ? 0.6 : 1,
                                     }}
                                 >
-                                    {isRTL
-                                        ? 'أرسل الطلب ↖'
-                                        : 'Send brief ↗'}
+                                    {processing
+                                        ? tr('Sending…', 'جارٍ الإرسال…')
+                                        : tr('Send brief ↗', 'أرسل الطلب ↖')}
                                 </button>
                             </>
                         )}
@@ -385,9 +540,14 @@ export default function LandingContact() {
                 </div>
             </div>
             <style>{`
+                .q-contact-form { position: relative; padding: 36px; }
+                .q-contact-input:focus-visible, .q-contact-chip:focus-visible { outline: 2px solid var(--q-accent); outline-offset: 2px; }
                 @media (max-width: 900px) {
                     .contact-grid { grid-template-columns: 1fr !important; gap: 48px !important; }
-                    .contact-title { font-size: 56px !important; }
+                    .contact-title { font-size: clamp(40px, 11vw, 56px) !important; }
+                }
+                @media (max-width: 540px) {
+                    .q-contact-form { padding: 20px; }
                 }
             `}</style>
         </section>

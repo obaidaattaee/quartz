@@ -21,10 +21,23 @@ import AuthLayout from '@/layouts/auth-layout';
 import PublicLayout from '@/layouts/public-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+const appName = import.meta.env.VITE_APP_NAME || 'Quartz';
+
+// SEO titles from the server already end in "| Quartz"; only brand titles
+// that don't mention the app name yet (e.g. admin pages).
+function formatTitle(title: string): string {
+    if (!title) {
+        return appName;
+    }
+
+    // The Arabic brand name counts as the app name too.
+    return title.includes(appName) || title.includes('كوارتز')
+        ? title
+        : `${title} - ${appName}`;
+}
 
 createInertiaApp({
-    title: (title) => (title ? `${title} - ${appName}` : appName),
+    title: formatTitle,
     layout: (name) => {
         switch (true) {
             case name === 'welcome':

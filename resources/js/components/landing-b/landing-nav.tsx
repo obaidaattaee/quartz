@@ -1,17 +1,18 @@
 import { Link } from '@inertiajs/react';
-import { Menu } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
 
 import LanguageSwitcher from '@/components/language-switcher';
+import PublicThemeToggle from '@/components/public-theme-toggle';
 import {
     Sheet,
+    SheetClose,
     SheetContent,
     SheetHeader,
     SheetTitle,
     SheetTrigger,
 } from '@/components/ui/sheet';
 import { useLocale } from '@/hooks/use-locale';
-
 import { B } from './tokens';
 
 type NavLink = {
@@ -27,7 +28,7 @@ export default function LandingNav() {
     const links: NavLink[] = [
         {
             key: 'services',
-            href: `/${locale}/services/development`,
+            href: `/${locale}/services`,
             label: t('nav.services') || 'Services',
         },
         {
@@ -55,9 +56,9 @@ export default function LandingNav() {
     const ctaLabel = t('nav.ctaShort') || 'Book a demo';
     const arrow = isRTL ? '↖' : '↗';
 
-    const navLabel = isRTL
-        ? 'التنقّل الرئيسي'
-        : 'Primary navigation';
+    const navLabel = isRTL ? 'التنقّل الرئيسي' : 'Primary navigation';
+    const menuLabel = isRTL ? 'القائمة' : 'Menu';
+    const closeLabel = isRTL ? 'إغلاق القائمة' : 'Close menu';
 
     return (
         <nav
@@ -66,11 +67,11 @@ export default function LandingNav() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                padding: '22px 48px',
+                padding: '22px clamp(16px, 4vw, 48px)',
                 position: 'sticky',
                 top: 0,
                 zIndex: 40,
-                background: 'rgba(14,13,11,0.78)',
+                background: 'var(--q-nav-bg)',
                 backdropFilter: 'blur(10px)',
                 WebkitBackdropFilter: 'blur(10px)',
                 borderBottom: `1px solid ${B.line}`,
@@ -79,7 +80,11 @@ export default function LandingNav() {
             <Link
                 href={`/${locale}`}
                 className="flex shrink-0 items-center"
-                aria-label="Quartz Solutions — home"
+                aria-label={
+                    isRTL
+                        ? 'كوارتز — الصفحة الرئيسية'
+                        : 'Quartz Solutions — home'
+                }
                 style={{ color: B.cream, textDecoration: 'none' }}
             >
                 <img
@@ -87,7 +92,16 @@ export default function LandingNav() {
                     alt="Quartz"
                     width={132}
                     height={34}
-                    style={{ height: 30, width: 'auto', display: 'block' }}
+                    className="q-logo-dark"
+                    style={{ height: 30, width: 'auto' }}
+                />
+                <img
+                    src="/logo-dark.svg"
+                    alt="Quartz"
+                    width={132}
+                    height={34}
+                    className="q-logo-light"
+                    style={{ height: 30, width: 'auto' }}
                 />
             </Link>
 
@@ -117,6 +131,7 @@ export default function LandingNav() {
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <PublicThemeToggle />
                 <LanguageSwitcher />
 
                 <Link
@@ -146,52 +161,75 @@ export default function LandingNav() {
                     {ctaLabel} {arrow}
                 </Link>
 
-                {/* Mobile hamburger */}
+                {/* Mobile menu. The sheet is portalled outside the layout, so it
+                    carries .public-theme itself to resolve the --q-* tokens
+                    (dark and light). It opens from the reading-start edge. */}
                 <Sheet open={open} onOpenChange={setOpen}>
                     <SheetTrigger asChild>
                         <button
                             type="button"
-                            aria-label="Menu"
-                            className="lg:hidden"
+                            aria-label={menuLabel}
+                            className="inline-grid place-items-center lg:hidden"
                             style={{
                                 background: 'transparent',
                                 color: B.cream,
                                 border: `1px solid ${B.line}`,
-                                padding: 10,
+                                width: 44,
+                                height: 44,
                                 cursor: 'pointer',
                             }}
                         >
-                            <Menu size={18} />
+                            <Menu size={18} aria-hidden="true" />
                         </button>
                     </SheetTrigger>
                     <SheetContent
-                        side={isRTL ? 'left' : 'right'}
-                        className="w-[320px] sm:w-[380px]"
+                        side={isRTL ? 'right' : 'left'}
+                        dir={isRTL ? 'rtl' : 'ltr'}
+                        aria-describedby={undefined}
+                        className="public-theme q-mobile-menu w-[86vw] max-w-[360px] gap-0 p-0 shadow-2xl [&>button:last-child]:hidden"
                         style={{
                             background: B.bg,
                             color: B.cream,
-                            borderColor: B.line,
+                            borderColor: B.lineStrong,
                         }}
                     >
-                        <SheetHeader>
+                        <SheetHeader
+                            style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                paddingBlock: 12,
+                                paddingInlineStart: 20,
+                                paddingInlineEnd: 12,
+                                borderBottom: `1px solid ${B.line}`,
+                            }}
+                        >
                             <SheetTitle
                                 style={{
                                     color: B.cream,
                                     fontFamily: B.serif,
-                                    fontSize: 26,
+                                    fontSize: 24,
                                     fontWeight: 500,
-                                    textAlign: 'start',
+                                    margin: 0,
                                 }}
                             >
-                                Quartz
+                                {isRTL ? 'كوارتز' : 'Quartz'}
                             </SheetTitle>
+                            <SheetClose
+                                className="q-menu-close"
+                                aria-label={closeLabel}
+                            >
+                                <X size={20} aria-hidden="true" />
+                            </SheetClose>
                         </SheetHeader>
                         <nav
+                            aria-label={menuLabel}
                             style={{
-                                padding: '24px 16px',
+                                padding: '8px 20px 24px',
                                 display: 'flex',
                                 flexDirection: 'column',
-                                gap: 4,
+                                overflowY: 'auto',
+                                flex: 1,
                             }}
                         >
                             {links.map((l) => (
@@ -199,14 +237,7 @@ export default function LandingNav() {
                                     key={l.key}
                                     href={l.href}
                                     onClick={() => setOpen(false)}
-                                    style={{
-                                        padding: '14px 12px',
-                                        fontFamily: B.serif,
-                                        fontSize: 22,
-                                        color: B.cream,
-                                        textDecoration: 'none',
-                                        borderBottom: `1px solid ${B.line}`,
-                                    }}
+                                    className="q-menu-link"
                                 >
                                     {l.label}
                                 </Link>
@@ -214,20 +245,26 @@ export default function LandingNav() {
                             <Link
                                 href={`/${locale}/contact`}
                                 onClick={() => setOpen(false)}
-                                style={{
-                                    marginTop: 24,
-                                    background: B.accent,
-                                    color: B.bg,
-                                    padding: '14px 22px',
-                                    textAlign: 'center',
-                                    textDecoration: 'none',
-                                    fontSize: 14,
-                                    fontWeight: 500,
-                                }}
+                                className="q-menu-cta"
                             >
                                 {ctaLabel} {arrow}
                             </Link>
+                            <div className="q-menu-tools">
+                                <LanguageSwitcher className="q-menu-lang" />
+                                <PublicThemeToggle />
+                            </div>
                         </nav>
+                        <style>{`
+                            .q-mobile-menu .q-menu-close { display: inline-grid; place-items: center; width: 44px; height: 44px; background: transparent; color: var(--q-cream); border: 1px solid var(--q-line-strong); cursor: pointer; }
+                            .q-mobile-menu .q-menu-close:hover { border-color: var(--q-accent); color: var(--q-accent); }
+                            .q-mobile-menu .q-menu-link { display: flex; align-items: center; min-height: 56px; padding: 8px 4px; font-family: var(--font-display); font-size: 22px; color: var(--q-cream); text-decoration: none; border-bottom: 1px solid var(--q-line); }
+                            [dir='rtl'] .q-mobile-menu .q-menu-link { font-family: var(--font-arabic); }
+                            .q-mobile-menu .q-menu-link:hover { color: var(--q-accent); }
+                            .q-mobile-menu .q-menu-cta { display: flex; align-items: center; justify-content: center; min-height: 48px; margin-top: 24px; padding: 12px 22px; background: var(--q-accent); color: var(--q-bg); text-decoration: none; font-size: 15px; font-weight: 500; }
+                            .q-mobile-menu .q-menu-tools { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--q-line); }
+                            .q-mobile-menu .q-menu-lang { display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border: 1px solid var(--q-line-strong); color: var(--q-cream); text-decoration: none; }
+                            .q-mobile-menu .q-menu-close:focus-visible, .q-mobile-menu .q-menu-link:focus-visible, .q-mobile-menu .q-menu-cta:focus-visible, .q-mobile-menu .q-menu-lang:focus-visible { outline: 2px solid var(--q-accent); outline-offset: 2px; }
+                        `}</style>
                     </SheetContent>
                 </Sheet>
             </div>

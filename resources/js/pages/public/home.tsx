@@ -1,21 +1,17 @@
 import { usePage } from '@inertiajs/react';
 import type { ReactNode } from 'react';
 
+import JsonLd from '@/components/json-ld';
 import { useLandingData } from '@/components/landing-b/data';
 import LandingCases from '@/components/landing-b/landing-cases';
 import LandingContact from '@/components/landing-b/landing-contact';
 import LandingFaq from '@/components/landing-b/landing-faq';
-import LandingFeaturedCase, {
-    type FeaturedCase,
-} from '@/components/landing-b/landing-featured-case';
 import LandingHero from '@/components/landing-b/landing-hero';
 import LandingLogos from '@/components/landing-b/landing-logos';
-import LandingPlatformCards from '@/components/landing-b/landing-platform-cards';
 import LandingProcess from '@/components/landing-b/landing-process';
-import LandingProducts from '@/components/landing-b/landing-products';
 import LandingServices from '@/components/landing-b/landing-services';
 import LandingTestimonials from '@/components/landing-b/landing-testimonials';
-import JsonLd from '@/components/json-ld';
+import LandingWorld from '@/components/landing-b/landing-world';
 import SeoHead from '@/components/seo-head';
 import type { SeoData } from '@/components/seo-head';
 import LandingBLayout from '@/layouts/landing-b-layout';
@@ -37,16 +33,13 @@ type Testimonial = {
 type HomeProps = {
     seo: SeoData;
     testimonials: Testimonial[];
-    featuredCase: FeaturedCase;
 };
 
 export default function Home() {
-    const { seo, testimonials, featuredCase } =
-        usePage<HomeProps>().props;
+    const { seo, testimonials } = usePage<HomeProps>().props;
     const { faqs } = useLandingData();
 
-    const origin =
-        typeof window !== 'undefined' ? window.location.origin : '';
+    const origin = typeof window !== 'undefined' ? window.location.origin : '';
 
     const orgSchema = {
         '@context': 'https://schema.org',
@@ -54,8 +47,7 @@ export default function Home() {
         name: 'Quartz Solutions',
         url: origin,
         description:
-            'Enterprise software development, QA, cybersecurity and automation. Built to outlast the trend cycle.',
-        foundingDate: '2013',
+            'Software development, QA, cybersecurity and automation from a remote team serving the Gulf and the wider region.',
         contactPoint: {
             '@type': 'ContactPoint',
             contactType: 'customer service',
@@ -85,13 +77,11 @@ export default function Home() {
             {faqSchema && <JsonLd data={faqSchema} />}
 
             <LandingHero />
-            <LandingPlatformCards />
-            <LandingServices />
-            <LandingProducts />
-            <LandingProcess />
             <LandingLogos />
+            <LandingWorld />
+            <LandingServices />
+            <LandingProcess />
             <LandingCases />
-            <LandingFeaturedCase featuredCase={featuredCase} />
             <LandingTestimonials testimonials={testimonials ?? []} />
             <LandingFaq />
             <LandingContact />

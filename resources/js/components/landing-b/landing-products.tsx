@@ -16,15 +16,16 @@ export default function LandingProducts() {
     const [active, setActive] = useState<string>(defaultCode);
     const p = products.find((x) => x.code === active) ?? products[0];
 
-    if (!p) return null;
+    if (!p) {
+        return null;
+    }
 
     const arrow = isRTL ? '↖' : '↗';
 
     return (
-        <section style={{ padding: '80px 48px' }}>
+        <section className="q-sec">
             <div style={{ maxWidth: 1240, margin: '0 auto' }}>
                 <SectionHead
-                    num={isRTL ? '٢.' : 'II.'}
                     kicker={isRTL ? 'المنتجات' : 'Products'}
                     title={
                         isRTL ? (
@@ -151,8 +152,7 @@ export default function LandingProducts() {
                                             fontFamily: B.serif,
                                             fontSize: 32,
                                             lineHeight: 1,
-                                            fontVariantNumeric:
-                                                'tabular-nums',
+                                            fontVariantNumeric: 'tabular-nums',
                                             color: B.accent,
                                         }}
                                     >

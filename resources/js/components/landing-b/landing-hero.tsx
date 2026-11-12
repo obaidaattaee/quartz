@@ -1,281 +1,196 @@
 import { Link } from '@inertiajs/react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { useLocale } from '@/hooks/use-locale';
-import { useRafTime } from '@/hooks/use-raf-time';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
 
-import CountUp from './count-up';
-import EditorialStackDiagram from './editorial-stack-diagram';
-import { B, monoStyle } from './tokens';
+import HeroBuilding from './hero-building';
+
+// One pass through every service, ending back on the first one. The whole
+// pass stays under five seconds so it never needs a pause control.
+const STEP_MS = 1200;
 
 export default function LandingHero() {
     const { locale, isRTL, t } = useLocale();
-    const time = useRafTime();
-    const arrow = isRTL ? '↖' : '↗';
+    const reduceMotion = useReducedMotion();
+    const [active, setActive] = useState(0);
+    const [previous, setPrevious] = useState(-1);
+    const timer = useRef<number | null>(null);
+
+    const words = isRTL
+        ? ['برمجيات', 'أتمتة', 'جودة', 'حماية']
+        : ['software', 'automation', 'quality', 'security'];
+
+    const play = useCallback(() => {
+        if (reduceMotion || timer.current !== null) {
+            return;
+        }
+
+        let step = 0;
+        timer.current = window.setInterval(() => {
+            setPrevious(step % words.length);
+            step += 1;
+            setActive(step % words.length);
+
+            if (step >= words.length) {
+                window.clearInterval(timer.current ?? undefined);
+                timer.current = null;
+            }
+        }, STEP_MS);
+    }, [reduceMotion, words.length]);
+
+    useEffect(() => {
+        const start = window.setTimeout(play, 700);
+
+        return () => {
+            window.clearTimeout(start);
+
+            if (timer.current !== null) {
+                window.clearInterval(timer.current);
+                timer.current = null;
+            }
+        };
+    }, [play]);
+
+    const fullTitle = isRTL
+        ? 'نبني برمجيات وأتمتة وجودة وحماية تدوم.'
+        : 'We build software, automation, quality and security that lasts.';
 
     return (
-        <section style={{ padding: '100px 48px 120px', position: 'relative' }}>
-            <div
-                style={{
-                    maxWidth: 1240,
-                    margin: '0 auto',
-                    display: 'grid',
-                    gridTemplateColumns: '1.3fr 1fr',
-                    gap: 64,
-                    alignItems: 'center',
-                }}
-                className="hero-grid"
-            >
-                <div>
-                    <div style={monoStyle}>
-                        <span style={{ color: B.accent }}>·</span>&nbsp;&nbsp;
-                        {isRTL
-                            ? 'Quartz Solutions · منذ 2013'
-                            : 'Quartz Solutions · since 2013'}
-                    </div>
-                    <h1
-                        style={{
-                            fontFamily: B.serif,
-                            fontSize: 112,
-                            lineHeight: 0.94,
-                            fontWeight: 400,
-                            letterSpacing: '-0.04em',
-                            margin: '28px 0',
-                            textWrap: 'balance' as React.CSSProperties['textWrap'],
-                        }}
-                        className="hero-title"
-                    >
-                        {isRTL ? 'برمجيات' : 'Software'}
-                        <br />
-                        <em
-                            style={{
-                                fontStyle: 'italic',
-                                color: B.accent,
-                                fontWeight: 300,
-                            }}
-                        >
-                            {isRTL
-                                ? 'مبنيّة لتدوم'
-                                : 'built to outlast'}
-                        </em>
-                        <br />
-                        {isRTL
-                            ? 'ما بعد موجة التقنيات.'
-                            : 'the trend cycle.'}
+        <section className="q-hero">
+            <div className="q-hero-grid">
+                <div className="q-hero-copy">
+                    <h1 className="q-hero-title" onMouseEnter={play}>
+                        <span className="q-sr">{fullTitle}</span>
+                        <span aria-hidden="true">
+                            {isRTL ? 'نبني' : 'We build'}
+                            <br />
+                            <span className="q-hero-swap">
+                                {words.map((w, i) => (
+                                    <span
+                                        key={w}
+                                        className={
+                                            i === active
+                                                ? 'is-active'
+                                                : i === previous
+                                                  ? 'is-past'
+                                                  : ''
+                                        }
+                                    >
+                                        {w}
+                                    </span>
+                                ))}
+                            </span>
+                            <br />
+                            {isRTL ? 'تدوم.' : 'that lasts.'}
+                        </span>
                     </h1>
-                    <p
-                        style={{
-                            fontSize: 21,
-                            lineHeight: 1.5,
-                            color: B.dim,
-                            maxWidth: 560,
-                            margin: 0,
-                            textWrap: 'pretty' as React.CSSProperties['textWrap'],
-                        }}
-                    >
+                    <p className="q-hero-sub">
                         {isRTL
-                            ? 'نصمّم ونبني ونُؤمّن الأنظمة التي تُشغّل أعمالك — من منصات مخصّصة إلى أمن سيبراني متكامل. لا شعارات تسويقية؛ فقط أنظمة لا تزال تعمل بعد خمس سنوات.'
-                            : 'We design, build, and secure the systems that run your business — from custom platforms to full-stack cybersecurity. No buzzwords. Just systems that still work in five years.'}
+                            ? 'برمجيات مخصّصة وأتمتة للأعمال التي تعتمد على أنظمتها، يختبرها ويؤمّنها الفريق نفسه.'
+                            : 'Custom software and automation for businesses that depend on their systems. Tested and secured by the same team.'}
                     </p>
-                    <div
-                        style={{
-                            display: 'flex',
-                            gap: 14,
-                            marginTop: 40,
-                            alignItems: 'center',
-                            flexWrap: 'wrap',
-                        }}
-                    >
+                    <div className="q-hero-ctas">
                         <Link
                             href={`/${locale}/contact`}
-                            style={{
-                                background: B.accent,
-                                color: B.bg,
-                                border: 'none',
-                                padding: '18px 28px',
-                                fontFamily: B.sans,
-                                fontSize: 14,
-                                fontWeight: 500,
-                                textDecoration: 'none',
-                                display: 'inline-block',
-                            }}
+                            className="q-btn q-btn-primary"
                         >
-                            {t('nav.cta')} {arrow}
+                            {t('nav.ctaShort') || 'Book a Call'}{' '}
+                            {isRTL ? '↖' : '↗'}
                         </Link>
                         <Link
-                            href={`/${locale}/about`}
-                            style={{
-                                color: B.cream,
-                                fontSize: 14,
-                                textDecoration: 'underline',
-                                textUnderlineOffset: 4,
-                                textDecorationColor: B.accent,
-                            }}
+                            href={`/${locale}/portfolio`}
+                            className="q-btn q-btn-link"
                         >
-                            {isRTL
-                                ? 'اقرأ بياننا'
-                                : 'Or read our manifesto'}
+                            {t('hero.secondaryCta') || 'See our work'}
                         </Link>
                     </div>
                 </div>
 
-                <div
-                    style={{
-                        aspectRatio: '3 / 4',
-                        position: 'relative',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                    }}
-                    className="hero-figure"
-                >
-                    <div
-                        style={{
-                            position: 'absolute',
-                            inset: 0,
-                            border: `1px solid ${B.line}`,
-                        }}
-                    />
-                    <div
-                        style={{
-                            position: 'absolute',
-                            top: 16,
-                            left: 16,
-                            ...monoStyle,
-                        }}
-                    >
-                        {isRTL ? 'شكل ٠١' : 'Fig. 01'}
-                    </div>
-                    <div
-                        style={{
-                            position: 'absolute',
-                            top: 16,
-                            right: 16,
-                            ...monoStyle,
-                            color: B.accent,
-                        }}
-                    >
-                        {time.toFixed(1)}s
-                    </div>
-                    <div
-                        style={{
-                            position: 'absolute',
-                            bottom: 16,
-                            left: 16,
-                            right: 16,
-                            ...monoStyle,
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                        }}
-                    >
-                        <span>
-                            {isRTL
-                                ? 'حزمة من مصدر واحد'
-                                : 'A single-origin stack'}
-                        </span>
-                        <span>
-                            {isRTL ? '← ٤ تخصّصات' : '→ 4 disciplines'}
-                        </span>
-                    </div>
-                    <div
-                        style={{
-                            position: 'absolute',
-                            inset: 32,
-                        }}
-                    >
-                        <EditorialStackDiagram />
-                    </div>
+                <div className="q-hero-visual">
+                    <HeroBuilding />
                 </div>
-            </div>
-
-            <div
-                style={{
-                    maxWidth: 1240,
-                    margin: '80px auto 0',
-                    borderTop: `1px solid ${B.line}`,
-                    paddingTop: 28,
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(4, 1fr)',
-                    gap: 32,
-                }}
-                className="hero-stats"
-            >
-                {[
-                    {
-                        v: (
-                            <>
-                                <CountUp to={13} />
-                                {isRTL ? ' سنة' : ' yrs'}
-                            </>
-                        ),
-                        k: isRTL
-                            ? 'من الشحن في الإنتاج'
-                            : 'of shipping in production',
-                    },
-                    {
-                        v: (
-                            <>
-                                <CountUp to={147} />+
-                            </>
-                        ),
-                        k: isRTL
-                            ? 'منصّة في الخدمة'
-                            : 'platforms in service',
-                    },
-                    {
-                        v: (
-                            <>
-                                <CountUp to={99.98} decimals={2} />%
-                            </>
-                        ),
-                        k: isRTL
-                            ? 'زمن تشغيل عبر الأنظمة المُدارة'
-                            : 'uptime across operated stacks',
-                    },
-                    {
-                        v: (
-                            <>
-                                −<CountUp to={63} />%
-                            </>
-                        ),
-                        k: isRTL
-                            ? 'متوسط خفض المخاطر البشرية'
-                            : 'avg. human-risk exposure',
-                    },
-                ].map((s, i) => (
-                    <div key={i}>
-                        <div
-                            style={{
-                                fontFamily: B.serif,
-                                fontSize: 44,
-                                lineHeight: 1,
-                                fontVariantNumeric: 'tabular-nums',
-                            }}
-                        >
-                            {s.v}
-                        </div>
-                        <div
-                            style={{
-                                fontSize: 13,
-                                color: B.dim,
-                                marginTop: 10,
-                                textWrap: 'balance' as React.CSSProperties['textWrap'],
-                            }}
-                        >
-                            {s.k}
-                        </div>
-                    </div>
-                ))}
             </div>
 
             <style>{`
-                @media (max-width: 900px) {
-                    .hero-grid { grid-template-columns: 1fr !important; gap: 48px !important; }
-                    .hero-title { font-size: 68px !important; }
-                    .hero-figure { max-width: 420px; margin: 0 auto; }
-                    .hero-stats { grid-template-columns: repeat(2, 1fr) !important; }
+                .q-hero {
+                    position: relative;
+                    min-height: calc(100vh - var(--q-nav-h, 84px));
+                    min-height: calc(100dvh - var(--q-nav-h, 84px));
+                    display: flex;
+                    align-items: center;
+                    padding: clamp(32px, 5vh, 64px) clamp(16px, 4vw, 48px);
                 }
-                @media (max-width: 540px) {
-                    .hero-title { font-size: 52px !important; }
+                .q-hero-grid {
+                    width: 100%;
+                    max-width: 1240px;
+                    margin: 0 auto;
+                    display: grid;
+                    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+                    gap: clamp(24px, 4vw, 64px);
+                    align-items: center;
+                }
+                .q-sr {
+                    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+                    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+                }
+                .q-hero-title {
+                    margin: 0;
+                    font-family: var(--font-display);
+                    font-weight: 400;
+                    font-size: clamp(52px, 7.6vw, 112px);
+                    line-height: 0.98;
+                    letter-spacing: -0.04em;
+                    color: var(--q-cream);
+                }
+                [dir='rtl'] .q-hero-title { letter-spacing: 0; line-height: 1.3; font-family: var(--font-arabic); }
+                .q-hero-swap {
+                    display: inline-grid;
+                    overflow: hidden;
+                    vertical-align: bottom;
+                    padding-bottom: 0.1em;
+                    color: var(--q-accent);
+                    font-style: italic;
+                    font-weight: 300;
+                }
+                [dir='rtl'] .q-hero-swap { font-style: normal; font-weight: 700; }
+                .q-hero-swap > span {
+                    grid-area: 1 / 1;
+                    padding-inline-end: 0.08em;
+                    transform: translateY(105%);
+                    opacity: 0;
+                    transition: transform 520ms cubic-bezier(.7, 0, .2, 1), opacity 320ms ease;
+                }
+                .q-hero-swap > span.is-active { transform: none; opacity: 1; }
+                .q-hero-swap > span.is-past { transform: translateY(-105%); opacity: 0; }
+                .q-hero-sub {
+                    margin: 28px 0 0;
+                    max-width: 34rem;
+                    font-size: clamp(17px, 1.5vw, 21px);
+                    line-height: 1.5;
+                    color: var(--q-dim);
+                }
+                .q-hero-ctas { display: flex; flex-wrap: wrap; align-items: center; gap: 20px; margin-top: 40px; }
+                .q-btn { font-size: 14px; font-weight: 500; text-decoration: none; white-space: nowrap; }
+                .q-btn-primary {
+                    display: inline-block; padding: 18px 28px;
+                    background: var(--q-accent); color: var(--q-bg);
+                    transition: transform 100ms ease, filter 150ms ease;
+                }
+                .q-btn-primary:hover { filter: brightness(1.06); }
+                .q-btn-primary:active { transform: translateY(1px); }
+                .q-btn-link {
+                    color: var(--q-cream); text-decoration: underline;
+                    text-underline-offset: 4px; text-decoration-color: var(--q-accent);
+                }
+                .q-btn:focus-visible { outline: 2px solid var(--q-accent); outline-offset: 3px; }
+                .q-hero-visual { width: 100%; max-width: 620px; justify-self: end; }
+                @media (max-width: 900px) {
+                    .q-hero-grid { grid-template-columns: 1fr; }
+                    .q-hero-visual { justify-self: center; max-width: 460px; }
+                }
+                @media (prefers-reduced-motion: reduce) {
+                    .q-hero-swap > span, .q-btn-primary { transition: none; }
                 }
             `}</style>
         </section>

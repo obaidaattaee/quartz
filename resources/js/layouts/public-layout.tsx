@@ -21,8 +21,67 @@ type Props = {
     breadcrumbs?: BreadcrumbItemType[];
 };
 
-export default function PublicLayout({ children, breadcrumbs = [] }: Props) {
-    const { locale, t } = useLocale();
+/*
+ * Page layouts are static functions without access to the translation hook,
+ * so breadcrumb titles are passed either as translation keys (preferred) or
+ * as legacy English literals. Both are localized here.
+ */
+const LEGACY_CRUMB_KEYS: Record<string, string> = {
+    About: 'breadcrumb.about',
+    Contact: 'breadcrumb.contact',
+    FAQ: 'breadcrumb.faq',
+    Services: 'breadcrumb.services',
+    Portfolio: 'breadcrumb.portfolio',
+    Work: 'breadcrumb.portfolio',
+    Industries: 'breadcrumb.industries',
+    Blog: 'breadcrumb.blog',
+    'Case Study': 'breadcrumb.caseStudy',
+    'Software Development': 'nav.services.dev',
+    'Web Development': 'nav.services.web',
+    'Mobile Apps': 'nav.services.mobile',
+    Automation: 'nav.services.automation',
+    'Quality Assurance': 'nav.services.qa',
+    Cybersecurity: 'nav.services.cybersecurity',
+};
+
+// Section crumbs that were given a placeholder href ('#').
+const SECTION_PATHS: Record<string, string> = {
+    'breadcrumb.services': '/services',
+    'breadcrumb.portfolio': '/portfolio',
+    'breadcrumb.industries': '/industries',
+    'breadcrumb.blog': '/blog',
+};
+
+function resolveCrumbHref(key: string, href: unknown, locale: string): string {
+    const raw = typeof href === 'string' ? href : '';
+
+    if (raw === '' || raw === '#') {
+        return SECTION_PATHS[key] ? `/${locale}${SECTION_PATHS[key]}` : '';
+    }
+
+    if (/^\/(en|ar)(\/|$)/.test(raw)) {
+        return raw.replace(/^\/(en|ar)/, `/${locale}`);
+    }
+
+    return raw.startsWith('/') ? `/${locale}${raw}` : raw;
+}
+
+export default function PublicLayout({
+    children,
+    breadcrumbs: rawBreadcrumbs = [],
+}: Props) {
+    const { locale, t, isRTL } = useLocale();
+
+    const breadcrumbs = rawBreadcrumbs
+        .filter((item) => item.title)
+        .map((item) => {
+            const key = LEGACY_CRUMB_KEYS[item.title] ?? item.title;
+
+            return {
+                title: t(key),
+                href: resolveCrumbHref(key, item.href, locale),
+            };
+        });
     const { siteSettings } = usePage<{
         siteSettings: Record<string, string>;
     }>().props;
@@ -52,8 +111,7 @@ export default function PublicLayout({ children, breadcrumbs = [] }: Props) {
         };
     }, [siteSettings]);
 
-    const origin =
-        typeof window !== 'undefined' ? window.location.origin : '';
+    const origin = typeof window !== 'undefined' ? window.location.origin : '';
 
     const breadcrumbSchema =
         breadcrumbs.length > 0
@@ -68,10 +126,7 @@ export default function PublicLayout({ children, breadcrumbs = [] }: Props) {
                           item: `${origin}/${locale}`,
                       },
                       ...breadcrumbs.map((item, index) => {
-                          const href =
-                              typeof item.href === 'string'
-                                  ? item.href
-                                  : '';
+                          const href = item.href;
 
                           return {
                               '@type': 'ListItem',
@@ -115,13 +170,25 @@ export default function PublicLayout({ children, breadcrumbs = [] }: Props) {
             {breadcrumbs.length > 0 && (
                 <div
                     className="mx-auto w-full max-w-7xl px-6 pt-8 sm:px-10 lg:px-12"
-                    style={{
-                        fontFamily: B.mono,
-                        color: B.dim,
-                        fontSize: 12,
-                        letterSpacing: '0.12em',
-                        textTransform: 'uppercase',
-                    }}
+                    // Tracked uppercase mono breaks Arabic letter joining, so
+                    // RTL uses the Arabic sans with normal spacing.
+                    style={
+                        isRTL
+                            ? {
+                                  fontFamily: 'var(--font-arabic-sans)',
+                                  color: B.dim,
+                                  fontSize: 13,
+                                  letterSpacing: 'normal',
+                                  textTransform: 'none',
+                              }
+                            : {
+                                  fontFamily: B.mono,
+                                  color: B.dim,
+                                  fontSize: 12,
+                                  letterSpacing: '0.12em',
+                                  textTransform: 'uppercase',
+                              }
+                    }
                 >
                     <Breadcrumb>
                         <BreadcrumbList>
@@ -137,9 +204,10 @@ export default function PublicLayout({ children, breadcrumbs = [] }: Props) {
                             </BreadcrumbItem>
                             {breadcrumbs.map((item, index) => (
                                 <span key={index} className="contents">
-                                    <BreadcrumbSeparator />
+                                    <BreadcrumbSeparator className="rtl:[&>svg]:rotate-180" />
                                     <BreadcrumbItem>
-                                        {index === breadcrumbs.length - 1 ? (
+                                        {index === breadcrumbs.length - 1 ||
+                                        !item.href ? (
                                             <BreadcrumbPage
                                                 style={{ color: B.cream }}
                                             >

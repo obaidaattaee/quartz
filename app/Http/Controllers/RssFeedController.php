@@ -19,7 +19,7 @@ class RssFeedController extends Controller
             ->get();
 
         $baseUrl = rtrim(config('app.url'), '/');
-        $siteName = config('app.name', 'Quart');
+        $siteName = config('app.name', 'Quartz');
         $titleField = 'title_' . $locale;
         $excerptField = 'excerpt_' . $locale;
 

@@ -65,7 +65,7 @@ export default function IndustryShow() {
             <section className="bg-muted/40 py-20 md:py-28">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <ScrollReveal variant="hero">
-                        <p className="text-accent text-xs font-semibold uppercase tracking-[0.16em]">
+                        <p className="text-accent text-xs font-semibold uppercase tracking-[0.16em] rtl:tracking-normal rtl:normal-case">
                             {t('nav.industries')}
                         </p>
                         <h1 className="mt-3 text-4xl font-bold md:text-5xl">

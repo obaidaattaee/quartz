@@ -231,9 +231,11 @@ class LandingContentSeeder extends Seeder
         ];
 
         foreach ($cases as $i => $c) {
+            // Placeholder clients and metrics — kept for reference but
+            // hidden until replaced with verified, client-approved results.
             LandingCaseStudy::updateOrCreate(
                 ['headline_en' => $c['headline_en']],
-                array_merge($c, ['sort_order' => $i]),
+                array_merge($c, ['sort_order' => $i, 'is_visible' => false]),
             );
         }
     }
@@ -256,14 +258,16 @@ class LandingContentSeeder extends Seeder
             [
                 'question_en' => 'Where is your team based?',
                 'question_ar' => 'أين يقع فريقكم؟',
-                'answer_en' => 'Distributed across Europe, North Africa, the Gulf, SE Asia and the Americas — with a named lead in your timezone. Every engagement has one accountable engineer on your side.',
-                'answer_ar' => 'موزّع على أوروبا وشمال أفريقيا والخليج وجنوب شرق آسيا والأمريكتَين — مع قائد مُعيَّن في منطقتك الزمنية. كل ارتباط له مهندس مسؤول واحد إلى جانبك.',
+                'answer_en' => 'A remote team serving the Gulf and the wider region, with one dedicated lead per project.',
+                'answer_ar' => 'فريق عن بُعد يخدم دول الخليج والمنطقة، بقائد مخصّص لكل مشروع.',
             ],
             [
                 'question_en' => 'Is Quartz Cyber a SaaS or self-hosted?',
                 'question_ar' => 'هل Quartz Cyber خدمة سحابية أم استضافة ذاتية؟',
                 'answer_en' => 'Cloud-hosted by default with regional data residency; on-prem available for regulated sectors.',
                 'answer_ar' => 'سحابي افتراضياً مع الإقامة الإقليمية للبيانات؛ والاستضافة الذاتية متاحة للقطاعات المنظّمة.',
+                // Company platforms are not marketed on the services site.
+                'is_visible' => false,
             ],
             [
                 'question_en' => 'What’s the smallest engagement you’ll take?',
@@ -276,7 +280,7 @@ class LandingContentSeeder extends Seeder
         foreach ($faqs as $i => $f) {
             LandingFaq::updateOrCreate(
                 ['question_en' => $f['question_en']],
-                array_merge($f, ['sort_order' => $i]),
+                array_merge(['is_visible' => true], $f, ['sort_order' => $i]),
             );
         }
     }

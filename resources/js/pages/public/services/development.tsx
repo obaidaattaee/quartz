@@ -61,7 +61,7 @@ export default function Development() {
         description: subtitle,
         provider: {
             '@type': 'Organization',
-            name: 'Quart',
+            name: 'Quartz',
         },
         serviceType: title,
     };

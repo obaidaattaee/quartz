@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 import { useLocale } from '@/hooks/use-locale';
-
 import { useLandingData } from './data';
 import SectionHead from './section-head';
 import { B, monoStyle } from './tokens';
@@ -11,15 +10,16 @@ export default function LandingProcess() {
     const { isRTL } = useLocale();
     const [active, setActive] = useState(0);
 
-    if (processSteps.length === 0) return null;
+    if (processSteps.length === 0) {
+        return null;
+    }
 
     const current = processSteps[Math.min(active, processSteps.length - 1)];
 
     return (
-        <section style={{ padding: '80px 48px' }}>
+        <section className="q-sec">
             <div style={{ maxWidth: 1240, margin: '0 auto' }}>
                 <SectionHead
-                    num={isRTL ? '٣.' : 'III.'}
                     kicker={isRTL ? 'المنهجية' : 'Method'}
                     title={
                         isRTL ? (
@@ -96,9 +96,7 @@ export default function LandingProcess() {
                                         style={{
                                             fontFamily: B.mono,
                                             fontSize: 12,
-                                            color: on
-                                                ? B.accent
-                                                : B.dim,
+                                            color: on ? B.accent : B.dim,
                                         }}
                                     >
                                         {s.n}
@@ -109,9 +107,7 @@ export default function LandingProcess() {
                                             fontSize: 32,
                                             lineHeight: 1.1,
                                             fontWeight: 400,
-                                            color: on
-                                                ? B.cream
-                                                : B.dim,
+                                            color: on ? B.cream : B.dim,
                                             transition: 'color 200ms',
                                             letterSpacing: '-0.01em',
                                         }}

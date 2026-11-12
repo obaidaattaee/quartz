@@ -3,30 +3,21 @@ import type { ReactNode } from 'react';
 import { B, monoStyle } from './tokens';
 
 type Props = {
-    num: string;
     kicker: string;
     title: ReactNode;
     sub: ReactNode;
+    id?: string;
 };
 
-export default function SectionHead({ num, kicker, title, sub }: Props) {
+// Section eyebrows carry no ordinal: sections hide themselves when their
+// content is empty, so any numbering would skip.
+export default function SectionHead({ kicker, title, sub, id }: Props) {
     return (
-        <div
-            style={{
-                display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
-                gap: 64,
-                alignItems: 'end',
-                marginBottom: 56,
-                borderTop: `1px solid ${B.line}`,
-                paddingTop: 32,
-            }}
-        >
+        <div className="q-sec-head">
             <div>
-                <div style={monoStyle}>
-                    {num}&nbsp;&nbsp;&nbsp;{kicker}
-                </div>
+                <div style={monoStyle}>{kicker}</div>
                 <h2
+                    id={id}
                     style={{
                         fontFamily: B.serif,
                         fontSize: 64,

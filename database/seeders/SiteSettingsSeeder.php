@@ -16,10 +16,12 @@ class SiteSettingsSeeder extends Seeder
             'site_name' => 'Quartz',
             'primary_color' => '#14B8A6',
             'secondary_color' => '#0F172A',
-            'contact_phone' => '+966 50 XXX XXXX',
-            'contact_email' => 'info@quartz.sa',
-            'contact_whatsapp' => '+966 50 XXX XXXX',
-            'contact_address' => 'Riyadh, Saudi Arabia',
+            // Email is the only public contact channel. Phone, WhatsApp and
+            // street address stay empty (and hidden) until real ones exist.
+            'contact_phone' => '',
+            'contact_email' => 'info@quartz-solutions.net',
+            'contact_whatsapp' => '',
+            'contact_address' => '',
             'social_linkedin' => 'https://linkedin.com/company/quart',
             'social_twitter' => 'https://twitter.com/quart',
             'social_github' => 'https://github.com/quart',

@@ -2,9 +2,10 @@ import { Link } from '@inertiajs/react';
 import { Calendar } from 'lucide-react';
 import { motion } from 'motion/react';
 
+import ReadingTime from '@/components/reading-time';
 import { useLocale } from '@/hooks/use-locale';
 import { fadeInUp } from '@/lib/animations';
-import ReadingTime from '@/components/reading-time';
+import { authorDisplayName } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 import type { BlogPostSummary } from '@/types';
 
@@ -13,7 +14,8 @@ type Props = {
 };
 
 export default function BlogCard({ post }: Props) {
-    const { locale, isRTL } = useLocale();
+    const { locale, isRTL, t } = useLocale();
+    const authorName = authorDisplayName(t, post.author?.name);
 
     const title = locale === 'ar' ? post.title_ar : post.title_en;
     const excerpt = locale === 'ar' ? post.excerpt_ar : post.excerpt_en;
@@ -33,7 +35,7 @@ export default function BlogCard({ post }: Props) {
 
     const avatarUrl =
         post.author?.avatar?.thumbnail_sm_url ?? post.author?.avatar?.url;
-    const authorInitial = post.author?.name?.charAt(0)?.toUpperCase() ?? '?';
+    const authorInitial = authorName.charAt(0).toUpperCase() || '?';
 
     return (
         <motion.div variants={fadeInUp}>
@@ -43,7 +45,7 @@ export default function BlogCard({ post }: Props) {
             >
                 <article
                     className={cn(
-                        'bg-card h-full overflow-hidden rounded-xl shadow-sm transition-all duration-300',
+                        'h-full overflow-hidden rounded-xl bg-card shadow-sm transition-all duration-300',
                         'hover:-translate-y-0.5 hover:shadow-md',
                     )}
                 >
@@ -59,8 +61,8 @@ export default function BlogCard({ post }: Props) {
                                 className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                             />
                         ) : (
-                            <div className="bg-muted flex h-full w-full items-center justify-center">
-                                <span className="text-muted-foreground text-4xl">
+                            <div className="flex h-full w-full items-center justify-center bg-muted">
+                                <span className="text-4xl text-muted-foreground">
                                     Q
                                 </span>
                             </div>
@@ -71,7 +73,7 @@ export default function BlogCard({ post }: Props) {
                     <div className="flex flex-1 flex-col p-5">
                         {/* Category badge */}
                         {categoryName && (
-                            <span className="bg-primary/10 text-primary mb-3 inline-block w-fit rounded-full px-3 py-1 text-xs font-medium">
+                            <span className="mb-3 inline-block w-fit rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
                                 {categoryName}
                             </span>
                         )}
@@ -79,7 +81,7 @@ export default function BlogCard({ post }: Props) {
                         {/* Title */}
                         <h3
                             className={cn(
-                                'text-foreground mb-2 line-clamp-2 text-lg font-semibold',
+                                'mb-2 line-clamp-2 text-lg font-semibold text-foreground',
                                 isRTL && 'text-right',
                             )}
                         >
@@ -90,7 +92,7 @@ export default function BlogCard({ post }: Props) {
                         {excerpt && (
                             <p
                                 className={cn(
-                                    'text-muted-foreground mb-4 line-clamp-3 text-sm',
+                                    'mb-4 line-clamp-3 text-sm text-muted-foreground',
                                     isRTL && 'text-right',
                                 )}
                             >
@@ -105,16 +107,16 @@ export default function BlogCard({ post }: Props) {
                                 {avatarUrl ? (
                                     <img
                                         src={avatarUrl}
-                                        alt={post.author.name}
+                                        alt={authorName}
                                         className="h-7 w-7 rounded-full object-cover"
                                     />
                                 ) : (
-                                    <div className="bg-primary text-primary-foreground flex h-7 w-7 items-center justify-center rounded-full text-xs font-medium">
+                                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-xs font-medium text-primary-foreground">
                                         {authorInitial}
                                     </div>
                                 )}
-                                <span className="text-muted-foreground text-xs">
-                                    {post.author.name}
+                                <span className="text-xs text-muted-foreground">
+                                    {authorName}
                                 </span>
                             </div>
 
@@ -122,7 +124,7 @@ export default function BlogCard({ post }: Props) {
                             <div className="flex-1" />
 
                             {/* Date */}
-                            <span className="text-muted-foreground flex items-center gap-1 text-xs">
+                            <span className="flex items-center gap-1 text-xs text-muted-foreground">
                                 <Calendar className="h-3.5 w-3.5" />
                                 {formattedDate}
                             </span>

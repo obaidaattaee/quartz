@@ -16,7 +16,7 @@ class FaqController extends Controller
     public function index(): Response
     {
         $locale = app()->getLocale();
-        $seo = SeoService::forStaticPage('faq', $locale, 'FAQ', "/{$locale}/faq");
+        $seo = SeoService::forStaticPage('faq', $locale, null, "/{$locale}/faq");
 
         return Inertia::render('public/faq', [
             'seo' => $seo,

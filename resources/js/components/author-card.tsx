@@ -2,6 +2,7 @@ import { Link } from '@inertiajs/react';
 import { Github, Globe, Linkedin, Twitter } from 'lucide-react';
 
 import { useLocale } from '@/hooks/use-locale';
+import { authorDisplayName } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 import type { Author } from '@/types';
 
@@ -11,12 +12,12 @@ type Props = {
 };
 
 export default function AuthorCard({ author, variant = 'default' }: Props) {
-    const { locale, isRTL } = useLocale();
+    const { locale, isRTL, t } = useLocale();
+    const authorName = authorDisplayName(t, author.name);
 
     const bio = locale === 'ar' ? author.bio_ar : author.bio_en;
-    const avatarUrl =
-        author.avatar?.thumbnail_sm_url ?? author.avatar?.url;
-    const authorInitial = author.name?.charAt(0)?.toUpperCase() ?? '?';
+    const avatarUrl = author.avatar?.thumbnail_sm_url ?? author.avatar?.url;
+    const authorInitial = authorName.charAt(0).toUpperCase() || '?';
     const isLarge = variant === 'large';
     const avatarSize = isLarge ? 'h-20 w-20' : 'h-16 w-16';
     const nameSize = isLarge ? 'text-xl' : 'text-base';
@@ -32,7 +33,7 @@ export default function AuthorCard({ author, variant = 'default' }: Props) {
     return (
         <div
             className={cn(
-                'bg-card flex gap-4 rounded-xl border p-6',
+                'flex gap-4 rounded-xl border bg-card p-6',
                 isRTL && 'flex-row-reverse',
             )}
         >
@@ -41,17 +42,14 @@ export default function AuthorCard({ author, variant = 'default' }: Props) {
                 {avatarUrl ? (
                     <img
                         src={avatarUrl}
-                        alt={author.name}
-                        className={cn(
-                            avatarSize,
-                            'rounded-full object-cover',
-                        )}
+                        alt={authorName}
+                        className={cn(avatarSize, 'rounded-full object-cover')}
                     />
                 ) : (
                     <div
                         className={cn(
                             avatarSize,
-                            'bg-primary text-primary-foreground flex items-center justify-center rounded-full text-lg font-medium',
+                            'flex items-center justify-center rounded-full bg-primary text-lg font-medium text-primary-foreground',
                         )}
                     >
                         {authorInitial}
@@ -63,20 +61,20 @@ export default function AuthorCard({ author, variant = 'default' }: Props) {
             <div className={cn('flex-1', isRTL && 'text-right')}>
                 <Link
                     href={`/${locale}/blog/author/${author.id}`}
-                    className="hover:text-primary transition-colors"
+                    className="transition-colors hover:text-primary"
                 >
                     <h4
                         className={cn(
-                            'text-foreground font-semibold',
+                            'font-semibold text-foreground',
                             nameSize,
                         )}
                     >
-                        {author.name}
+                        {authorName}
                     </h4>
                 </Link>
 
                 {bio && (
-                    <p className="text-muted-foreground mt-1 line-clamp-3 text-sm">
+                    <p className="mt-1 line-clamp-3 text-sm text-muted-foreground">
                         {bio}
                     </p>
                 )}
@@ -94,7 +92,7 @@ export default function AuthorCard({ author, variant = 'default' }: Props) {
                                 href={socialLinks.linkedin}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-muted-foreground hover:text-primary transition-colors"
+                                className="text-muted-foreground transition-colors hover:text-primary"
                             >
                                 <Linkedin className="h-4 w-4" />
                             </a>
@@ -104,7 +102,7 @@ export default function AuthorCard({ author, variant = 'default' }: Props) {
                                 href={socialLinks.twitter}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-muted-foreground hover:text-primary transition-colors"
+                                className="text-muted-foreground transition-colors hover:text-primary"
                             >
                                 <Twitter className="h-4 w-4" />
                             </a>
@@ -114,7 +112,7 @@ export default function AuthorCard({ author, variant = 'default' }: Props) {
                                 href={socialLinks.github}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-muted-foreground hover:text-primary transition-colors"
+                                className="text-muted-foreground transition-colors hover:text-primary"
                             >
                                 <Github className="h-4 w-4" />
                             </a>
@@ -124,7 +122,7 @@ export default function AuthorCard({ author, variant = 'default' }: Props) {
                                 href={socialLinks.website}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-muted-foreground hover:text-primary transition-colors"
+                                className="text-muted-foreground transition-colors hover:text-primary"
                             >
                                 <Globe className="h-4 w-4" />
                             </a>

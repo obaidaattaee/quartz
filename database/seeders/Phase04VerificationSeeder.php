@@ -78,7 +78,7 @@ class Phase04VerificationSeeder extends Seeder
     }
 
     /**
-     * Seed 7 published blog posts for pagination testing (6 per page).
+     * Seed 7 placeholder blog posts as drafts (not publicly listed).
      */
     private function seedBlogPosts(): void
     {
@@ -120,7 +120,7 @@ class Phase04VerificationSeeder extends Seeder
                 'content_ar' => '<h2>مقدمة</h2><p>بناء واجهات برمجة تطبيقات يمكنها التعامل مع ملايين الطلبات يتطلب تخطيطًا وتنفيذًا دقيقًا. في هذا المقال، نستكشف أنماط لارافيل لتطوير واجهات برمجة تطبيقات قابلة للتوسع.</p>',
                 'categories' => ['development'],
                 'tags' => ['laravel'],
-                'meta_title_en' => 'Building Scalable APIs with Laravel | Quart Blog',
+                'meta_title_en' => 'Building Scalable APIs with Laravel | Quartz Blog',
                 'meta_description_en' => 'Expert guide to designing RESTful APIs that scale with Laravel.',
             ],
             [
@@ -200,8 +200,10 @@ class Phase04VerificationSeeder extends Seeder
                 ['slug' => $postData['slug']],
                 array_merge($postData, [
                     'author_id' => $author->id,
-                    'status' => 'published',
-                    'published_at' => now()->subDays(7 - $index),
+                    // Placeholder stubs — kept as drafts so they never go
+                    // live until replaced with real articles.
+                    'status' => 'draft',
+                    'published_at' => null,
                 ])
             );
 
@@ -220,11 +222,11 @@ class Phase04VerificationSeeder extends Seeder
             }
         }
 
-        $this->command->info('Seeded 7 published blog posts with categories and tags.');
+        $this->command->info('Seeded 7 draft blog posts with categories and tags.');
     }
 
     /**
-     * Seed 3 published portfolio items across different service categories.
+     * Seed 3 placeholder portfolio items as drafts (not publicly listed).
      */
     private function seedPortfolioItems(): void
     {
@@ -245,7 +247,8 @@ class Phase04VerificationSeeder extends Seeder
                     ['label' => 'Page Load Time', 'value' => '0.8s'],
                     ['label' => 'Uptime', 'value' => '99.9%'],
                 ],
-                'status' => 'published',
+                // Placeholder client — hidden until replaced with a real case study.
+                'status' => 'draft',
                 'sort_order' => 1,
             ],
             [
@@ -263,7 +266,7 @@ class Phase04VerificationSeeder extends Seeder
                     ['label' => 'Deployments Per Day', 'value' => '12+'],
                     ['label' => 'Downtime Eliminated', 'value' => '100%'],
                 ],
-                'status' => 'published',
+                'status' => 'draft',
                 'sort_order' => 2,
             ],
             [
@@ -281,7 +284,7 @@ class Phase04VerificationSeeder extends Seeder
                     ['label' => 'Compliance Score', 'value' => '98%'],
                     ['label' => 'Security Incidents', 'value' => '0'],
                 ],
-                'status' => 'published',
+                'status' => 'draft',
                 'sort_order' => 3,
             ],
         ];
@@ -293,7 +296,7 @@ class Phase04VerificationSeeder extends Seeder
             );
         }
 
-        $this->command->info('Seeded 3 published portfolio items.');
+        $this->command->info('Seeded 3 draft portfolio items.');
     }
 
     /**
@@ -347,9 +350,10 @@ class Phase04VerificationSeeder extends Seeder
                 'description_ar' => 'منصة موحدة لنقاط البيع والإدارة الخلفية تغطي السجلات والكتالوج والمخزون والمبيعات والتسعير والطلبات والشحن والعملاء والولاء والتسويق والواجهة الإلكترونية والمدفوعات والتقارير والترجمة.',
                 'outcome_headline_en' => 'A complete retail operating system, built end-to-end',
                 'outcome_headline_ar' => 'نظام تشغيل متكامل لتجارة التجزئة، مبني من البداية إلى النهاية',
-                'service_category' => 'Software Development',
+                'service_category' => 'development',
                 'client_name' => 'Quartz',
-                'status' => 'published',
+                // Company platform — not marketed on the services site.
+                'status' => 'draft',
                 'sort_order' => 0,
                 'featured_image_id' => $media->id,
             ],
@@ -412,10 +416,10 @@ class Phase04VerificationSeeder extends Seeder
         SeoMetadata::updateOrCreate(
             ['page_key' => 'home'],
             [
-                'meta_title_en' => 'Quart - Software Development, Automation & Cybersecurity',
-                'meta_title_ar' => 'كوارت - تطوير البرمجيات والأتمتة والأمن السيبراني',
-                'meta_description_en' => 'Quart delivers professional software development, automation, QA, and cybersecurity services. Transform your business with our expert team.',
-                'meta_description_ar' => 'تقدم كوارت خدمات تطوير البرمجيات والأتمتة وضمان الجودة والأمن السيبراني المهنية. حوّل عملك مع فريقنا المتخصص.',
+                'meta_title_en' => 'Quartz - Software Development, Automation & Cybersecurity',
+                'meta_title_ar' => 'كوارتز - تطوير البرمجيات والأتمتة والأمن السيبراني',
+                'meta_description_en' => 'Quartz delivers software development, automation, QA, and cybersecurity services — a remote team serving the Gulf, with 13+ live products serving 500K+ users.',
+                'meta_description_ar' => 'تقدّم كوارتز خدمات تطوير البرمجيات والأتمتة وضمان الجودة والأمن السيبراني — فريق عن بُعد يخدم دول الخليج، بأكثر من 13 منتجاً قيد التشغيل تخدم أكثر من 500 ألف مستخدم.',
             ]
         );
 

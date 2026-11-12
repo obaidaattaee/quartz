@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { Mail, MapPin, Phone } from 'lucide-react';
+import { Mail } from 'lucide-react';
 
 import NewsletterForm from '@/components/newsletter-form';
 import { useLocale } from '@/hooks/use-locale';
@@ -112,15 +112,7 @@ export default function SiteFooter() {
                         <ul className="flex flex-col gap-3">
                             <li className="text-muted-foreground flex items-center gap-2 text-sm">
                                 <Mail className="size-4 shrink-0" />
-                                <span>info@quartz.com</span>
-                            </li>
-                            <li className="text-muted-foreground flex items-center gap-2 text-sm">
-                                <Phone className="size-4 shrink-0" />
-                                <span dir="ltr">+966 XX XXX XXXX</span>
-                            </li>
-                            <li className="text-muted-foreground flex items-start gap-2 text-sm">
-                                <MapPin className="mt-0.5 size-4 shrink-0" />
-                                <span>Riyadh, Saudi Arabia</span>
+                                <span dir="ltr">info@quartz-solutions.net</span>
                             </li>
                         </ul>
                     </div>

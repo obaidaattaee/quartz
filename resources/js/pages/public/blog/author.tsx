@@ -6,8 +6,8 @@ import BlogCard from '@/components/blog-card';
 import ScrollReveal from '@/components/scroll-reveal';
 import SeoHead from '@/components/seo-head';
 import { useLocale } from '@/hooks/use-locale';
-import { t as translate } from '@/lib/i18n';
 import PublicLayout from '@/layouts/public-layout';
+import { authorDisplayName, t as translate } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 import type {
     Author as AuthorType,
@@ -24,14 +24,14 @@ type Props = {
 };
 
 export default function BlogAuthor({ posts, author, seo }: Props) {
-    const { locale, t, isRTL } = useLocale();
+    const { t, isRTL } = useLocale();
 
     return (
         <>
             <SeoHead seo={seo} />
 
             {/* Author header */}
-            <section className="bg-primary/5 dark:bg-primary/10 relative py-20 md:py-28">
+            <section className="relative bg-primary/5 py-20 md:py-28 dark:bg-primary/10">
                 <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
                     <ScrollReveal variant="hero">
                         <AuthorCard author={author} variant="large" />
@@ -44,7 +44,7 @@ export default function BlogAuthor({ posts, author, seo }: Props) {
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <h2
                         className={cn(
-                            'text-foreground text-2xl font-bold',
+                            'text-2xl font-bold text-foreground',
                             isRTL && 'text-right',
                         )}
                     >
@@ -68,7 +68,7 @@ export default function BlogAuthor({ posts, author, seo }: Props) {
                         </ScrollReveal>
                     ) : (
                         <div className="py-16 text-center">
-                            <p className="text-muted-foreground text-lg">
+                            <p className="text-lg text-muted-foreground">
                                 {t('blog.noPosts')}
                             </p>
                         </div>
@@ -111,7 +111,7 @@ function Pagination({
                     return (
                         <span
                             key={index}
-                            className="text-muted-foreground px-3 py-2 text-sm"
+                            className="px-3 py-2 text-sm text-muted-foreground"
                         >
                             {label}
                         </span>
@@ -126,7 +126,7 @@ function Pagination({
                             'rounded-lg px-3 py-2 text-sm font-medium transition-colors',
                             link.active
                                 ? 'bg-primary text-primary-foreground'
-                                : 'bg-muted hover:bg-muted/80 text-foreground',
+                                : 'bg-muted text-foreground hover:bg-muted/80',
                         )}
                     >
                         {label}
@@ -149,9 +149,10 @@ BlogAuthor.layout = (page: ReactNode) => {
     const translations = pageProps?.translations ?? {};
     const blogTitle = translate(translations, 'nav.blog');
 
-    const authorName =
-        pageProps?.author?.name ??
-        (locale === 'ar' ? 'المؤلف' : 'Author');
+    const authorName = authorDisplayName(
+        (key) => translate(translations, key),
+        pageProps?.author?.name,
+    );
 
     const breadcrumbs: BreadcrumbItem[] = [
         { title: blogTitle, href: `/${locale}/blog` },

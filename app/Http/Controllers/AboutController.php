@@ -19,6 +19,7 @@ class AboutController extends Controller
 
         return Inertia::render('public/about', [
             'teamMembers' => TeamMember::with('photo')
+                ->where('is_visible', true)
                 ->orderBy('sort_order')
                 ->get(),
             'seo' => $seo,

@@ -21,6 +21,7 @@ class TeamMember extends Model
         'bio_ar',
         'photo_id',
         'sort_order',
+        'is_visible',
     ];
 
     /**
@@ -32,6 +33,7 @@ class TeamMember extends Model
     {
         return [
             'sort_order' => 'integer',
+            'is_visible' => 'boolean',
         ];
     }
 

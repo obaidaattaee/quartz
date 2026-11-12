@@ -12,6 +12,17 @@ import {
 } from '@/components/ui/select';
 import { useLocale } from '@/hooks/use-locale';
 
+function RequiredMark({ label }: { label: string }) {
+    return (
+        <>
+            <span aria-hidden="true" className="text-destructive">
+                *
+            </span>
+            <span className="sr-only">({label})</span>
+        </>
+    );
+}
+
 export default function ContactForm() {
     const { locale, t } = useLocale();
 
@@ -49,7 +60,10 @@ export default function ContactForm() {
             {/* Name + Email row */}
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div className="space-y-2">
-                    <Label htmlFor="name">{t('contact.form.name')}</Label>
+                    <Label htmlFor="name">
+                        {t('contact.form.name')}
+                        <RequiredMark label={t('contact.form.required')} />
+                    </Label>
                     <Input
                         id="name"
                         name="name"
@@ -59,14 +73,17 @@ export default function ContactForm() {
                         onChange={(e) => setData('name', e.target.value)}
                     />
                     {errors.name && (
-                        <p className="text-destructive mt-1 text-sm">
+                        <p className="mt-1 text-sm text-destructive">
                             {errors.name}
                         </p>
                     )}
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="email">{t('contact.form.email')}</Label>
+                    <Label htmlFor="email">
+                        {t('contact.form.email')}
+                        <RequiredMark label={t('contact.form.required')} />
+                    </Label>
                     <Input
                         id="email"
                         name="email"
@@ -77,7 +94,7 @@ export default function ContactForm() {
                         onChange={(e) => setData('email', e.target.value)}
                     />
                     {errors.email && (
-                        <p className="text-destructive mt-1 text-sm">
+                        <p className="mt-1 text-sm text-destructive">
                             {errors.email}
                         </p>
                     )}
@@ -88,7 +105,7 @@ export default function ContactForm() {
             <div className="space-y-2">
                 <Label htmlFor="phone">
                     {t('contact.form.phone')}{' '}
-                    <span className="text-muted-foreground text-xs">
+                    <span className="text-xs text-muted-foreground">
                         ({t('contact.form.phoneOptional')})
                     </span>
                 </Label>
@@ -100,7 +117,7 @@ export default function ContactForm() {
                     onChange={(e) => setData('phone', e.target.value)}
                 />
                 {errors.phone && (
-                    <p className="text-destructive mt-1 text-sm">
+                    <p className="mt-1 text-sm text-destructive">
                         {errors.phone}
                     </p>
                 )}
@@ -108,12 +125,22 @@ export default function ContactForm() {
 
             {/* Service dropdown */}
             <div className="space-y-2">
-                <Label htmlFor="service">{t('contact.form.service')}</Label>
+                <Label htmlFor="service">
+                    {t('contact.form.service')}
+                    <RequiredMark label={t('contact.form.required')} />
+                </Label>
                 <Select
+                    name="service"
+                    required
                     value={data.service}
                     onValueChange={(v) => setData('service', v)}
                 >
-                    <SelectTrigger className="w-full">
+                    <SelectTrigger
+                        id="service"
+                        className="w-full"
+                        aria-required="true"
+                        aria-invalid={errors.service ? true : undefined}
+                    >
                         <SelectValue
                             placeholder={t('contact.form.servicePlaceholder')}
                         />
@@ -137,7 +164,7 @@ export default function ContactForm() {
                     </SelectContent>
                 </Select>
                 {errors.service && (
-                    <p className="text-destructive mt-1 text-sm">
+                    <p className="mt-1 text-sm text-destructive">
                         {errors.service}
                     </p>
                 )}
@@ -145,7 +172,10 @@ export default function ContactForm() {
 
             {/* Message */}
             <div className="space-y-2">
-                <Label htmlFor="message">{t('contact.form.message')}</Label>
+                <Label htmlFor="message">
+                    {t('contact.form.message')}
+                    <RequiredMark label={t('contact.form.required')} />
+                </Label>
                 <textarea
                     id="message"
                     name="message"
@@ -154,10 +184,10 @@ export default function ContactForm() {
                     placeholder={t('contact.form.messagePlaceholder')}
                     value={data.message}
                     onChange={(e) => setData('message', e.target.value)}
-                    className="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring w-full rounded-md border px-3 py-2 text-sm outline-none focus-visible:ring-2"
+                    className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background outline-none placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring"
                 />
                 {errors.message && (
-                    <p className="text-destructive mt-1 text-sm">
+                    <p className="mt-1 text-sm text-destructive">
                         {errors.message}
                     </p>
                 )}

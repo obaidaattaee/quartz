@@ -110,14 +110,10 @@ function outwardTransform(svgX: number, svgY: number): string {
     const verticalBand = 18;
 
     if (Math.abs(svgX) < verticalBand) {
-        return svgY < 0
-            ? 'translate(-50%, -100%)'
-            : 'translate(-50%, 0%)';
+        return svgY < 0 ? 'translate(-50%, -100%)' : 'translate(-50%, 0%)';
     }
 
-    return svgX > 0
-        ? 'translate(8%, -50%)'
-        : 'translate(-108%, -50%)';
+    return svgX > 0 ? 'translate(8%, -50%)' : 'translate(-108%, -50%)';
 }
 
 export default function EditorialStackDiagram() {
@@ -149,7 +145,7 @@ export default function EditorialStackDiagram() {
                         rx={o.rx}
                         ry={o.ry}
                         fill="none"
-                        stroke={B.line}
+                        style={{ stroke: B.line }}
                         strokeWidth="0.8"
                         strokeDasharray="2 6"
                     />
@@ -195,7 +191,7 @@ export default function EditorialStackDiagram() {
                                 y1="0"
                                 x2={p.x}
                                 y2={p.y}
-                                stroke={B.accent}
+                                style={{ stroke: B.accent }}
                                 strokeWidth="0.6"
                                 opacity="0.18"
                             />

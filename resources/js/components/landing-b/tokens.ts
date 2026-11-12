@@ -1,15 +1,16 @@
-// Direction B editorial palette — single source of truth for inline styles
-// that need the exact hex/rgba values from the prototype.
+// Direction B editorial palette — single source of truth for inline styles.
+// Colours resolve through the .public-theme CSS variables in app.css, so the
+// header theme toggle (dark / light) restyles every component that uses them.
 export const B = {
-    bg: '#0e0d0b',
-    bgElev: '#151310',
-    cream: '#ece4d3',
-    dim: 'rgba(236,228,211,0.62)',
-    faint: 'rgba(236,228,211,0.22)',
-    line: 'rgba(236,228,211,0.12)',
-    lineStrong: 'rgba(236,228,211,0.22)',
-    accent: '#e8a84a',
-    accentSoft: 'rgba(232,168,74,0.12)',
+    bg: 'var(--q-bg)',
+    bgElev: 'var(--q-bg-elev)',
+    cream: 'var(--q-cream)',
+    dim: 'var(--q-dim)',
+    faint: 'var(--q-faint)',
+    line: 'var(--q-line)',
+    lineStrong: 'var(--q-line-strong)',
+    accent: 'var(--q-accent)',
+    accentSoft: 'var(--q-accent-soft)',
     sans: "'Inter', system-ui, sans-serif",
     serif: "'Fraunces', Georgia, serif",
     mono: "'JetBrains Mono', ui-monospace, monospace",

@@ -66,7 +66,32 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->render(function (NotFoundHttpException $e, $request) {
-            return Inertia::render('errors/404')
+            // Unmatched URLs never reach SetLocale / HandleInertiaRequests, so
+            // resolve the locale from the URL prefix and pass the props the
+            // page needs explicitly.
+            $locale = in_array($request->segment(1), ['en', 'ar'], true)
+                ? $request->segment(1)
+                : 'en';
+            app()->setLocale($locale);
+
+            $translationsPath = lang_path("{$locale}.json");
+            $translations = file_exists($translationsPath)
+                ? (json_decode((string) file_get_contents($translationsPath), true) ?? [])
+                : [];
+
+            $seo = [
+                'title' => __('error.404.title').' | '.config('app.name', 'Quartz'),
+                'description' => __('error.404.description'),
+                'robots' => 'noindex',
+            ];
+
+            return Inertia::render('errors/404', [
+                'locale' => $locale,
+                'direction' => $locale === 'ar' ? 'rtl' : 'ltr',
+                'translations' => $translations,
+                'seo' => $seo,
+            ])
+                ->withViewData(['seo' => $seo])
                 ->toResponse($request)
                 ->setStatusCode(404);
         });

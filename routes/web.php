@@ -30,6 +30,7 @@ Route::prefix('{locale}')
         Route::get('/', [HomeController::class, 'index'])->name('home');
 
         // Service pages (database-backed via controller)
+        Route::get('/services', [ServiceController::class, 'index'])->name('services.index');
         Route::get('/services/{slug}', [ServiceController::class, 'show'])
             ->where('slug', 'development|web-development|mobile-apps|automation|qa|cybersecurity')
             ->name('services.show');

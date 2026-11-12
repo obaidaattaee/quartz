@@ -1,3 +1,4 @@
+import { Link } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'motion/react';
 import type { ReactNode } from 'react';
 import { useState } from 'react';
@@ -5,6 +6,7 @@ import { useState } from 'react';
 import PortfolioCard from '@/components/portfolio-card';
 import ScrollReveal from '@/components/scroll-reveal';
 import SeoHead from '@/components/seo-head';
+import { Button } from '@/components/ui/button';
 import { useLocale } from '@/hooks/use-locale';
 import PublicLayout from '@/layouts/public-layout';
 import { cn } from '@/lib/utils';
@@ -41,15 +43,39 @@ export default function PortfolioIndex({
         ? items.filter((i) => i.service_category === activeFilter)
         : items;
 
-    const allLabel = locale === 'ar' ? '\u0627\u0644\u0643\u0644' : 'All';
-    const pageTitle =
-        locale === 'ar'
-            ? '\u0623\u0639\u0645\u0627\u0644\u0646\u0627'
-            : 'Portfolio';
-    const pageSubtitle =
-        locale === 'ar'
-            ? '\u0627\u0633\u062A\u0643\u0634\u0641 \u0645\u0634\u0627\u0631\u064A\u0639\u0646\u0627 \u0648\u062F\u0631\u0627\u0633\u0627\u062A \u0627\u0644\u062D\u0627\u0644\u0629 \u0627\u0644\u062A\u064A \u0646\u0641\u062E\u0631 \u0628\u0647\u0627'
-            : 'Explore our projects and case studies that we take pride in';
+    const allLabel = t('portfolio.all');
+    const pageTitle = t('portfolio.title');
+    const pageSubtitle = t('portfolio.subtitle');
+
+    if (items.length === 0) {
+        return (
+            <>
+                <SeoHead seo={seo} />
+                <section className="py-16 md:py-24">
+                    <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
+                        <ScrollReveal>
+                            <h1 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
+                                {pageTitle}
+                            </h1>
+                            <div className="mt-12 rounded-lg border border-dashed border-border p-10">
+                                <h2 className="text-xl font-semibold text-foreground">
+                                    {t('portfolio.empty.title')}
+                                </h2>
+                                <p className="mt-3 text-muted-foreground">
+                                    {t('portfolio.empty.description')}
+                                </p>
+                                <Button size="lg" asChild className="mt-6">
+                                    <Link href={`/${locale}/contact`}>
+                                        {t('portfolio.empty.cta')}
+                                    </Link>
+                                </Button>
+                            </div>
+                        </ScrollReveal>
+                    </div>
+                </section>
+            </>
+        );
+    }
 
     return (
         <>
@@ -95,9 +121,8 @@ export default function PortfolioIndex({
                                                 : 'bg-muted text-muted-foreground hover:bg-muted/80',
                                         )}
                                     >
-                                        {SERVICE_LABELS[category]?.[
-                                            locale
-                                        ] ?? category}
+                                        {SERVICE_LABELS[category]?.[locale] ??
+                                            category}
                                     </button>
                                 ))}
                             </div>
@@ -119,18 +144,13 @@ export default function PortfolioIndex({
                                 className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
                             >
                                 {filtered.map((item) => (
-                                    <PortfolioCard
-                                        key={item.id}
-                                        item={item}
-                                    />
+                                    <PortfolioCard key={item.id} item={item} />
                                 ))}
                             </ScrollReveal>
 
                             {filtered.length === 0 && (
                                 <p className="mt-12 text-center text-muted-foreground">
-                                    {locale === 'ar'
-                                        ? '\u0644\u0627 \u062A\u0648\u062C\u062F \u0645\u0634\u0627\u0631\u064A\u0639 \u0641\u064A \u0647\u0630\u0627 \u0627\u0644\u062A\u0635\u0646\u064A\u0641'
-                                        : 'No projects found in this category'}
+                                    {t('portfolio.noneInCategory')}
                                 </p>
                             )}
                         </motion.div>
@@ -145,8 +165,8 @@ PortfolioIndex.layout = (page: ReactNode) => (
     <PublicLayout
         breadcrumbs={[
             {
-                title: 'Portfolio',
-                href: '#',
+                title: 'breadcrumb.portfolio',
+                href: '',
             },
         ]}
     >

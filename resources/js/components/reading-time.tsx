@@ -9,17 +9,25 @@ type Props = {
 };
 
 export default function ReadingTime({ minutes, className }: Props) {
-    const { t } = useLocale();
+    const { locale, t } = useLocale();
     const normalizedMinutes = Math.max(1, Math.floor(minutes));
 
-    const label = t('blog.readingTime', {
-        minutes: String(normalizedMinutes),
-    });
+    // Arabic needs real plural forms (دقيقة واحدة / دقيقتان / 3 دقائق /
+    // 11 دقيقة), so pick the CLDR plural category and fall back to the
+    // generic key when a locale has no form for it.
+    const category = new Intl.PluralRules(locale).select(normalizedMinutes);
+    const pluralKey = `blog.readingTime.${category}`;
+    const replacements = { minutes: String(normalizedMinutes) };
+    const pluralLabel = t(pluralKey, replacements);
+    const label =
+        pluralLabel === pluralKey
+            ? t('blog.readingTime', replacements)
+            : pluralLabel;
 
     return (
         <span
             className={cn(
-                'text-muted-foreground flex items-center gap-1 text-sm',
+                'flex items-center gap-1 text-sm text-muted-foreground',
                 className,
             )}
         >

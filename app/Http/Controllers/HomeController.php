@@ -61,7 +61,7 @@ class HomeController extends Controller
             ],
         );
 
-        $cases = LandingCaseStudy::orderBy('sort_order')->get()->map(
+        $cases = LandingCaseStudy::where('is_visible', true)->orderBy('sort_order')->get()->map(
             fn ($c) => [
                 'tag' => $ar ? $c->tag_ar : $c->tag_en,
                 'client' => $ar ? $c->client_ar : $c->client_en,
@@ -72,7 +72,7 @@ class HomeController extends Controller
             ],
         );
 
-        $faqs = LandingFaq::orderBy('sort_order')->get()->map(
+        $faqs = LandingFaq::where('is_visible', true)->orderBy('sort_order')->get()->map(
             fn ($f) => [
                 'q' => $ar ? $f->question_ar : $f->question_en,
                 'a' => $ar ? $f->answer_ar : $f->answer_en,

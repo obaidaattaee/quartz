@@ -4,9 +4,10 @@ import type { ReactNode } from 'react';
 import BlogCard from '@/components/blog-card';
 import ScrollReveal from '@/components/scroll-reveal';
 import SeoHead from '@/components/seo-head';
+import { Button } from '@/components/ui/button';
 import { useLocale } from '@/hooks/use-locale';
-import { t as translate } from '@/lib/i18n';
 import PublicLayout from '@/layouts/public-layout';
+import { t as translate } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 import type {
     BreadcrumbItem,
@@ -30,7 +31,7 @@ export default function BlogIndex({ posts, categories, seo }: Props) {
             <SeoHead seo={seo} />
 
             {/* Hero section */}
-            <section className="bg-primary/5 dark:bg-primary/10 relative py-20 md:py-28">
+            <section className="relative bg-primary/5 py-20 md:py-28 dark:bg-primary/10">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <ScrollReveal variant="hero">
                         <h1
@@ -43,7 +44,7 @@ export default function BlogIndex({ posts, categories, seo }: Props) {
                         </h1>
                         <p
                             className={cn(
-                                'text-muted-foreground mt-4 max-w-2xl text-lg',
+                                'mt-4 max-w-2xl text-lg text-muted-foreground',
                                 isRTL && 'text-right',
                             )}
                         >
@@ -53,36 +54,38 @@ export default function BlogIndex({ posts, categories, seo }: Props) {
                 </div>
             </section>
 
-            {/* Category filter tabs */}
-            <section className="border-b">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div className="flex flex-wrap gap-2 py-4">
-                        <Link
-                            href={`/${locale}/blog`}
-                            className={cn(
-                                'rounded-full px-4 py-2 text-sm font-medium transition-colors',
-                                'bg-primary text-primary-foreground',
-                            )}
-                        >
-                            {t('blog.allCategories')}
-                        </Link>
-                        {categories.map((category) => (
+            {/* Category filter tabs (hidden until there is something to filter) */}
+            {posts.data.length > 0 && (
+                <section className="border-b">
+                    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                        <div className="flex flex-wrap gap-2 py-4">
                             <Link
-                                key={category.id}
-                                href={`/${locale}/blog/category/${category.slug}`}
+                                href={`/${locale}/blog`}
                                 className={cn(
                                     'rounded-full px-4 py-2 text-sm font-medium transition-colors',
-                                    'bg-muted hover:bg-muted/80 text-foreground',
+                                    'bg-primary text-primary-foreground',
                                 )}
                             >
-                                {locale === 'ar'
-                                    ? category.name_ar
-                                    : category.name_en}
+                                {t('blog.allCategories')}
                             </Link>
-                        ))}
+                            {categories.map((category) => (
+                                <Link
+                                    key={category.id}
+                                    href={`/${locale}/blog/category/${category.slug}`}
+                                    className={cn(
+                                        'rounded-full px-4 py-2 text-sm font-medium transition-colors',
+                                        'bg-muted text-foreground hover:bg-muted/80',
+                                    )}
+                                >
+                                    {locale === 'ar'
+                                        ? category.name_ar
+                                        : category.name_en}
+                                </Link>
+                            ))}
+                        </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            )}
 
             {/* Post grid */}
             <section className="py-16 md:py-24">
@@ -98,10 +101,18 @@ export default function BlogIndex({ posts, categories, seo }: Props) {
                             ))}
                         </ScrollReveal>
                     ) : (
-                        <div className="py-16 text-center">
-                            <p className="text-muted-foreground text-lg">
-                                {t('blog.noPosts')}
+                        <div className="mx-auto max-w-2xl rounded-lg border border-dashed border-border p-10 text-center">
+                            <h2 className="text-xl font-semibold text-foreground">
+                                {t('blog.empty.title')}
+                            </h2>
+                            <p className="mt-3 text-muted-foreground">
+                                {t('blog.empty.description')}
                             </p>
+                            <Button size="lg" asChild className="mt-6">
+                                <Link href={`/${locale}/contact`}>
+                                    {t('blog.empty.cta')}
+                                </Link>
+                            </Button>
                         </div>
                     )}
 
@@ -142,7 +153,7 @@ function Pagination({
                     return (
                         <span
                             key={index}
-                            className="text-muted-foreground px-3 py-2 text-sm"
+                            className="px-3 py-2 text-sm text-muted-foreground"
                         >
                             {label}
                         </span>
@@ -157,7 +168,7 @@ function Pagination({
                             'rounded-lg px-3 py-2 text-sm font-medium transition-colors',
                             link.active
                                 ? 'bg-primary text-primary-foreground'
-                                : 'bg-muted hover:bg-muted/80 text-foreground',
+                                : 'bg-muted text-foreground hover:bg-muted/80',
                         )}
                     >
                         {label}

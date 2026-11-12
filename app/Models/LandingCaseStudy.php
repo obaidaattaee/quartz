@@ -18,10 +18,11 @@ class LandingCaseStudy extends Model
         'metric_label_ar',
         'portfolio_slug',
         'sort_order',
+        'is_visible',
     ];
 
     protected function casts(): array
     {
-        return ['sort_order' => 'integer'];
+        return ['sort_order' => 'integer', 'is_visible' => 'boolean'];
     }
 }

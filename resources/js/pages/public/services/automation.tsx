@@ -62,7 +62,7 @@ export default function Automation() {
         description: subtitle,
         provider: {
             '@type': 'Organization',
-            name: 'Quart',
+            name: 'Quartz',
         },
         serviceType: title,
     };

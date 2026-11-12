@@ -59,7 +59,7 @@ export default function Legal() {
             <section className="border-b border-border/60 py-16 md:py-24">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <ScrollReveal variant="hero">
-                        <p className="text-xs font-semibold tracking-[0.16em] text-accent uppercase">
+                        <p className="text-xs font-semibold tracking-[0.16em] text-accent uppercase rtl:tracking-normal rtl:normal-case">
                             {t('legal.eyebrow')}
                         </p>
                         <h1 className="mt-3 text-4xl font-bold md:text-5xl">
@@ -103,7 +103,7 @@ export default function Legal() {
                         aria-label={t('legal.contents')}
                         className="lg:sticky lg:top-24 lg:self-start print:hidden"
                     >
-                        <p className="text-xs font-semibold tracking-[0.16em] text-muted-foreground uppercase">
+                        <p className="text-xs font-semibold tracking-[0.16em] text-muted-foreground uppercase rtl:tracking-normal rtl:normal-case">
                             {t('legal.contents')}
                         </p>
                         <ol className="mt-4 space-y-2 border-s border-border/60 ps-4 text-sm">

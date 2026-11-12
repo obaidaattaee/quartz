@@ -45,6 +45,7 @@ class IndustryController extends Controller
             $locale,
             $title,
             "/{$locale}/industries/{$slug}",
+            $locale === 'ar' ? $industry->hero_blurb_ar : $industry->hero_blurb_en,
         );
 
         return Inertia::render('public/industries/show', [

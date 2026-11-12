@@ -10,8 +10,8 @@ import ScrollReveal from '@/components/scroll-reveal';
 import SeoHead from '@/components/seo-head';
 import ShareButtons from '@/components/share-buttons';
 import { useLocale } from '@/hooks/use-locale';
-import { t as translate } from '@/lib/i18n';
 import PublicLayout from '@/layouts/public-layout';
+import { authorDisplayName, t as translate } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 import type {
     BreadcrumbItem,
@@ -41,8 +41,8 @@ export default function BlogShow({ post, relatedPosts, seo }: Props) {
 
     const avatarUrl =
         post.author?.avatar?.thumbnail_sm_url ?? post.author?.avatar?.url;
-    const authorInitial =
-        post.author?.name?.charAt(0)?.toUpperCase() ?? '?';
+    const authorName = authorDisplayName(t, post.author?.name);
+    const authorInitial = authorName.charAt(0).toUpperCase() || '?';
 
     // BlogPosting JSON-LD schema (per D-21)
     const blogPostingSchema = {
@@ -54,11 +54,11 @@ export default function BlogShow({ post, relatedPosts, seo }: Props) {
         dateModified: post.created_at,
         author: {
             '@type': 'Person',
-            name: post.author.name,
+            name: authorName,
         },
         publisher: {
             '@type': 'Organization',
-            name: 'Quart',
+            name: 'Quartz',
         },
     };
 
@@ -83,7 +83,7 @@ export default function BlogShow({ post, relatedPosts, seo }: Props) {
                                     <Link
                                         key={cat.id}
                                         href={`/${locale}/blog/category/${cat.slug}`}
-                                        className="bg-primary/10 text-primary rounded-full px-3 py-1 text-xs font-medium transition-colors hover:bg-primary/20"
+                                        className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary transition-colors hover:bg-primary/20"
                                     >
                                         {locale === 'ar'
                                             ? cat.name_ar
@@ -96,7 +96,7 @@ export default function BlogShow({ post, relatedPosts, seo }: Props) {
                         {/* Title */}
                         <h1
                             className={cn(
-                                'text-foreground text-3xl font-bold leading-tight md:text-4xl lg:text-5xl',
+                                'text-3xl leading-tight font-bold text-foreground md:text-4xl lg:text-5xl',
                                 isRTL && 'text-right',
                             )}
                             dir={isRTL ? 'rtl' : 'ltr'}
@@ -116,32 +116,30 @@ export default function BlogShow({ post, relatedPosts, seo }: Props) {
                                 {avatarUrl ? (
                                     <img
                                         src={avatarUrl}
-                                        alt={post.author.name}
+                                        alt={authorName}
                                         className="h-8 w-8 rounded-full object-cover"
                                     />
                                 ) : (
-                                    <div className="bg-primary text-primary-foreground flex h-8 w-8 items-center justify-center rounded-full text-xs font-medium">
+                                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-xs font-medium text-primary-foreground">
                                         {authorInitial}
                                     </div>
                                 )}
                                 <Link
                                     href={`/${locale}/blog/author/${post.author.id}`}
-                                    className="text-foreground text-sm font-medium hover:underline"
+                                    className="text-sm font-medium text-foreground hover:underline"
                                 >
-                                    {post.author.name}
+                                    {authorName}
                                 </Link>
                             </div>
 
                             {/* Date */}
-                            <span className="text-muted-foreground flex items-center gap-1 text-sm">
+                            <span className="flex items-center gap-1 text-sm text-muted-foreground">
                                 <Calendar className="h-4 w-4" />
                                 {formattedDate}
                             </span>
 
                             {/* Reading time */}
-                            <ReadingTime
-                                minutes={readingTime}
-                            />
+                            <ReadingTime minutes={readingTime} />
 
                             {/* Spacer */}
                             <div className="flex-1" />
@@ -172,7 +170,7 @@ export default function BlogShow({ post, relatedPosts, seo }: Props) {
                     <ScrollReveal>
                         <article
                             className={cn(
-                                'prose prose-lg dark:prose-invert max-w-none',
+                                'prose prose-lg max-w-none dark:prose-invert',
                                 isRTL && 'text-right',
                             )}
                             dir={isRTL ? 'rtl' : 'ltr'}
@@ -186,7 +184,7 @@ export default function BlogShow({ post, relatedPosts, seo }: Props) {
 
             {/* Tags */}
             {post.tags && post.tags.length > 0 && (
-                <section className="border-t pb-8 pt-8">
+                <section className="border-t pt-8 pb-8">
                     <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
                         <div
                             className={cn(
@@ -198,7 +196,7 @@ export default function BlogShow({ post, relatedPosts, seo }: Props) {
                                 <Link
                                     key={tag.id}
                                     href={`/${locale}/blog/tag/${tag.slug}`}
-                                    className="bg-muted hover:bg-muted/80 rounded-full px-3 py-1 text-sm transition-colors"
+                                    className="rounded-full bg-muted px-3 py-1 text-sm transition-colors hover:bg-muted/80"
                                 >
                                     #
                                     {locale === 'ar'
@@ -227,7 +225,7 @@ export default function BlogShow({ post, relatedPosts, seo }: Props) {
                         <ScrollReveal>
                             <h2
                                 className={cn(
-                                    'text-foreground mb-8 text-2xl font-bold',
+                                    'mb-8 text-2xl font-bold text-foreground',
                                     isRTL && 'text-right',
                                 )}
                             >
@@ -269,8 +267,8 @@ BlogShow.layout = (page: ReactNode) => {
     const blogTitle = translate(translations, 'nav.blog');
     const postTitle =
         locale === 'ar'
-            ? pageProps?.post?.title_ar ?? 'Post'
-            : pageProps?.post?.title_en ?? 'Post';
+            ? (pageProps?.post?.title_ar ?? 'Post')
+            : (pageProps?.post?.title_en ?? 'Post');
 
     const breadcrumbs: BreadcrumbItem[] = [
         { title: blogTitle, href: `/${locale}/blog` },

@@ -82,15 +82,10 @@ export default function BoPreview() {
                 >
                     HOURLY THROUGHPUT
                 </div>
-                <svg
-                    viewBox="0 0 400 80"
-                    style={{ width: '100%', height: 80 }}
-                >
+                <svg viewBox="0 0 400 80" style={{ width: '100%', height: 80 }}>
                     {Array.from({ length: 24 }).map((_, i) => {
                         const v =
-                            30 +
-                            Math.sin(i * 0.6 + t * 0.5) * 15 +
-                            (i % 3);
+                            30 + Math.sin(i * 0.6 + t * 0.5) * 15 + (i % 3);
 
                         return (
                             <rect
@@ -99,7 +94,7 @@ export default function BoPreview() {
                                 y={80 - v}
                                 width="10"
                                 height={v}
-                                fill={B.accent}
+                                style={{ fill: B.accent }}
                                 opacity={0.3 + (i / 24) * 0.7}
                             />
                         );

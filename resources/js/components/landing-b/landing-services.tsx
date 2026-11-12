@@ -1,5 +1,4 @@
 import { useLocale } from '@/hooks/use-locale';
-
 import { useLandingData } from './data';
 import SectionHead from './section-head';
 import { B, monoStyle } from './tokens';
@@ -7,8 +6,13 @@ import { B, monoStyle } from './tokens';
 export default function LandingServices() {
     const { services } = useLandingData();
     const { isRTL } = useLocale();
+
+    if (services.length === 0) {
+        return null;
+    }
+
     return (
-        <section style={{ padding: '80px 48px' }}>
+        <section className="q-sec">
             <div
                 style={{
                     maxWidth: 1240,
@@ -18,7 +22,6 @@ export default function LandingServices() {
                 }}
             >
                 <SectionHead
-                    num={isRTL ? '١.' : 'I.'}
                     kicker={isRTL ? 'الخدمات' : 'Services'}
                     title={
                         isRTL ? (
@@ -68,9 +71,9 @@ export default function LandingServices() {
                             style={{
                                 padding: '40px 0',
                                 borderBottom: `1px solid ${B.line}`,
-                                paddingRight: i % 2 === 0 ? 40 : 0,
-                                paddingLeft: i % 2 === 1 ? 40 : 0,
-                                borderLeft:
+                                paddingInlineEnd: i % 2 === 0 ? 40 : 0,
+                                paddingInlineStart: i % 2 === 1 ? 40 : 0,
+                                borderInlineStart:
                                     i % 2 === 1
                                         ? `1px solid ${B.line}`
                                         : 'none',
@@ -126,7 +129,7 @@ export default function LandingServices() {
                                             {j < s.tags.length - 1 && (
                                                 <span
                                                     style={{
-                                                        marginLeft: 14,
+                                                        marginInlineStart: 14,
                                                         color: B.faint,
                                                     }}
                                                 >
@@ -145,9 +148,8 @@ export default function LandingServices() {
                 @media (max-width: 900px) {
                     .services-grid { grid-template-columns: 1fr !important; }
                     .services-grid > div {
-                        padding-left: 0 !important;
-                        padding-right: 0 !important;
-                        border-left: none !important;
+                        padding-inline: 0 !important;
+                        border-inline-start: none !important;
                     }
                 }
             `}</style>

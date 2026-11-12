@@ -1,71 +1,70 @@
 import { Link } from '@inertiajs/react';
 
 import { useLocale } from '@/hooks/use-locale';
-
 import { B, monoStyle } from './tokens';
 
 export default function LandingFooter() {
-    const { locale, t } = useLocale();
+    const { locale, isRTL, t } = useLocale();
     const year = new Date().getFullYear();
+    const tr = (en: string, ar: string) => (isRTL ? ar : en);
 
     const columns: Array<[string, { label: string; href: string }[]]> = [
         [
-            'Services',
+            tr('Services', 'الخدمات'),
             [
                 {
-                    label: 'Software',
+                    label: tr('Software', 'تطوير البرمجيات'),
                     href: `/${locale}/services/development`,
                 },
-                { label: 'QA', href: `/${locale}/services/qa` },
                 {
-                    label: 'Cybersecurity',
+                    label: tr('QA', 'ضمان الجودة'),
+                    href: `/${locale}/services/qa`,
+                },
+                {
+                    label: tr('Cybersecurity', 'الأمن السيبراني'),
                     href: `/${locale}/services/cybersecurity`,
                 },
                 {
-                    label: 'Automation',
+                    label: tr('Automation', 'الأتمتة'),
                     href: `/${locale}/services/automation`,
                 },
             ],
         ],
         [
-            'Products',
+            tr('Company', 'الشركة'),
             [
+                { label: tr('About', 'من نحن'), href: `/${locale}/about` },
+                { label: tr('Work', 'أعمالنا'), href: `/${locale}/portfolio` },
                 {
-                    label: 'Quartz POS',
-                    href: 'https://bo.quartz-solutions.net',
+                    label: tr('Industries', 'القطاعات'),
+                    href: `/${locale}/industries`,
                 },
                 {
-                    label: 'Quartz Cyber',
-                    href: 'https://cyber.quartz-solutions.net',
+                    label: tr('Contact', 'تواصل معنا'),
+                    href: `/${locale}/contact`,
                 },
-                { label: 'Changelog', href: `/${locale}/blog` },
-                { label: 'Status', href: `/${locale}` },
             ],
         ],
         [
-            'Company',
+            tr('Resources', 'الموارد'),
             [
-                { label: 'About', href: `/${locale}/about` },
-                { label: 'Work', href: `/${locale}/portfolio` },
-                { label: 'Industries', href: `/${locale}/industries` },
-                { label: 'Contact', href: `/${locale}/contact` },
-                { label: 'Privacy', href: `/${locale}/privacy` },
-                { label: 'Terms', href: `/${locale}/terms` },
-            ],
-        ],
-        [
-            'Resources',
-            [
-                { label: 'Journal', href: `/${locale}/blog` },
-                { label: 'FAQ', href: `/${locale}/faq` },
-                { label: 'Feed', href: `/${locale}/feed.xml` },
-                { label: 'Contact', href: `/${locale}/contact` },
+                { label: tr('Journal', 'المدوّنة'), href: `/${locale}/blog` },
+                {
+                    label: tr('FAQ', 'الأسئلة الشائعة'),
+                    href: `/${locale}/faq`,
+                },
+                { label: tr('Feed', 'خلاصة RSS'), href: `/${locale}/feed.xml` },
             ],
         ],
     ];
 
     return (
-        <footer style={{ padding: '72px 48px 36px', background: B.bg }}>
+        <footer
+            style={{
+                padding: '64px clamp(16px, 5vw, 48px) 36px',
+                background: B.bg,
+            }}
+        >
             <div style={{ maxWidth: 1240, margin: '0 auto' }}>
                 <div
                     style={{
@@ -79,6 +78,9 @@ export default function LandingFooter() {
                         color: B.cream,
                     }}
                     className="footer-wordmark"
+                    dir="ltr"
+                    lang="en"
+                    aria-hidden="true"
                 >
                     Quartz
                     <span
@@ -93,7 +95,7 @@ export default function LandingFooter() {
                 <div
                     style={{
                         display: 'grid',
-                        gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr',
+                        gridTemplateColumns: '2fr 1fr 1fr 1fr',
                         gap: 40,
                         paddingTop: 40,
                         borderTop: `1px solid ${B.line}`,
@@ -109,8 +111,10 @@ export default function LandingFooter() {
                                 maxWidth: 300,
                             }}
                         >
-                            Enterprise software, QA, cybersecurity and
-                            automation. Built to outlast the trend cycle.
+                            {tr(
+                                'Software, automation, QA and cybersecurity from one remote team serving the Gulf and the wider region.',
+                                'برمجيات وأتمتة وضمان جودة وأمن سيبراني، من فريق واحد يعمل عن بُعد ويخدم دول الخليج والمنطقة.',
+                            )}
                         </div>
                     </div>
                     {columns.map(([heading, items]) => (
@@ -125,8 +129,7 @@ export default function LandingFooter() {
                                 }}
                             >
                                 {items.map((l) => {
-                                    const external =
-                                        l.href.startsWith('http');
+                                    const external = l.href.startsWith('http');
 
                                     if (external) {
                                         return (
@@ -138,8 +141,7 @@ export default function LandingFooter() {
                                                 style={{
                                                     color: B.cream,
                                                     fontSize: 14,
-                                                    textDecoration:
-                                                        'none',
+                                                    textDecoration: 'none',
                                                 }}
                                             >
                                                 {l.label}
@@ -177,7 +179,15 @@ export default function LandingFooter() {
                         gap: 12,
                     }}
                 >
-                    <span>© {year} Quartz Solutions</span>
+                    <span>
+                        {isRTL ? (
+                            <>
+                                © <bdi>{year}</bdi> كوارتز
+                            </>
+                        ) : (
+                            <bdi dir="ltr">© {year} Quartz Solutions</bdi>
+                        )}
+                    </span>
                     <span
                         style={{
                             display: 'flex',
@@ -197,7 +207,7 @@ export default function LandingFooter() {
                         >
                             {t('footer.terms')}
                         </Link>
-                        <span>quartz-solutions.net</span>
+                        <bdi dir="ltr">quartz-solutions.net</bdi>
                     </span>
                 </div>
             </div>

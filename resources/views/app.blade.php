@@ -20,6 +20,13 @@
                         document.documentElement.classList.add('dark');
                     }
                 }
+
+                // Public site theme (dark by default), chosen with the header toggle.
+                try {
+                    if (localStorage.getItem('qz-public-theme') === 'light') {
+                        document.documentElement.dataset.publicTheme = 'light';
+                    }
+                } catch (e) {}
             })();
         </script>
 
@@ -43,26 +50,6 @@
         <meta name="theme-color" content="#0e0d0b">
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-        @isset($seo)
-            <meta name="description" content="{{ $seo['description'] ?? '' }}">
-            <meta property="og:title" content="{{ $seo['title'] ?? config('app.name') }}">
-            <meta property="og:description" content="{{ $seo['description'] ?? '' }}">
-            <meta property="og:image" content="{{ $seo['image'] ?? '' }}">
-            <meta property="og:url" content="{{ $seo['url'] ?? request()->url() }}">
-            <meta property="og:type" content="{{ $seo['type'] ?? 'website' }}">
-            <meta property="og:site_name" content="{{ config('app.name') }}">
-            <meta name="twitter:card" content="summary_large_image">
-            <meta name="twitter:title" content="{{ $seo['title'] ?? config('app.name') }}">
-            <meta name="twitter:description" content="{{ $seo['description'] ?? '' }}">
-            <meta name="twitter:image" content="{{ $seo['image'] ?? '' }}">
-            <link rel="canonical" href="{{ $seo['canonical'] ?? request()->url() }}">
-            @isset($seo['hreflang'])
-                @foreach($seo['hreflang'] as $lang => $href)
-                    <link rel="alternate" hreflang="{{ $lang }}" href="{{ $href }}">
-                @endforeach
-            @endisset
-        @endisset
-
         <link rel="preload" as="font" type="font/woff2" href="{{ Vite::asset('resources/fonts/SpaceGrotesk-Variable.woff2') }}" crossorigin>
 
         {{-- Additional critical font preloads (LCP). Controllers can set
@@ -82,8 +69,40 @@
 
         @viteReactRefresh
         @vite(['resources/css/app.css', 'resources/js/app.tsx', "resources/js/pages/{$page['component']}.tsx"])
+        {{-- Server-rendered head for crawlers and the first paint. Every tag
+             carries data-inertia so Inertia's head manager adopts and replaces
+             it on hydration and client navigation, leaving exactly one
+             <title> (and one of each meta tag) in the document. --}}
         <x-inertia::head>
-            <title>{{ config('app.name', 'Laravel') }}</title>
+            <title data-inertia="">{{ $seo['title'] ?? config('app.name', 'Quartz') }}</title>
+            @isset($seo)
+                @if (! empty($seo['description']))
+                    <meta name="description" content="{{ $seo['description'] }}" data-inertia="">
+                    <meta property="og:description" content="{{ $seo['description'] }}" data-inertia="">
+                    <meta name="twitter:description" content="{{ $seo['description'] }}" data-inertia="">
+                @endif
+                <meta property="og:title" content="{{ $seo['title'] ?? config('app.name') }}" data-inertia="">
+                <meta property="og:url" content="{{ $seo['url'] ?? request()->url() }}" data-inertia="">
+                <meta property="og:type" content="{{ $seo['type'] ?? 'website' }}" data-inertia="">
+                <meta property="og:site_name" content="{{ config('app.name') }}" data-inertia="">
+                @if (! empty($seo['image']))
+                    <meta property="og:image" content="{{ $seo['image'] }}" data-inertia="">
+                    <meta name="twitter:image" content="{{ $seo['image'] }}" data-inertia="">
+                @endif
+                <meta name="twitter:card" content="summary_large_image" data-inertia="">
+                <meta name="twitter:title" content="{{ $seo['title'] ?? config('app.name') }}" data-inertia="">
+                @if (! empty($seo['canonical']))
+                    <link rel="canonical" href="{{ $seo['canonical'] }}" data-inertia="">
+                @endif
+                @isset($seo['hreflang'])
+                    @foreach($seo['hreflang'] as $lang => $href)
+                        <link rel="alternate" hreflang="{{ $lang }}" href="{{ $href }}" data-inertia="">
+                    @endforeach
+                @endisset
+                @if (! empty($seo['robots']))
+                    <meta name="robots" content="{{ $seo['robots'] }}" data-inertia="">
+                @endif
+            @endisset
         </x-inertia::head>
     </head>
     <body class="{{ app()->getLocale() === 'ar' ? 'font-arabic' : 'font-sans' }} antialiased">

@@ -12,10 +12,11 @@ class LandingFaq extends Model
         'answer_en',
         'answer_ar',
         'sort_order',
+        'is_visible',
     ];
 
     protected function casts(): array
     {
-        return ['sort_order' => 'integer'];
+        return ['sort_order' => 'integer', 'is_visible' => 'boolean'];
     }
 }

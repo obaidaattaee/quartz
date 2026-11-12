@@ -71,7 +71,7 @@ export default function PortfolioShow({ item, seo }: Props) {
             <section className="bg-muted/40 py-16 md:py-24">
                 <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
                     <ScrollReveal variant="hero">
-                        <p className="text-accent text-xs font-semibold uppercase tracking-[0.16em]">
+                        <p className="text-accent text-xs font-semibold uppercase tracking-[0.16em] rtl:tracking-normal rtl:normal-case">
                             {serviceLabel}
                         </p>
                         <h1 className="text-foreground mt-3 max-w-4xl text-4xl font-bold leading-tight md:text-5xl">
@@ -128,7 +128,7 @@ export default function PortfolioShow({ item, seo }: Props) {
                                 {item.services_used &&
                                     item.services_used.length > 0 && (
                                         <div className="flex flex-col gap-2">
-                                            <dt className="text-muted-foreground text-xs font-semibold uppercase tracking-[0.12em]">
+                                            <dt className="text-muted-foreground text-xs font-semibold uppercase tracking-[0.12em] rtl:tracking-normal rtl:normal-case">
                                                 {t('work.sidebar.services')}
                                             </dt>
                                             <dd className="flex flex-wrap gap-2">
@@ -276,7 +276,7 @@ export default function PortfolioShow({ item, seo }: Props) {
 function MetaRow({ label, value }: { label: string; value: string }) {
     return (
         <div className="flex flex-col gap-1">
-            <dt className="text-muted-foreground text-xs font-semibold uppercase tracking-[0.12em]">
+            <dt className="text-muted-foreground text-xs font-semibold uppercase tracking-[0.12em] rtl:tracking-normal rtl:normal-case">
                 {label}
             </dt>
             <dd className="text-foreground text-sm font-medium">{value}</dd>

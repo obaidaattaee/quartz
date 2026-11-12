@@ -42,13 +42,13 @@ export default function FAQ() {
             <JsonLd data={faqSchema} />
 
             {/* Hero section */}
-            <section className="bg-primary/5 dark:bg-primary/10 relative py-20 md:py-28">
+            <section className="relative bg-primary/5 py-20 md:py-28 dark:bg-primary/10">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <ScrollReveal variant="hero">
                         <h1 className="text-3xl font-bold md:text-5xl">
                             {t('faq.title')}
                         </h1>
-                        <p className="text-muted-foreground mt-4 max-w-2xl text-lg">
+                        <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
                             {t('faq.subtitle')}
                         </p>
                     </ScrollReveal>
@@ -59,11 +59,7 @@ export default function FAQ() {
             <section className="py-16 md:py-24">
                 <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
                     <ScrollReveal>
-                        <Accordion
-                            type="single"
-                            collapsible
-                            className="w-full"
-                        >
+                        <Accordion type="single" collapsible className="w-full">
                             {faqIndices.map((index) => (
                                 <AccordionItem
                                     key={index}
@@ -103,7 +99,7 @@ export default function FAQ() {
 
 FAQ.layout = (page: ReactNode) => {
     const breadcrumbs: BreadcrumbItem[] = [
-        { title: 'FAQ', href: '/faq' },
+        { title: 'breadcrumb.faq', href: '' },
     ];
 
     return <PublicLayout breadcrumbs={breadcrumbs}>{page}</PublicLayout>;

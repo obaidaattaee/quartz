@@ -1,5 +1,4 @@
 import { useLocale } from '@/hooks/use-locale';
-
 import SectionHead from './section-head';
 import { B, monoStyle } from './tokens';
 
@@ -22,13 +21,16 @@ type Props = {
 export default function LandingTestimonials({ testimonials }: Props) {
     const { isRTL } = useLocale();
 
-    if (!testimonials || testimonials.length === 0) return null;
+    if (!testimonials || testimonials.length === 0) {
+        return null;
+    }
+
+    const shown = testimonials.slice(0, 3);
 
     return (
-        <section style={{ padding: '80px 48px' }}>
+        <section className="q-sec">
             <div style={{ maxWidth: 1240, margin: '0 auto' }}>
                 <SectionHead
-                    num="VII."
                     kicker={isRTL ? 'شهادات' : 'In their words'}
                     title={
                         isRTL ? (
@@ -72,7 +74,7 @@ export default function LandingTestimonials({ testimonials }: Props) {
                         borderTop: `1px solid ${B.line}`,
                     }}
                 >
-                    {testimonials.slice(0, 3).map((t, i) => {
+                    {shown.map((t, i) => {
                         const quote = isRTL ? t.quote_ar : t.quote_en;
                         const name = isRTL
                             ? t.author_name_ar
@@ -80,22 +82,15 @@ export default function LandingTestimonials({ testimonials }: Props) {
                         const role = isRTL
                             ? t.author_title_ar
                             : t.author_title_en;
-                        const company = isRTL
-                            ? t.company_ar
-                            : t.company_en;
+                        const company = isRTL ? t.company_ar : t.company_en;
 
                         return (
                             <figure
                                 key={t.id}
                                 style={{
                                     padding: '40px 32px',
-                                    borderRight:
-                                        !isRTL &&
-                                        i < testimonials.length - 1
-                                            ? `1px solid ${B.line}`
-                                            : 'none',
-                                    borderLeft:
-                                        isRTL && i > 0
+                                    borderInlineEnd:
+                                        i < shown.length - 1
                                             ? `1px solid ${B.line}`
                                             : 'none',
                                     borderBottom: `1px solid ${B.line}`,
@@ -115,7 +110,7 @@ export default function LandingTestimonials({ testimonials }: Props) {
                                     }}
                                     aria-hidden
                                 >
-                                    “
+                                    {isRTL ? '”' : '“'}
                                 </div>
                                 <blockquote
                                     style={{
