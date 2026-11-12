@@ -21,15 +21,6 @@ type Props = {
     siteSettings?: Record<string, string>;
 };
 
-const GCC = [
-    'Saudi Arabia',
-    'United Arab Emirates',
-    'Kuwait',
-    'Qatar',
-    'Bahrain',
-    'Oman',
-];
-
 function Arrow({ size = 18 }: { size?: number }) {
     return <ArrowRight size={size} className="in-flip" aria-hidden="true" />;
 }
@@ -67,7 +58,7 @@ export default function IndustryShow() {
                     name: 'Quartz',
                     url: `${origin}/${locale}`,
                 },
-                areaServed: GCC.map((name) => ({ '@type': 'Country', name })),
+                areaServed: 'Worldwide',
             },
             ...(industry.faqs.length > 0
                 ? [

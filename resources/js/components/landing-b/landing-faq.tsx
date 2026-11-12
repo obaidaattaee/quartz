@@ -48,8 +48,8 @@ export default function LandingFaq() {
                     }
                     sub={
                         isRTL
-                            ? 'الأسئلة التي يطرحها المشتريات والهندسة والأمن في الغالب. وإن لم يكن سؤالك هنا، فسنجيبه في مكالمة العرض.'
-                            : 'The questions procurement, engineering and security almost always ask. If yours isn’t here, it’s in the demo call.'
+                            ? 'إجابات عن أسئلة فرق المشتريات والهندسة والأمن. وإن لم تجد سؤالك، أرسله لنا.'
+                            : 'Answers to common questions from procurement, engineering and security teams. Send us anything else you would like to know.'
                     }
                 />
                 <div>

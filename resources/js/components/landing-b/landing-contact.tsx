@@ -1,8 +1,10 @@
 import { useForm, usePage } from '@inertiajs/react';
-import { useId, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 
+import { useContactDraft } from '@/hooks/use-contact-draft';
 import { useLocale } from '@/hooks/use-locale';
 import { serviceFromUrl } from '@/lib/contact-service';
+import { contactErrors, focusContactError } from '@/lib/contact-validation';
 import { B, monoStyle } from './tokens';
 
 type Service =
@@ -15,6 +17,8 @@ type Service =
 type FormData = {
     name: string;
     email: string;
+    phone: string;
+    company: string;
     service: Service;
     message: string;
     _honeypot: string;
@@ -50,6 +54,7 @@ function FieldError({ id, message }: { id: string; message?: string }) {
 }
 
 function Field({
+    name,
     label,
     value,
     onChange,
@@ -58,6 +63,7 @@ function Field({
     required = false,
     autoComplete,
 }: {
+    name: string;
     label: string;
     value: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -81,6 +87,7 @@ function Field({
             </label>
             <input
                 id={id}
+                name={name}
                 type={type}
                 value={value}
                 onChange={onChange}
@@ -97,9 +104,10 @@ function Field({
 }
 
 export default function LandingContact() {
-    const { locale, isRTL } = useLocale();
+    const { locale, isRTL, t } = useLocale();
     const tr = (en: string, ar: string) => (isRTL ? ar : en);
-    const [company, setCompany] = useState('');
+    const formRef = useRef<HTMLFormElement>(null);
+    const successRef = useRef<HTMLHeadingElement>(null);
     const [sent, setSent] = useState(false);
     const scopeLabelId = useId();
     const messageId = useId();
@@ -109,33 +117,25 @@ export default function LandingContact() {
     const form = useForm<FormData>({
         name: '',
         email: '',
+        phone: '',
+        company: '',
         service: serviceFromUrl(url) ?? 'development',
         message: '',
         _honeypot: '',
     });
     const { data, setData, processing, errors } = form;
 
-    // Server messages are English-only; show localized copy per field.
-    const fieldErrors: Partial<Record<keyof FormData, string>> = {
-        name: errors.name
-            ? tr('Please enter your name.', 'يرجى كتابة اسمك.')
-            : undefined,
-        email: errors.email
-            ? tr(
-                  'Please enter a valid email address.',
-                  'يرجى كتابة بريد إلكتروني صحيح.',
-              )
-            : undefined,
-        service: errors.service
-            ? tr('Please choose a scope.', 'يرجى اختيار النطاق.')
-            : undefined,
-        message: errors.message
-            ? tr(
-                  'Please describe what you need (at least 10 characters).',
-                  'يرجى وصف ما تحتاجه (10 أحرف على الأقل).',
-              )
-            : undefined,
-    };
+    const clearDraft = useContactDraft(
+        'quartz-home-contact-draft',
+        data,
+        setData,
+    );
+    const fieldErrors = errors;
+    useEffect(() => {
+        if (sent) {
+            successRef.current?.focus();
+        }
+    }, [sent]);
 
     const scopes: Array<[Service, string]> = [
         ['development', tr('Software build', 'بناء برمجيات')],
@@ -148,8 +148,18 @@ export default function LandingContact() {
     function submit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
+        form.clearErrors();
+        const validation = contactErrors(data, t);
+
+        if (Object.keys(validation).length) {
+            form.setError(validation);
+            focusContactError(formRef.current, validation);
+
+            return;
+        }
+
         // The contacts table has no company column; carry it in the message.
-        const companyName = company.trim();
+        const companyName = data.company.trim();
         form.transform((d) => ({
             ...d,
             message:
@@ -159,9 +169,11 @@ export default function LandingContact() {
         }));
         form.post(`/${locale}/contact`, {
             preserveScroll: true,
+            onError: (serverErrors) =>
+                focusContactError(formRef.current, serverErrors),
             onSuccess: () => {
+                clearDraft();
                 form.reset();
-                setCompany('');
                 setSent(true);
             },
         });
@@ -203,7 +215,7 @@ export default function LandingContact() {
                             }}
                             className="contact-title"
                         >
-                            {isRTL ? 'أخبرنا أين' : 'Tell us where'}
+                            {isRTL ? 'حدّثنا عن' : 'Tell us what'}
                             <br />
                             <em
                                 style={{
@@ -211,7 +223,9 @@ export default function LandingContact() {
                                     fontWeight: 300,
                                 }}
                             >
-                                {isRTL ? 'تؤلمك المشكلة.' : 'it hurts.'}
+                                {isRTL
+                                    ? 'المشكلة التي تريد حلّها.'
+                                    : 'you need to solve.'}
                             </em>
                         </h2>
                         <p
@@ -224,8 +238,8 @@ export default function LandingContact() {
                             }}
                         >
                             {isRTL
-                                ? 'ردّ كتابي خلال 24 ساعة — بالنطاق والملاءمة، ومع مهندس رئيسي معيّن بالاسم. دون التزام.'
-                                : 'A written response within 24 hours — with scope, fit, and a named principal engineer. No obligation.'}
+                                ? 'يردّ عليك مهندس خلال 24 ساعة ليوضّح مدى ملاءمة المشروع والخطوة التالية، دون التزام.'
+                                : 'An engineer will reply within 24 hours to confirm whether we can help and suggest the next step. No obligation.'}
                         </p>
                         <div
                             style={{
@@ -236,13 +250,10 @@ export default function LandingContact() {
                             {(isRTL
                                 ? [
                                       ['01', 'نقرأ طلبك خلال 24 ساعة.'],
-                                      [
-                                          '02',
-                                          'مهندس رئيسي يرد — ليس مندوب تطوير أعمال.',
-                                      ],
+                                      ['02', 'يردّ عليك مهندس من الفريق.'],
                                       [
                                           '03',
-                                          'إن كان هناك ملاءمة، نحدّد مكالمة مدتها 30 دقيقة.',
+                                          'إذا كان المشروع مناسباً، نتفق على مكالمة مجانية مدتها 30 دقيقة.',
                                       ],
                                       [
                                           '04',
@@ -256,11 +267,11 @@ export default function LandingContact() {
                                       ],
                                       [
                                           '02',
-                                          'A principal engineer replies — not a BD rep.',
+                                          'An engineer from the team replies to your inquiry.',
                                       ],
                                       [
                                           '03',
-                                          'If there’s fit, we schedule a 30-min call.',
+                                          'If it’s a fit, we agree a free 30-minute call.',
                                       ],
                                       [
                                           '04',
@@ -302,6 +313,8 @@ export default function LandingContact() {
                     </div>
 
                     <form
+                        ref={formRef}
+                        noValidate
                         onSubmit={submit}
                         aria-label={tr('Project brief', 'طلب مشروع')}
                         className="q-contact-form"
@@ -329,6 +342,8 @@ export default function LandingContact() {
                                     ✓
                                 </div>
                                 <h3
+                                    ref={successRef}
+                                    tabIndex={-1}
                                     style={{
                                         fontFamily: B.serif,
                                         fontSize: 32,
@@ -354,6 +369,7 @@ export default function LandingContact() {
                         ) : (
                             <>
                                 <Field
+                                    name="name"
                                     label={tr('Your name', 'اسمك')}
                                     value={data.name}
                                     onChange={(e) =>
@@ -364,15 +380,19 @@ export default function LandingContact() {
                                     required
                                 />
                                 <Field
+                                    name="company"
                                     label={tr(
                                         'Company (optional)',
                                         'الشركة (اختياري)',
                                     )}
-                                    value={company}
-                                    onChange={(e) => setCompany(e.target.value)}
+                                    value={data.company}
+                                    onChange={(e) =>
+                                        setData('company', e.target.value)
+                                    }
                                     autoComplete="organization"
                                 />
                                 <Field
+                                    name="email"
                                     label={tr('Work email', 'بريد العمل')}
                                     value={data.email}
                                     onChange={(e) =>
@@ -390,7 +410,10 @@ export default function LandingContact() {
                                     }}
                                 >
                                     <div id={scopeLabelId} style={monoStyle}>
-                                        {tr('Scope', 'النطاق')}
+                                        {tr(
+                                            'Service you need',
+                                            'الخدمة التي تحتاجها',
+                                        )}
                                     </div>
                                     <div
                                         role="radiogroup"
@@ -406,17 +429,8 @@ export default function LandingContact() {
                                             const on = data.service === value;
 
                                             return (
-                                                <button
+                                                <label
                                                     key={value}
-                                                    type="button"
-                                                    role="radio"
-                                                    aria-checked={on}
-                                                    onClick={() =>
-                                                        setData(
-                                                            'service',
-                                                            value,
-                                                        )
-                                                    }
                                                     className="q-contact-chip"
                                                     style={{
                                                         minHeight: 40,
@@ -433,8 +447,29 @@ export default function LandingContact() {
                                                         borderRadius: 999,
                                                     }}
                                                 >
+                                                    <input
+                                                        type="radio"
+                                                        name="service"
+                                                        value={value}
+                                                        checked={on}
+                                                        onChange={() =>
+                                                            setData(
+                                                                'service',
+                                                                value,
+                                                            )
+                                                        }
+                                                        aria-invalid={
+                                                            !!fieldErrors.service
+                                                        }
+                                                        aria-describedby={
+                                                            fieldErrors.service
+                                                                ? `${scopeLabelId}-error`
+                                                                : undefined
+                                                        }
+                                                        className="sr-only"
+                                                    />
                                                     {label}
-                                                </button>
+                                                </label>
                                             );
                                         })}
                                     </div>
@@ -452,12 +487,13 @@ export default function LandingContact() {
                                         }}
                                     >
                                         {tr(
-                                            'What do you need built or secured?',
-                                            'ما الذي تحتاج بناءه أو تأمينه؟',
+                                            'What do you need help with?',
+                                            'ما المشكلة التي تريد حلّها؟',
                                         )}
                                     </label>
                                     <textarea
                                         id={messageId}
+                                        name="message"
                                         value={data.message}
                                         onChange={(e) =>
                                             setData('message', e.target.value)
@@ -471,11 +507,7 @@ export default function LandingContact() {
                                                 ? true
                                                 : undefined
                                         }
-                                        aria-describedby={
-                                            fieldErrors.message
-                                                ? `${messageId}-error`
-                                                : undefined
-                                        }
+                                        aria-describedby={`${messageId}-hint ${fieldErrors.message ? `${messageId}-error` : ''}`}
                                         className="q-contact-input"
                                         style={{
                                             width: '100%',
@@ -489,6 +521,12 @@ export default function LandingContact() {
                                             resize: 'vertical',
                                         }}
                                     />
+                                    <p
+                                        id={`${messageId}-hint`}
+                                        style={{ color: B.dim, fontSize: 13 }}
+                                    >
+                                        {t('contact.validation.message')}
+                                    </p>
                                     <FieldError
                                         id={`${messageId}-error`}
                                         message={fieldErrors.message}
@@ -537,6 +575,15 @@ export default function LandingContact() {
                                         ? tr('Sending…', 'جارٍ الإرسال…')
                                         : tr('Send brief ↗', 'أرسل الطلب ↖')}
                                 </button>
+                                <p
+                                    style={{
+                                        color: B.dim,
+                                        fontSize: 14,
+                                        lineHeight: 1.6,
+                                    }}
+                                >
+                                    {t('contact.nextSteps')}
+                                </p>
                             </>
                         )}
                     </form>
@@ -544,7 +591,7 @@ export default function LandingContact() {
             </div>
             <style>{`
                 .q-contact-form { position: relative; padding: 36px; }
-                .q-contact-input:focus-visible, .q-contact-chip:focus-visible { outline: 2px solid var(--q-accent); outline-offset: 2px; }
+                .q-contact-input:focus-visible, .q-contact-chip:has(input:focus-visible) { outline: 2px solid var(--q-accent); outline-offset: 2px; }
                 @media (max-width: 900px) {
                     .contact-grid { grid-template-columns: 1fr !important; gap: 48px !important; }
                     .contact-title { font-size: clamp(40px, 11vw, 56px) !important; }

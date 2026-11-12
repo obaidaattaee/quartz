@@ -26,15 +26,6 @@ type PageProps = {
 // Specialisms that sit under Software Development.
 const SPECIALISMS = new Set(['web-development', 'mobile-apps']);
 
-const GCC = [
-    'Saudi Arabia',
-    'United Arab Emirates',
-    'Kuwait',
-    'Qatar',
-    'Bahrain',
-    'Oman',
-];
-
 function Arrow({ size = 18 }: { size?: number }) {
     return <ArrowRight size={size} className="sv-flip" aria-hidden="true" />;
 }
@@ -49,7 +40,15 @@ export default function ServiceDetail() {
     const heroRef = useRef<HTMLElement>(null);
     const endRef = useRef<HTMLElement>(null);
 
-    const contactHref = `/${locale}/contact?service=${service.slug}`;
+    const contactParams = new URLSearchParams({
+        service: SPECIALISMS.has(service.slug) ? 'development' : service.slug,
+    });
+
+    if (SPECIALISMS.has(service.slug)) {
+        contactParams.set('from', service.slug);
+    }
+
+    const contactHref = `/${locale}/contact?${contactParams}`;
     const cta = service.cta || t('nav.ctaShort');
     const first = service.engagements[0];
     const email = siteSettings?.contact_email;
@@ -74,7 +73,7 @@ export default function ServiceDetail() {
                     name: 'Quartz',
                     url: `${origin}/${locale}`,
                 },
-                areaServed: GCC.map((name) => ({ '@type': 'Country', name })),
+                areaServed: 'Worldwide',
                 ...(service.engagements.length > 0
                     ? {
                           hasOfferCatalog: {
@@ -160,19 +159,13 @@ export default function ServiceDetail() {
                         {first && (
                             <p className="sv-starts">
                                 {t('services.page.startsWith')}{' '}
-                                <strong>{first.title}</strong>
-                                {first.duration && (
-                                    <>
-                                        {listJoin(locale)}
-                                        {/* Mid-sentence after "starts with X," */}
-                                        {locale === 'en'
-                                            ? first.duration
-                                                  .charAt(0)
-                                                  .toLowerCase() +
-                                              first.duration.slice(1)
-                                            : first.duration}
-                                    </>
-                                )}
+                                <strong>
+                                    {locale === 'ar'
+                                        ? `«${first.title}»`
+                                        : `“${first.title}”`}
+                                </strong>
+                                {locale === 'ar' ? '، ' : ', '}
+                                {t('services.page.startScope')}
                             </p>
                         )}
                     </div>
@@ -348,11 +341,12 @@ export default function ServiceDetail() {
                                         </p>
                                     )}
                                     <Link
-                                        href={contactHref}
+                                        href={`${contactHref}&topic=${encodeURIComponent(e.title)}`}
                                         className="sv-link"
-                                        aria-label={`${t('services.page.engagements.ask')}: ${e.title}`}
                                     >
-                                        {t('services.page.engagements.ask')}
+                                        {t('services.page.engagements.ask', {
+                                            title: e.title,
+                                        })}
                                         <Arrow size={16} />
                                     </Link>
                                 </article>
@@ -377,7 +371,11 @@ export default function ServiceDetail() {
                         </div>
                         <ul className="sv-chips">
                             {service.tools.map((tool) => (
-                                <li key={tool}>{tool}</li>
+                                <li key={tool}>
+                                    {tool === 'REST APIs and webhooks'
+                                        ? t('services.page.tools.rest')
+                                        : tool}
+                                </li>
                             ))}
                         </ul>
                     </section>
@@ -470,11 +468,6 @@ export default function ServiceDetail() {
             />
         </>
     );
-}
-
-// Join the engagement title and its scope wording for each locale.
-function listJoin(locale: string): string {
-    return locale === 'ar' ? '، ' : ', ';
 }
 
 type LayoutProps = {

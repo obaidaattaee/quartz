@@ -192,11 +192,11 @@ function LandingProof() {
     const arrow = isRTL ? '←' : '→';
     const stats = isRTL
         ? [
-              ['13+', 'منتج حي'],
+              ['13+', 'مواقع ومنتجات قيد التشغيل'],
               ['500K+', 'مستخدم'],
           ]
         : [
-              ['13+', 'live products'],
+              ['13+', 'live websites/products'],
               ['500K+', 'users'],
           ];
 
@@ -209,7 +209,7 @@ function LandingProof() {
                     title={
                         isRTL ? (
                             <>
-                                منتجات حية،{' '}
+                                منتجات قيد التشغيل،{' '}
                                 <em
                                     style={{ color: B.accent, fontWeight: 300 }}
                                 >
@@ -218,7 +218,7 @@ function LandingProof() {
                             </>
                         ) : (
                             <>
-                                Live products,{' '}
+                                Products in use,{' '}
                                 <em
                                     style={{ color: B.accent, fontWeight: 300 }}
                                 >

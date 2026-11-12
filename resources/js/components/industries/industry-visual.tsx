@@ -186,7 +186,7 @@ function Retail({ tr, mx, path, signal }: DiagramProps) {
             <Node
                 x={mx(395)}
                 y={110}
-                label={tr('Fatoora', 'منصة فاتورة')}
+                label={tr('E-invoicing', 'الفوترة الإلكترونية')}
                 sub={tr('E-invoices', 'الفواتير الإلكترونية')}
             />
             <Node
@@ -292,7 +292,7 @@ function Healthcare({ tr, mx, path, signal }: DiagramProps) {
                 x={mx(390)}
                 y={260}
                 label={tr('Insurance exchange', 'منصة التأمين')}
-                sub={tr('NPHIES claims', 'مطالبات نفيس')}
+                sub={tr('Insurance claims', 'مطالبات التأمين')}
             />
             <Band
                 y={330}
@@ -514,14 +514,14 @@ function Government({ tr, mx, path, signal }: DiagramProps) {
                 w={150}
                 hi
                 label={tr('Identity sign-in', 'الدخول بالهوية')}
-                sub={tr('Nafath or UAE Pass', 'نفاذ أو الهوية الرقمية')}
+                sub={tr('SAML / OpenID Connect', 'SAML / OpenID Connect')}
             />
             <Node
                 x={mx(390)}
                 y={90}
                 w={130}
                 label={tr('E-service', 'الخدمة الإلكترونية')}
-                sub="WCAG 2.1 AA"
+                sub="WCAG 2.2 AA"
             />
             {desks.map((d) => (
                 <Node key={d.x} {...d} x={mx(d.x)} y={230} w={110} />

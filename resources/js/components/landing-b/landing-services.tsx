@@ -1,3 +1,4 @@
+import { Link } from '@inertiajs/react';
 import { useLocale } from '@/hooks/use-locale';
 import { useLandingData } from './data';
 import SectionHead from './section-head';
@@ -5,7 +6,25 @@ import { B, monoStyle } from './tokens';
 
 export default function LandingServices() {
     const { services } = useLandingData();
-    const { isRTL } = useLocale();
+    const { isRTL, locale } = useLocale();
+    const links: Record<string, [string, string, string]> = {
+        S_01: [
+            'development',
+            'Explore software development',
+            'تعرّف على تطوير البرمجيات',
+        ],
+        S_02: [
+            'qa',
+            'Explore QA and testing',
+            'تعرّف على ضمان الجودة والاختبار',
+        ],
+        S_03: [
+            'cybersecurity',
+            'Explore cybersecurity',
+            'تعرّف على الأمن السيبراني',
+        ],
+        S_04: ['automation', 'Explore automation', 'تعرّف على الأتمتة'],
+    };
 
     if (services.length === 0) {
         return null;
@@ -24,36 +43,14 @@ export default function LandingServices() {
                 <SectionHead
                     kicker={isRTL ? 'الخدمات' : 'Services'}
                     title={
-                        isRTL ? (
-                            <>
-                                أربعة تخصّصات،{' '}
-                                <em
-                                    style={{
-                                        color: B.accent,
-                                        fontWeight: 300,
-                                    }}
-                                >
-                                    فريق واحد متّصل.
-                                </em>
-                            </>
-                        ) : (
-                            <>
-                                Four disciplines.{' '}
-                                <em
-                                    style={{
-                                        color: B.accent,
-                                        fontWeight: 300,
-                                    }}
-                                >
-                                    One continuous team.
-                                </em>
-                            </>
-                        )
+                        isRTL
+                            ? 'أربعة تخصّصات يتولّاها فريق واحد.'
+                            : 'One team from development through testing, security and support.'
                     }
                     sub={
                         isRTL
-                            ? 'نفس الأشخاص الذين يصمّمون نظامك يختبرونه ويؤمّنونه ويشغّلونه. لا تسليمات بين فِرق، ولا ضياع سياق، ولا اتهامات في الثالثة فجراً.'
-                            : 'The people who design your system test it, secure it, and operate it. No handoffs, no lost context, no finger-pointing at 3am.'
+                            ? 'يتولّى الفريق نفسه تصميم نظامك واختباره وتأمينه وتشغيله، فتتعامل مع جهة واحدة تعرف المشروع وتتحمّل مسؤوليته.'
+                            : 'The same team designs, tests, secures and operates your system, with one lead responsible for the work.'
                     }
                 />
                 <div
@@ -114,6 +111,22 @@ export default function LandingServices() {
                                 >
                                     {s.body}
                                 </p>
+                                {links[s.code] && (
+                                    <Link
+                                        className="q-service-link"
+                                        href={`/${locale}/services/${links[s.code][0]}`}
+                                        style={{
+                                            display: 'inline-block',
+                                            color: B.cream,
+                                            marginBottom: 20,
+                                            textDecoration: 'underline',
+                                            textUnderlineOffset: 4,
+                                        }}
+                                    >
+                                        {links[s.code][isRTL ? 2 : 1]}{' '}
+                                        {isRTL ? '←' : '→'}
+                                    </Link>
+                                )}
                                 <div
                                     style={{
                                         display: 'flex',
@@ -145,6 +158,7 @@ export default function LandingServices() {
                 </div>
             </div>
             <style>{`
+                .q-service-link:focus-visible { outline: 2px solid var(--q-accent); outline-offset: 4px; }
                 @media (max-width: 900px) {
                     .services-grid { grid-template-columns: 1fr !important; }
                     .services-grid > div {

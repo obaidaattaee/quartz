@@ -292,8 +292,11 @@ export default function ServicesIndex() {
                                                         {sp.title}
                                                         {sp.subtitle && (
                                                             <span>
-                                                                {shorten(
-                                                                    sp.subtitle,
+                                                                {t(
+                                                                    sp.slug ===
+                                                                        'web-development'
+                                                                        ? 'services.index.specialisms.webDescription'
+                                                                        : 'services.index.specialisms.mobileDescription',
                                                                 )}
                                                             </span>
                                                         )}
@@ -498,13 +501,6 @@ export default function ServicesIndex() {
             </div>
         </>
     );
-}
-
-// First clause of a subtitle, for the compact specialism links.
-function shorten(text: string): string {
-    const cut = text.split(/[,،]/)[0];
-
-    return cut.length < text.length ? cut : text;
 }
 
 function ServicesLayout({ children }: { children: ReactNode }) {

@@ -11,7 +11,6 @@ use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Str;
 
 class Phase04VerificationSeeder extends Seeder
 {
@@ -418,8 +417,8 @@ class Phase04VerificationSeeder extends Seeder
             [
                 'meta_title_en' => 'Quartz - Software Development, Automation & Cybersecurity',
                 'meta_title_ar' => 'كوارتز - تطوير البرمجيات والأتمتة والأمن السيبراني',
-                'meta_description_en' => 'Quartz delivers software development, automation, QA, and cybersecurity services — a remote team serving the Gulf, with 13+ live products serving 500K+ users.',
-                'meta_description_ar' => 'تقدّم كوارتز خدمات تطوير البرمجيات والأتمتة وضمان الجودة والأمن السيبراني — فريق عن بُعد يخدم دول الخليج، بأكثر من 13 منتجاً قيد التشغيل تخدم أكثر من 500 ألف مستخدم.',
+                'meta_description_en' => 'Quartz delivers software development, automation, QA and cybersecurity worldwide, mostly in the US and Europe. 13+ live websites/products serving 500K+ users.',
+                'meta_description_ar' => 'تقدّم كوارتز تطوير البرمجيات والأتمتة وضمان الجودة والأمن السيبراني لعملاء حول العالم، أغلبهم في الولايات المتحدة وأوروبا. أكثر من 13 موقعاً ومنتجاً قيد التشغيل تخدم أكثر من 500 ألف مستخدم.',
             ]
         );
 

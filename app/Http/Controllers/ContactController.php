@@ -38,9 +38,13 @@ class ContactController extends Controller
     {
         $seo = SeoService::forStaticPage('contact', $locale, __('contact.title'), "/{$locale}/contact");
 
+        $from = self::sanitizeTopic($request->query('from'));
+
         return Inertia::render('public/contact', [
             'seo' => $seo,
             'preselectedService' => self::resolveService($request->query('service')),
+            'topic' => self::sanitizeTopic($request->query('topic')),
+            'from' => isset(self::SERVICE_ALIASES[$from ?? '']) ? $from : null,
         ])->withViewData(['seo' => $seo]);
     }
 
@@ -57,6 +61,17 @@ class ContactController extends Controller
         $value = self::SERVICE_ALIASES[$value] ?? $value;
 
         return in_array($value, self::SERVICES, true) ? $value : null;
+    }
+
+    private static function sanitizeTopic(mixed $value): ?string
+    {
+        if (! is_string($value)) {
+            return null;
+        }
+
+        $value = trim(preg_replace('/[\x00-\x1F\x7F]/u', ' ', strip_tags($value)) ?? '');
+
+        return $value === '' ? null : mb_substr($value, 0, 120);
     }
 
     public function store(ContactRequest $request)

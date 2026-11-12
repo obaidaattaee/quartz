@@ -48,12 +48,15 @@ export default function LandingFooter() {
         [
             tr('Resources', 'الموارد'),
             [
-                { label: tr('Journal', 'المدوّنة'), href: `/${locale}/blog` },
+                { label: tr('Blog', 'المدوّنة'), href: `/${locale}/blog` },
                 {
                     label: tr('FAQ', 'الأسئلة الشائعة'),
                     href: `/${locale}/faq`,
                 },
-                { label: tr('Feed', 'خلاصة RSS'), href: `/${locale}/feed.xml` },
+                {
+                    label: tr('RSS feed', 'خلاصة RSS'),
+                    href: `/${locale}/feed.xml`,
+                },
             ],
         ],
     ];
@@ -112,8 +115,8 @@ export default function LandingFooter() {
                             }}
                         >
                             {tr(
-                                'Software, automation, QA and cybersecurity from one remote team serving the Gulf and the wider region.',
-                                'برمجيات وأتمتة وضمان جودة وأمن سيبراني، من فريق واحد يعمل عن بُعد ويخدم دول الخليج والمنطقة.',
+                                'Software, automation, QA and cybersecurity from a remote team working with clients worldwide, mostly in the US and Europe.',
+                                'برمجيات وأتمتة وضمان جودة وأمن سيبراني، من فريق يعمل عن بُعد مع عملاء حول العالم، أغلبهم في الولايات المتحدة وأوروبا.',
                             )}
                         </div>
                     </div>

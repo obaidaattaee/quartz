@@ -19,37 +19,38 @@ class RssFeedController extends Controller
             ->get();
 
         $baseUrl = rtrim(config('app.url'), '/');
-        $siteName = config('app.name', 'Quartz');
-        $titleField = 'title_' . $locale;
-        $excerptField = 'excerpt_' . $locale;
+        $channelTitle = $locale === 'ar' ? 'مدوّنة كوارتز' : 'Quartz Blog';
+        $channelDescription = $locale === 'ar' ? 'أحدث مقالات كوارتز وأدلتها العملية' : 'Latest articles and practical guides from Quartz';
+        $titleField = 'title_'.$locale;
+        $excerptField = 'excerpt_'.$locale;
 
         $xml = '<?xml version="1.0" encoding="UTF-8"?>';
         $xml .= '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">';
         $xml .= '<channel>';
-        $xml .= '<title>' . htmlspecialchars($siteName . ' Blog') . '</title>';
-        $xml .= '<link>' . $baseUrl . '/' . $locale . '/blog</link>';
-        $xml .= '<description>' . htmlspecialchars($siteName . ' - Latest articles and insights') . '</description>';
-        $xml .= '<language>' . $locale . '</language>';
-        $xml .= '<atom:link href="' . $baseUrl . '/' . $locale . '/feed.xml" rel="self" type="application/rss+xml" />';
+        $xml .= '<title>'.htmlspecialchars($channelTitle).'</title>';
+        $xml .= '<link>'.$baseUrl.'/'.$locale.'/blog</link>';
+        $xml .= '<description>'.htmlspecialchars($channelDescription).'</description>';
+        $xml .= '<language>'.$locale.'</language>';
+        $xml .= '<atom:link href="'.$baseUrl.'/'.$locale.'/feed.xml" rel="self" type="application/rss+xml" />';
 
         foreach ($posts as $post) {
             $xml .= '<item>';
-            $xml .= '<title>' . htmlspecialchars($post->$titleField ?? $post->title_en) . '</title>';
-            $xml .= '<link>' . $baseUrl . '/' . $locale . '/blog/' . $post->slug . '</link>';
-            $xml .= '<description>' . htmlspecialchars($post->$excerptField ?? $post->excerpt_en ?? '') . '</description>';
-            $xml .= '<guid isPermaLink="true">' . $baseUrl . '/' . $locale . '/blog/' . $post->slug . '</guid>';
+            $xml .= '<title>'.htmlspecialchars($post->$titleField ?? $post->title_en).'</title>';
+            $xml .= '<link>'.$baseUrl.'/'.$locale.'/blog/'.$post->slug.'</link>';
+            $xml .= '<description>'.htmlspecialchars($post->$excerptField ?? $post->excerpt_en ?? '').'</description>';
+            $xml .= '<guid isPermaLink="true">'.$baseUrl.'/'.$locale.'/blog/'.$post->slug.'</guid>';
 
             if ($post->published_at) {
-                $xml .= '<pubDate>' . $post->published_at->toRfc2822String() . '</pubDate>';
+                $xml .= '<pubDate>'.$post->published_at->toRfc2822String().'</pubDate>';
             }
 
             if ($post->author) {
-                $xml .= '<author>' . htmlspecialchars($post->author->email . ' (' . $post->author->name . ')') . '</author>';
+                $xml .= '<author>'.htmlspecialchars($post->author->email.' ('.$post->author->name.')').'</author>';
             }
 
             foreach ($post->categories as $category) {
-                $catField = 'name_' . $locale;
-                $xml .= '<category>' . htmlspecialchars($category->$catField ?? $category->name_en) . '</category>';
+                $catField = 'name_'.$locale;
+                $xml .= '<category>'.htmlspecialchars($category->$catField ?? $category->name_en).'</category>';
             }
 
             $xml .= '</item>';

@@ -105,7 +105,7 @@ class LegalPageSeeder extends Seeder
                 'body' => [
                     'Where a Quartz product offers it, you may create or access an account using a third-party identity provider instead of a password. We request the minimum set of permissions needed to authenticate you and to populate your profile, and we explain the purpose at the point where we request them.',
                     'We never receive your password from any identity provider. We do not use your sign-in connection to reach any other data in your provider account, and we do not post, send, or publish anything through your provider account.',
-                    'You can disconnect a provider at any time from that provider security settings and from your Quartz account settings. Disconnecting a provider stops future sign-ins through it; it does not by itself delete your Quartz account, which is covered in the deletion section below.',
+                    'You can disconnect a provider at any time in the provider’s security settings and your Quartz account settings. Disconnecting a provider stops future sign-ins through it; it does not by itself delete your Quartz account, which is covered in the deletion section below.',
                 ],
                 'list' => [
                     'What we receive: a stable account identifier, your email address or a private relay address, your display name, and — only where you permit it — your profile picture.',
@@ -325,7 +325,7 @@ class LegalPageSeeder extends Seeder
                 'body' => [
                     'تُشغّل {{company}} (ويُشار إليها بـ Quartz أو نحن) الموقع {{site_url}} والمنتجات والخدمات البرمجية الموضحة فيه. توضّح هذه السياسة البيانات الشخصية التي نجمعها، وسبب جمعها، ومع من نشاركها، ومدة الاحتفاظ بها، والخيارات والحقوق المتاحة لك.',
                     'تنطبق هذه السياسة على موقعنا الإلكتروني، وعلى الحسابات التي تنشئها لدينا، وعلى تطبيقاتنا على الويب والهواتف المحمولة، وعلى مراسلاتك معنا.',
-                    'عندما نبني أو نشغّل نظامًا لصالح عميل، فإن ذلك العميل هو من يحدد البيانات الشخصية التي تُعالَج داخله والغرض من معالجتها. في تلك المشاريع يكون العميل هو المتحكم في البيانات وتعمل Quartz بصفتها معالِجًا للبيانات بموجب اتفاقية مكتوبة، وتحكم إشعارُ الخصوصية الخاص بالعميل تلك البيانات. أما هذه السياسة فتحكم البيانات التي نحتفظ بها لأغراضنا نحن.',
+                    'عندما نبني أو نشغّل نظامًا لصالح عميل، فإن ذلك العميل هو من يحدد البيانات الشخصية التي تُعالَج داخله والغرض من معالجتها. في تلك المشاريع يكون العميل هو المتحكم في البيانات وتعمل Quartz بصفتها معالِجًا للبيانات بموجب اتفاقية مكتوبة، ويحكم إشعار الخصوصية الخاص بالعميل معالجة تلك البيانات. أما هذه السياسة فتحكم البيانات التي نحتفظ بها لأغراضنا نحن.',
                 ],
                 'list' => [
                     'العنوان المسجّل: {{registered_address}}',
@@ -415,7 +415,7 @@ class LegalPageSeeder extends Seeder
                     'وحيثما يشترط القانون ذلك، نطلب موافقتك قبل وضع أي ملف تعريف ارتباط غير ضروري بشكل صارم، ونتيح لك تغيير اختيارك في أي وقت. كما يمكنك حظر ملفات تعريف الارتباط أو حذفها من إعدادات متصفحك، مع العلم بأن تعطيل الملفات الضرورية يعطّل وظائف أساسية مثل تسجيل الدخول.',
                 ],
                 'list' => [
-                    'ضرورية بشكل صارم: إدارة الجلسة والمصادقة وموازنة الأحمال والأمان.',
+                    'ضرورية لتشغيل الخدمة: إدارة الجلسة والمصادقة وموازنة الأحمال والأمان.',
                     'التفضيلات: اللغة واتجاه النص وإعدادات الواجهة التي اخترتها.',
                     'التحليلات: قياس مجمّع لمرات مشاهدة الصفحات واستخدام الميزات، ويُجمع بموافقتك حيثما يلزم.',
                 ],
@@ -492,7 +492,7 @@ class LegalPageSeeder extends Seeder
                 'heading' => 'حذف حسابك وبياناتك',
                 'body' => [
                     'يمكنك حذف حسابك والبيانات الشخصية المرتبطة به في أي وقت، عبر أي من الطرق أدناه. ولست بحاجة إلى التواصل مع الدعم أولًا، ولا نشترط إجراء مكالمة هاتفية لتنفيذ الحذف.',
-                    'وننفّذ طلبات الحذف خلال 30 يومًا. وتُزال بياناتك من الأنظمة الحية فورًا وتُمحى من النسخ الاحتياطية خلال 90 يومًا. ولا نحتفظ إلا بالحد الأدنى الذي يلزمنا القانون بحفظه — كالفواتير التي تفرضها الأنظمة الضريبية، والسجلات اللازمة لمنع الاحتيال أو لحسم نزاع قائم — وعند إتمام طلبك نبلغك بما احتُفظ به وسببه.',
+                    'وننفّذ طلبات الحذف خلال 30 يومًا. وتُزال بياناتك من الأنظمة الحية دون تأخير وتُمحى من النسخ الاحتياطية خلال 90 يومًا. ولا نحتفظ إلا بالحد الأدنى الذي يلزمنا القانون بحفظه — كالفواتير التي تفرضها الأنظمة الضريبية، والسجلات اللازمة لمنع الاحتيال أو لحسم نزاع قائم — وعند إتمام طلبك نبلغك بما احتُفظ به وسببه.',
                     'ولا يؤدي حذف حسابك في Quartz إلى حذف أي بيانات لدى مزوّد الهوية الخاص بك. ولقطع ذلك الارتباط، ألغِ الوصول بشكل منفصل من أذونات حساب Google، أو إعدادات Apple ID، أو أذونات حساب Microsoft.',
                 ],
                 'list' => [
@@ -606,7 +606,7 @@ class LegalPageSeeder extends Seeder
             [
                 'heading' => 'Signing In Through Google, Apple, or Microsoft',
                 'body' => [
-                    'Where we offer sign-in through a third-party identity provider, using it is optional and your relationship with that provider remains governed by that provider terms and privacy policy.',
+                    'Where we offer sign-in through a third-party identity provider, using it is optional and your relationship with that provider remains governed by that provider’s terms and privacy policy.',
                     'By choosing to sign in through a provider, you authorise us to receive the account identifiers described in our Privacy Policy and to use them to create and secure your account. If you revoke our access from the provider, you may lose the ability to sign in, and you should set a password or connect another provider first to avoid being locked out.',
                 ],
                 'list' => [],
@@ -641,7 +641,7 @@ class LegalPageSeeder extends Seeder
             [
                 'heading' => 'App Stores and Third-Party Platforms',
                 'body' => [
-                    'If you obtain a Quartz application through a third-party platform such as the Apple App Store, Google Play, or the Microsoft Store, your use is also subject to that platform terms, and you agree to comply with them. The platform provider is not responsible for the application or its content.',
+                    'If you obtain a Quartz application through a third-party platform such as the Apple App Store, Google Play, or the Microsoft Store, your use is also subject to that platform’s terms, and you agree to comply with them. The platform provider is not responsible for the application or its content.',
                     'The following terms apply to any application you obtain through the Apple App Store. These Terms are concluded between you and {{company}} only, and not with Apple. Apple has no obligation to furnish any maintenance or support for the application. If the application fails to conform to any applicable warranty, you may notify Apple, and Apple will refund the purchase price to you; to the maximum extent permitted by law, Apple has no other warranty obligation with respect to the application. Apple is not responsible for addressing any claim relating to the application, including product liability claims, any claim that the application fails to conform to a legal or regulatory requirement, claims arising under consumer protection or privacy legislation, and third-party claims that the application infringes intellectual property rights.',
                     'Apple is a third-party beneficiary of these Terms, and Apple and its subsidiaries may enforce these Terms against you as such. You represent that you are not located in a country subject to a United States Government embargo or designated as a terrorist-supporting country, and that you are not listed on any United States Government list of prohibited or restricted parties.',
                 ],

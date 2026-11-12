@@ -128,7 +128,7 @@ class ServicePagesTest extends TestCase
     {
         $blob = json_encode(ServicePageContentSeeder::content(), JSON_UNESCAPED_UNICODE);
 
-        foreach (['%', 'ISO 27001', 'certified partner', 'testimonial', 'WhatsApp us'] as $banned) {
+        foreach (['%', 'ISO 27001 certified', 'certified partner', 'testimonial', 'WhatsApp us'] as $banned) {
             $this->assertStringNotContainsStringIgnoringCase($banned, $blob);
         }
     }

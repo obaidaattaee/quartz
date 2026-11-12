@@ -36,7 +36,7 @@ class PublicContentAuditTest extends TestCase
         $this->assertStringContainsString('lang="ar"', $html);
         $this->assertStringContainsString('dir="rtl"', $html);
         $this->assertSame(1, substr_count($html, '<title'));
-        $this->assertStringContainsString('<title data-inertia="">الصفحة غير موجودة | Quartz</title>', $html);
+        $this->assertStringContainsString('<title data-inertia="">الصفحة غير موجودة | كوارتز</title>', $html);
         $this->assertStringContainsString('name="robots" content="noindex"', $html);
     }
 
@@ -51,7 +51,7 @@ class PublicContentAuditTest extends TestCase
         }
 
         $this->assertStringContainsString(
-            '<title data-inertia="">عن كوارتز | Quartz</title>',
+            '<title data-inertia="">عن كوارتز | كوارتز</title>',
             $this->get('/ar/about')->getContent(),
         );
     }
@@ -97,9 +97,9 @@ class PublicContentAuditTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors([
-            'service' => 'حقل الخدمة مطلوب.',
-            'email' => 'حقل البريد الإلكتروني مطلوب.',
-            'name' => 'حقل الاسم مطلوب.',
+            'service' => 'اختر خدمة، أو اختر «استفسار عام».',
+            'email' => 'أدخل بريدك الإلكتروني.',
+            'name' => 'أدخل اسمك.',
         ]);
     }
 }

@@ -73,7 +73,7 @@ function Development({ tr, mx, signal }: DiagramProps) {
         {
             cy: 200,
             label: tr('APIs and integrations', 'الواجهات والتكاملات'),
-            sub: tr('ERP, payments, e-invoicing', 'ERP والدفع والفوترة'),
+            sub: tr('ERP, CRM, e-invoicing', 'ERP وإدارة العملاء والفوترة'),
         },
         {
             cy: 105,
@@ -183,7 +183,10 @@ function Automation({ tr, mx, signal }: DiagramProps) {
                 x={b}
                 y={70}
                 label={tr('Validate', 'التحقق')}
-                sub={tr('Rules and AI reading', 'قواعد وقراءة آلية')}
+                sub={tr(
+                    'Rules and AI reading',
+                    'قواعد تحقق وقراءة بالذكاء الاصطناعي',
+                )}
             />
             <FlowNode
                 x={b}
@@ -432,7 +435,10 @@ function Mobile({ tr, bx, mx, startAnchor }: DiagramProps) {
                 textAnchor="middle"
                 className="sv-svg-text"
             >
-                {tr('Saved offline, syncing', 'محفوظ دون اتصال')}
+                {tr(
+                    'Saved offline, syncing',
+                    'محفوظ دون اتصال، وجارٍ المزامنة',
+                )}
             </text>
         </>
     );
@@ -464,7 +470,7 @@ function Qa({ tr, mx, bx, startAnchor, signal }: DiagramProps) {
                 textAnchor={startAnchor}
                 className="sv-svg-text"
             >
-                {tr('Regression run', 'اختبار الانحدار')}
+                {tr('Regression run', 'اختبارات الانحدار')}
             </text>
             <text
                 x={mx(420)}

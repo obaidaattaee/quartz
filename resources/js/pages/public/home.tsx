@@ -14,6 +14,7 @@ import LandingTestimonials from '@/components/landing-b/landing-testimonials';
 import LandingWorld from '@/components/landing-b/landing-world';
 import SeoHead from '@/components/seo-head';
 import type { SeoData } from '@/components/seo-head';
+import { useLocale } from '@/hooks/use-locale';
 import LandingBLayout from '@/layouts/landing-b-layout';
 
 type Testimonial = {
@@ -38,16 +39,19 @@ type HomeProps = {
 export default function Home() {
     const { seo, testimonials } = usePage<HomeProps>().props;
     const { faqs } = useLandingData();
+    const { isRTL } = useLocale();
 
     const origin = typeof window !== 'undefined' ? window.location.origin : '';
 
     const orgSchema = {
         '@context': 'https://schema.org',
         '@type': 'Organization',
-        name: 'Quartz Solutions',
+        name: isRTL ? 'كوارتز' : 'Quartz',
         url: origin,
-        description:
-            'Software development, QA, cybersecurity and automation from a remote team serving the Gulf and the wider region.',
+        description: isRTL
+            ? 'تطوير البرمجيات وضمان الجودة والأمن السيبراني والأتمتة من فريق يعمل عن بُعد مع عملاء حول العالم.'
+            : 'Software development, QA, cybersecurity and automation from a remote team working with clients worldwide.',
+        areaServed: 'Worldwide',
         contactPoint: {
             '@type': 'ContactPoint',
             contactType: 'customer service',

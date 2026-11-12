@@ -22,36 +22,14 @@ export default function LandingProcess() {
                 <SectionHead
                     kicker={isRTL ? 'المنهجية' : 'Method'}
                     title={
-                        isRTL ? (
-                            <>
-                                خمس مراحل.{' '}
-                                <em
-                                    style={{
-                                        color: B.accent,
-                                        fontWeight: 300,
-                                    }}
-                                >
-                                    دون مفاجآت.
-                                </em>
-                            </>
-                        ) : (
-                            <>
-                                Five stages.{' '}
-                                <em
-                                    style={{
-                                        color: B.accent,
-                                        fontWeight: 300,
-                                    }}
-                                >
-                                    Zero surprises.
-                                </em>
-                            </>
-                        )
+                        isRTL
+                            ? 'خمس مراحل واضحة، بمراجعة متّفق عليها في كل مرحلة.'
+                            : 'Five stages, with clear reviews and decisions.'
                     }
                     sub={
                         isRTL
-                            ? 'إيقاع تشغيلي يمكن التنبؤ به — سواء كان الأمر بناءً جديداً أو تحصين بيئة قديمة.'
-                            : 'A predictable operating rhythm — the same one whether it’s a greenfield platform or hardening a legacy estate.'
+                            ? 'نتفق على طريقة العمل والمتابعة، سواء كنّا نبني نظاماً جديداً أو نحسّن نظاماً قائماً.'
+                            : 'The same process applies to new systems and improvements to existing ones.'
                     }
                 />
                 <div

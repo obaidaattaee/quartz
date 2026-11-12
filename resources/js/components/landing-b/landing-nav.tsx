@@ -44,7 +44,7 @@ export default function LandingNav() {
         {
             key: 'blog',
             href: `/${locale}/blog`,
-            label: t('nav.blog') || 'Journal',
+            label: t('nav.blog') || 'Blog',
         },
         {
             key: 'about',
@@ -53,7 +53,7 @@ export default function LandingNav() {
         },
     ];
 
-    const ctaLabel = t('nav.ctaShort') || 'Book a demo';
+    const ctaLabel = t('nav.ctaShort') || 'Request a call';
     const arrow = isRTL ? '↖' : '↗';
 
     const navLabel = isRTL ? 'التنقّل الرئيسي' : 'Primary navigation';

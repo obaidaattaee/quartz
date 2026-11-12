@@ -1,4 +1,5 @@
 import { useForm, usePage } from '@inertiajs/react';
+import { useEffect, useRef } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,8 +11,10 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import { useContactDraft } from '@/hooks/use-contact-draft';
 import { useLocale } from '@/hooks/use-locale';
 import { serviceFromUrl } from '@/lib/contact-service';
+import { contactErrors, focusContactError } from '@/lib/contact-validation';
 
 function RequiredMark({ label }: { label: string }) {
     return (
@@ -31,38 +34,104 @@ export default function ContactForm() {
     // the matching option; unknown values are ignored.
     // The contact page resolves it server-side (preselectedService);
     // elsewhere the form falls back to reading the URL.
-    const { url, props } = usePage<{ preselectedService?: string | null }>();
+    const { url, props } = usePage<{
+        preselectedService?: string | null;
+        topic?: string | null;
+        from?: string | null;
+    }>();
     const initialService =
         props.preselectedService ?? serviceFromUrl(url) ?? '';
 
-    const { data, setData, post, processing, errors, reset, wasSuccessful } =
-        useForm({
-            name: '',
-            email: '',
-            phone: '',
-            service: initialService as string,
-            message: '',
-            _honeypot: '',
-        });
+    const topic = props.topic ?? '';
+    const from = props.from ?? '';
+    const context = [topic, from, initialService].filter(Boolean).join('|');
+    const fromTitle =
+        from === 'web-development'
+            ? t('nav.services.web')
+            : from === 'mobile-apps'
+              ? t('nav.services.mobile')
+              : '';
+    const topicLine = topic ? t('contact.topic', { topic }) : '';
+    const firstLine = [
+        fromTitle ? t('contact.from', { service: fromTitle }) : '',
+        topicLine,
+    ]
+        .filter(Boolean)
+        .join('\n');
+    const formRef = useRef<HTMLFormElement>(null);
+    const successRef = useRef<HTMLHeadingElement>(null);
+    const form = useForm({
+        name: '',
+        email: '',
+        phone: '',
+        company: '',
+        service: initialService as string,
+        message: firstLine ? `${firstLine}\n\n` : '',
+        _honeypot: '',
+    });
 
-    function handleSubmit(e: React.FormEvent) {
+    const { data, setData, post, processing, errors, reset, wasSuccessful } =
+        form;
+    const clearDraft = useContactDraft(
+        'quartz-contact-draft',
+        data,
+        setData,
+        context,
+    );
+    useEffect(() => {
+        if (wasSuccessful) {
+            successRef.current?.focus();
+        }
+    }, [wasSuccessful]);
+
+    function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
+        form.clearErrors();
+        const validation = contactErrors(data, t);
+
+        if (Object.keys(validation).length) {
+            form.setError(validation);
+            focusContactError(formRef.current, validation);
+
+            return;
+        }
+
         post(`/${locale}/contact`, {
-            onSuccess: () => reset(),
+            onSuccess: () => {
+                clearDraft();
+                reset();
+            },
+            onError: (serverErrors) =>
+                focusContactError(formRef.current, serverErrors),
             preserveScroll: true,
         });
     }
 
     if (wasSuccessful) {
         return (
-            <div className="rounded-lg border border-green-200 bg-green-50 p-4 text-green-800 dark:border-green-800 dark:bg-green-950 dark:text-green-200">
-                {t('contact.form.success')}
+            <div
+                role="status"
+                className="rounded-lg border border-green-200 bg-green-50 p-4 text-green-800 dark:border-green-800 dark:bg-green-950 dark:text-green-200"
+            >
+                <h2 ref={successRef} tabIndex={-1}>
+                    {t('contact.form.success')}
+                </h2>
             </div>
         );
     }
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form
+            ref={formRef}
+            noValidate
+            onSubmit={handleSubmit}
+            className="space-y-6"
+        >
+            {(topic || fromTitle) && (
+                <p className="rounded-md border p-3 text-sm">
+                    {[fromTitle, topicLine].filter(Boolean).join(' · ')}
+                </p>
+            )}
             {/* Name + Email row */}
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div className="space-y-2">
@@ -73,13 +142,21 @@ export default function ContactForm() {
                     <Input
                         id="name"
                         name="name"
+                        aria-invalid={!!errors.name}
+                        aria-describedby={
+                            errors.name ? 'name-error' : undefined
+                        }
                         required
                         placeholder={t('contact.form.namePlaceholder')}
                         value={data.name}
                         onChange={(e) => setData('name', e.target.value)}
                     />
                     {errors.name && (
-                        <p className="mt-1 text-sm text-destructive">
+                        <p
+                            id="name-error"
+                            role="alert"
+                            className="mt-1 text-sm text-destructive"
+                        >
                             {errors.name}
                         </p>
                     )}
@@ -93,6 +170,10 @@ export default function ContactForm() {
                     <Input
                         id="email"
                         name="email"
+                        aria-invalid={!!errors.email}
+                        aria-describedby={
+                            errors.email ? 'email-error' : undefined
+                        }
                         type="email"
                         required
                         placeholder={t('contact.form.emailPlaceholder')}
@@ -100,7 +181,11 @@ export default function ContactForm() {
                         onChange={(e) => setData('email', e.target.value)}
                     />
                     {errors.email && (
-                        <p className="mt-1 text-sm text-destructive">
+                        <p
+                            id="email-error"
+                            role="alert"
+                            className="mt-1 text-sm text-destructive"
+                        >
                             {errors.email}
                         </p>
                     )}
@@ -118,12 +203,18 @@ export default function ContactForm() {
                 <Input
                     id="phone"
                     name="phone"
+                    aria-invalid={!!errors.phone}
+                    aria-describedby={errors.phone ? 'phone-error' : undefined}
                     placeholder={t('contact.form.phonePlaceholder')}
                     value={data.phone}
                     onChange={(e) => setData('phone', e.target.value)}
                 />
                 {errors.phone && (
-                    <p className="mt-1 text-sm text-destructive">
+                    <p
+                        id="phone-error"
+                        role="alert"
+                        className="mt-1 text-sm text-destructive"
+                    >
                         {errors.phone}
                     </p>
                 )}
@@ -143,6 +234,9 @@ export default function ContactForm() {
                 >
                     <SelectTrigger
                         id="service"
+                        aria-describedby={
+                            errors.service ? 'service-error' : undefined
+                        }
                         className="w-full"
                         aria-required="true"
                         aria-invalid={errors.service ? true : undefined}
@@ -170,7 +264,11 @@ export default function ContactForm() {
                     </SelectContent>
                 </Select>
                 {errors.service && (
-                    <p className="mt-1 text-sm text-destructive">
+                    <p
+                        id="service-error"
+                        role="alert"
+                        className="mt-1 text-sm text-destructive"
+                    >
                         {errors.service}
                     </p>
                 )}
@@ -185,15 +283,26 @@ export default function ContactForm() {
                 <textarea
                     id="message"
                     name="message"
+                    aria-invalid={!!errors.message}
+                    aria-describedby={`message-hint ${errors.message ? 'message-error' : ''}`}
                     required
                     rows={5}
+                    minLength={10}
+                    maxLength={5000}
                     placeholder={t('contact.form.messagePlaceholder')}
                     value={data.message}
                     onChange={(e) => setData('message', e.target.value)}
                     className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background outline-none placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring"
                 />
+                <p id="message-hint" className="text-sm text-muted-foreground">
+                    {t('contact.validation.message')}
+                </p>
                 {errors.message && (
-                    <p className="mt-1 text-sm text-destructive">
+                    <p
+                        id="message-error"
+                        role="alert"
+                        className="mt-1 text-sm text-destructive"
+                    >
                         {errors.message}
                     </p>
                 )}
@@ -216,6 +325,9 @@ export default function ContactForm() {
                     ? t('contact.form.sending')
                     : t('contact.form.submit')}
             </Button>
+            <p className="text-sm text-muted-foreground">
+                {t('contact.nextSteps')}
+            </p>
         </form>
     );
 }

@@ -50,8 +50,8 @@ class ServiceController extends Controller
 
         $title = $locale === 'ar' ? 'خدماتنا' : 'Services';
         $description = $locale === 'ar'
-            ? 'تطوير البرمجيات والأتمتة، مع ضمان الجودة والأمن السيبراني، من فريق واحد يعمل عن بُعد لخدمة الشركات في الخليج. اعرف الخدمة المناسبة لمشكلتك وكيف يبدأ المشروع.'
-            : 'Software development and automation, plus QA and cybersecurity, from one remote team serving businesses across the Gulf. Find the right service for your problem and see how a project starts.';
+            ? 'تطوير البرمجيات والأتمتة، مع ضمان الجودة والأمن السيبراني، من فريق يعمل عن بُعد مع عملاء حول العالم. اختر الخدمة المناسبة لمشكلتك واعرف كيف نبدأ.'
+            : 'Software development and automation, plus QA and cybersecurity, from a remote team working with clients worldwide. Find a suitable service and starting point.';
         $seo = SeoService::forStaticPage('services', $locale, $title, "/{$locale}/services", $description);
 
         return Inertia::render('public/services/index', [

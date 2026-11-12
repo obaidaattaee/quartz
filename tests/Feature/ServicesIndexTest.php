@@ -74,7 +74,7 @@ class ServicesIndexTest extends TestCase
     {
         $this->get('/en/services')
             ->assertInertia(fn (AssertableInertia $page) => $page
-                ->where('seo.description', fn ($d) => str_contains($d, 'Find the right service'))
+                ->where('seo.description', fn ($d) => str_contains($d, 'Find a suitable service'))
             );
 
         $this->get('/ar/services')

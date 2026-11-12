@@ -3,6 +3,7 @@
 use App\Http\Controllers\AgentDiscoveryController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Middleware\AgentLinkHeaders;
+use App\Http\Middleware\EnsureUserHasRole;
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\MarkdownForAgents;
@@ -10,6 +11,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -38,14 +40,14 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->trustProxies(
             at: env('TRUSTED_PROXIES', '*'),
-            headers: \Illuminate\Http\Request::HEADER_X_FORWARDED_FOR |
-                     \Illuminate\Http\Request::HEADER_X_FORWARDED_HOST |
-                     \Illuminate\Http\Request::HEADER_X_FORWARDED_PORT |
-                     \Illuminate\Http\Request::HEADER_X_FORWARDED_PROTO,
+            headers: Request::HEADER_X_FORWARDED_FOR |
+                     Request::HEADER_X_FORWARDED_HOST |
+                     Request::HEADER_X_FORWARDED_PORT |
+                     Request::HEADER_X_FORWARDED_PROTO,
         );
 
         $middleware->alias([
-            'role' => \App\Http\Middleware\EnsureUserHasRole::class,
+            'role' => EnsureUserHasRole::class,
         ]);
 
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
@@ -80,7 +82,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 : [];
 
             $seo = [
-                'title' => __('error.404.title').' | '.config('app.name', 'Quartz'),
+                'title' => __('error.404.title').' | '.(app()->getLocale() === 'ar' ? 'كوارتز' : config('app.name', 'Quartz')),
                 'description' => __('error.404.description'),
                 'robots' => 'noindex',
             ];

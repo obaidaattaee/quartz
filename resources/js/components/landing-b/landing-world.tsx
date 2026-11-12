@@ -30,7 +30,7 @@ export default function LandingWorld() {
         () =>
             isRTL
                 ? {
-                      product: (n) => `منتج حي ${n}`,
+                      product: () => `مثال توضيحي`,
                       select: 'اختر للعرض',
                       newWing: (p, f, of) =>
                           `جناح جديد لـ ${p} · الطابق ${f} من ${of}`,
@@ -44,7 +44,7 @@ export default function LandingWorld() {
                       blockedNote: 'قاعدة WAF وتحديد معدل، توضيحي',
                   }
                 : {
-                      product: (n) => `Live product ${n}`,
+                      product: () => `Illustrative example`,
                       select: 'Select to view',
                       newWing: (p, f, of) =>
                           `New wing for ${p} · floor ${f} of ${of}`,
@@ -65,25 +65,25 @@ export default function LandingWorld() {
               {
                   id: 'intro',
                   kicker: 'كيف نعمل',
-                  title: 'فريق واحد. أربعة أطقم تعمل على كل منتج.',
-                  body: 'كل مبنى منتج حي نبنيه ونشغّله. تابع التمرير لترى عمل كل طاقم.',
+                  title: 'فريق واحد يتولّى التطوير والأتمتة والاختبار والأمن.',
+                  body: 'يوضّح هذا الرسم كيف يتكامل التطوير والأتمتة والاختبار والأمن.',
               },
               {
                   id: 'dev',
                   kicker: 'تطوير البرمجيات',
-                  title: 'نبني البرمجيات التي يعمل عليها عملك.',
+                  title: 'نبني البرمجيات التي تعتمد عليها أعمالك.',
                   body: 'منصات ويب وتطبيقات جوال وواجهات برمجية وأدوات داخلية، يصمّمها ويبنيها ويطلقها فريق واحد.',
               },
               {
                   id: 'auto',
                   kicker: 'الأتمتة',
-                  title: 'اربط أنظمتك. تخلّص من العمل اليدوي.',
+                  title: 'قلّل نقل البيانات يدوياً بين أنظمتك.',
                   body: 'تدفقات عمل وتكاملات ومهام مجدولة تنقل البيانات بين الأدوات التي تستخدمها.',
               },
               {
                   id: 'qa',
                   kicker: 'اختبار الجودة',
-                  title: 'أطلق بأدلّة، لا بالأمل.',
+                  title: 'اعرف ما اختُبر وما يحتاج إلى إصلاح قبل الإطلاق.',
                   body: 'اختبار يدوي وآلي للمسارات الحرجة والأجهزة والأحمال، مدمج في كل إصدار.',
               },
               {
@@ -94,16 +94,16 @@ export default function LandingWorld() {
               },
               {
                   id: 'work',
-                  title: 'كل مبنى منتج حي.',
-                  body: 'اختر مبنى لترى ما هو، أو تصفّح دراسات الحالة.',
+                  title: 'كل مبنى مثال توضيحي.',
+                  body: 'يمكنك طلب أمثلة من أعمالنا عبر نموذج التواصل.',
               },
           ]
         : [
               {
                   id: 'intro',
                   kicker: 'How we work',
-                  title: 'One team. Four crews, working on every product.',
-                  body: 'Each building is a live product we build and run. Keep scrolling to see what each crew does.',
+                  title: 'One team for development, automation, testing and security.',
+                  body: 'This illustration shows how development, automation, testing and security fit together.',
               },
               {
                   id: 'dev',
@@ -114,13 +114,13 @@ export default function LandingWorld() {
               {
                   id: 'auto',
                   kicker: 'Automation',
-                  title: 'Connect your systems. Remove the manual handoffs.',
+                  title: 'Reduce manual data transfers between your systems.',
                   body: 'Workflows, integrations and scheduled jobs that move data between the tools you already use.',
               },
               {
                   id: 'qa',
                   kicker: 'QA Testing',
-                  title: 'Release with evidence, not hope.',
+                  title: 'Know what passed, what failed and what remains risky before release.',
                   body: 'Manual and automated testing across critical journeys, devices and load, built into every release.',
               },
               {
@@ -131,23 +131,23 @@ export default function LandingWorld() {
               },
               {
                   id: 'work',
-                  title: 'Every building is a live product.',
-                  body: 'Select a building to see what it is, or browse the case studies.',
+                  title: 'Each building is an illustrative example.',
+                  body: 'Contact us to request relevant work examples.',
               },
           ];
 
     const flow = isRTL
         ? [
-              ['طلب جديد', 'مُشغّل يبدأ سير العمل'],
-              ['تم التحقق', 'فحص المخزون والعنوان والدفع'],
-              ['مزامنة مع ERP', 'كتابة الطلب في نظام السجلات'],
-              ['إشعار الفريق', 'تحديث العميل والمستودع'],
+              ['طلب جديد', 'حدث يبدأ سير العمل'],
+              ['تم التحقق', 'فحص المخزون والعنوان'],
+              ['مزامنة مع ERP', 'تسجيل الطلب في نظام ERP'],
+              ['إشعار الفريق', 'إشعار العميل وفريق المستودع'],
           ]
         : [
               ['Order placed', 'A trigger starts the workflow'],
-              ['Validated', 'Stock, address and payment checked'],
-              ['Synced to ERP', 'Written to the system of record'],
-              ['Team notified', 'Customer and warehouse updated'],
+              ['Validated', 'Stock and address checked'],
+              ['Synced to ERP', 'Order recorded in ERP'],
+              ['Team notified', 'Customer and warehouse team notified'],
           ];
 
     // Engine lifecycle
@@ -265,8 +265,8 @@ export default function LandingWorld() {
                         {s.id === 'dev' && (
                             <p className="q-world-note">
                                 {t(
-                                    'In the map: a crane adds a new wing to a live product, floor by floor.',
-                                    'في الخريطة: رافعة تضيف جناحاً جديداً لمنتج حي، طابقاً بعد طابق.',
+                                    'In this illustration, a crane adds a new section to a software product.',
+                                    'في هذا الرسم التوضيحي، تضيف الرافعة جزءاً جديداً إلى منتج برمجي.',
                                 )}
                             </p>
                         )}
@@ -332,10 +332,13 @@ export default function LandingWorld() {
 
                         {s.id === 'work' && (
                             <Link
-                                href={`/${locale}/portfolio`}
+                                href={`/${locale}/contact`}
                                 className="q-world-link"
                             >
-                                {t('See our work', 'شاهد أعمالنا')}{' '}
+                                {t(
+                                    'Request work examples',
+                                    'اطلب أمثلة من أعمالنا',
+                                )}{' '}
                                 {isRTL ? '←' : '→'}
                             </Link>
                         )}
@@ -350,8 +353,8 @@ export default function LandingWorld() {
                             ref={canvasRef}
                             role="img"
                             aria-label={t(
-                                'Animated map of Quartz crews building, connecting, testing and protecting live products.',
-                                'خريطة متحركة لأطقم كوارتز وهي تبني وتربط وتختبر وتحمي منتجات حية.',
+                                'Illustration of Quartz building, connecting, testing and securing software.',
+                                'رسم توضيحي متحرك لكيفية بناء كوارتز للبرمجيات وربطها واختبارها وتأمينها.',
                             )}
                         />
                         <div
@@ -383,12 +386,7 @@ export default function LandingWorld() {
                     aria-labelledby="q-world-panel-title"
                 >
                     <div className="q-world-panel-head">
-                        <span>
-                            {t(
-                                'Live product · illustrative',
-                                'منتج حي · توضيحي',
-                            )}
-                        </span>
+                        <span>{t('Illustrative example', 'مثال توضيحي')}</span>
                         <button
                             ref={closeRef}
                             type="button"
@@ -402,16 +400,19 @@ export default function LandingWorld() {
                     </h3>
                     <p>
                         {t(
-                            'One of the live products we build, test and run. Full case studies are in our work section.',
-                            'أحد المنتجات الحية التي نبنيها ونختبرها ونشغّلها. دراسات الحالة الكاملة في قسم أعمالنا.',
+                            'This example shows how development, testing and operations work together. Contact us to request relevant work examples.',
+                            'يوضّح هذا المثال كيف نجمع التطوير والاختبار والتشغيل. يمكنك طلب أمثلة من أعمالنا عبر نموذج التواصل.',
                         )}
                     </p>
                     <div className="q-world-panel-actions">
                         <Link
-                            href={`/${locale}/portfolio`}
+                            href={`/${locale}/contact`}
                             className="q-world-link"
                         >
-                            {t('See our work', 'شاهد أعمالنا')}
+                            {t(
+                                'Request work examples',
+                                'اطلب أمثلة من أعمالنا',
+                            )}
                         </Link>
                         <Link
                             href={`/${locale}/contact`}
@@ -435,7 +436,7 @@ export default function LandingWorld() {
                 .q-world-step h2 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(32px, 3.4vw, 48px); line-height: 1.05; letter-spacing: -0.03em; color: var(--q-cream); }
                 [dir='rtl'] .q-world-step h2 { letter-spacing: 0; line-height: 1.35; font-family: var(--font-arabic); font-weight: 700; }
                 .q-world-step p { margin: 0; color: var(--q-dim); font-size: 17px; line-height: 1.6; max-width: 34rem; }
-                .q-world-step .q-world-note { font: 400 12px/1.5 var(--font-mono-brand); color: var(--q-faint); }
+                .q-world-step .q-world-note { font: 400 12px/1.5 var(--font-mono-brand); color: var(--q-dim); }
                 [dir='rtl'] .q-world-step .q-world-note { font-family: var(--font-arabic); font-size: 13px; }
                 .q-world-flow { list-style: none; margin: 4px 0 0; padding: 0; border-top: 1px solid var(--q-line); }
                 .q-world-flow li { display: grid; grid-template-columns: 28px 1fr; gap: 12px; align-items: start; padding: 10px 0; border-bottom: 1px solid var(--q-line); }

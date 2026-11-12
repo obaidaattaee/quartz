@@ -18,8 +18,8 @@ export default function LandingHero() {
     const timer = useRef<number | null>(null);
 
     const words = isRTL
-        ? ['برمجيات', 'أتمتة', 'جودة', 'حماية']
-        : ['software', 'automation', 'quality', 'security'];
+        ? ['نبنيها', 'نربطها', 'نختبرها', 'نؤمّنها']
+        : ['build', 'connect', 'test', 'secure'];
 
     const play = useCallback(() => {
         if (reduceMotion || timer.current !== null) {
@@ -53,8 +53,8 @@ export default function LandingHero() {
     }, [play]);
 
     const fullTitle = isRTL
-        ? 'نبني برمجيات وأتمتة وجودة وحماية تدوم.'
-        : 'We build software, automation, quality and security that lasts.';
+        ? 'نبني برمجيات تناسب عملك، ونربط أنظمتك ونختبرها ونؤمّنها.'
+        : 'We build custom software, connect your systems, and test and secure what you rely on.';
 
     return (
         <section className="q-hero">
@@ -63,7 +63,7 @@ export default function LandingHero() {
                     <h1 className="q-hero-title" onMouseEnter={play}>
                         <span className="q-sr">{fullTitle}</span>
                         <span aria-hidden="true">
-                            {isRTL ? 'نبني' : 'We build'}
+                            {isRTL ? 'برمجياتك،' : 'We'}
                             <br />
                             <span className="q-hero-swap">
                                 {words.map((w, i) => (
@@ -82,7 +82,7 @@ export default function LandingHero() {
                                 ))}
                             </span>
                             <br />
-                            {isRTL ? 'تدوم.' : 'that lasts.'}
+                            {isRTL ? 'لتخدم عملك.' : 'your software.'}
                         </span>
                     </h1>
                     <p className="q-hero-sub">
@@ -95,7 +95,7 @@ export default function LandingHero() {
                             href={`/${locale}/contact`}
                             className="q-btn q-btn-primary"
                         >
-                            {t('nav.ctaShort') || 'Book a Call'}{' '}
+                            {t('nav.ctaShort') || 'Request a call'}{' '}
                             {isRTL ? '↖' : '↗'}
                         </Link>
                         <Link

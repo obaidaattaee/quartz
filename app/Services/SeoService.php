@@ -23,7 +23,7 @@ class SeoService
         $titleField = 'meta_title_'.$locale;
         $descField = 'meta_description_'.$locale;
 
-        $siteName = config('app.name', 'Quartz');
+        $siteName = $locale === 'ar' ? 'كوارتز' : 'Quartz';
         $baseUrl = rtrim(config('app.url'), '/');
 
         $pageTitles = [
@@ -43,17 +43,17 @@ class SeoService
         $en = $locale === 'en';
         $descriptionDefaults = [
             'home' => $en
-                ? 'Quartz builds, tests, secures and automates software for businesses across the Gulf — a remote team with 13+ live products serving 500K+ users.'
-                : 'تبني كوارتز البرمجيات وتختبرها وتؤمّنها وتؤتمتها للشركات في دول الخليج — فريق عن بُعد بأكثر من 13 منتجاً قيد التشغيل تخدم أكثر من 500 ألف مستخدم.',
+                ? 'Quartz builds, tests, secures and automates software for clients worldwide, mostly in the US and Europe. 13+ live websites/products serving 500K+ users.'
+                : 'تبني كوارتز البرمجيات وتختبرها وتؤمّنها وتؤتمتها لعملاء حول العالم، أغلبهم في الولايات المتحدة وأوروبا. أكثر من 13 موقعاً ومنتجاً قيد التشغيل تخدم أكثر من 500 ألف مستخدم.',
             'about' => $en
-                ? 'Quartz is a remote engineering team serving the Gulf and the wider region across software development, QA, cybersecurity and automation.'
-                : 'كوارتز فريق هندسي يعمل عن بُعد ويخدم دول الخليج والمنطقة في تطوير البرمجيات وضمان الجودة والأمن السيبراني والأتمتة.',
+                ? 'Quartz is a remote engineering team working with clients worldwide, mostly in the US and Europe, across software, QA, cybersecurity and automation.'
+                : 'كوارتز فريق هندسي يعمل عن بُعد مع عملاء حول العالم، أغلبهم في الولايات المتحدة وأوروبا، في البرمجيات وضمان الجودة والأمن السيبراني والأتمتة.',
             'contact' => $en
                 ? 'Tell us about your project. Email Quartz or send a message and a dedicated lead will get back to you.'
                 : 'أخبرنا عن مشروعك. راسل كوارتز عبر البريد الإلكتروني أو أرسل رسالة وسيتواصل معك قائد مخصّص لمشروعك.',
             'faq' => $en
-                ? 'Answers to common questions about how Quartz works: services, timelines, pricing, security and support.'
-                : 'إجابات على الأسئلة الشائعة حول طريقة عمل كوارتز: الخدمات والجداول الزمنية والتسعير والأمان والدعم.',
+                ? 'Answers to common questions about how Quartz works: services, scoping, pricing, security and support.'
+                : 'إجابات على الأسئلة الشائعة حول طريقة عمل كوارتز: الخدمات وتحديد النطاق والتسعير والأمان والدعم.',
             'blog' => $en
                 ? 'Practical guides and engineering notes from the Quartz team on software, QA, cybersecurity and automation.'
                 : 'أدلة عملية وملاحظات هندسية من فريق كوارتز حول البرمجيات وضمان الجودة والأمن السيبراني والأتمتة.',
@@ -61,8 +61,8 @@ class SeoService
                 ? 'Selected work and case studies from Quartz across software development, automation, QA and cybersecurity.'
                 : 'أعمال ودراسات حالة مختارة من كوارتز في تطوير البرمجيات والأتمتة وضمان الجودة والأمن السيبراني.',
             'services' => $en
-                ? 'Software development, web and mobile apps, automation, QA and cybersecurity — delivered by a remote Quartz team serving the Gulf.'
-                : 'تطوير البرمجيات وتطبيقات الويب والجوال والأتمتة وضمان الجودة والأمن السيبراني — يقدّمها فريق كوارتز عن بُعد لدول الخليج.',
+                ? 'Software development, web and mobile apps, automation, QA and cybersecurity from Quartz, a remote team working with clients worldwide.'
+                : 'تطوير البرمجيات وتطبيقات الويب والجوال والأتمتة وضمان الجودة والأمن السيبراني، من فريق كوارتز الذي يعمل عن بُعد مع عملاء حول العالم.',
             'services.development' => $en
                 ? 'Custom software engineered for performance, scale and long-term value — from discovery to launch and beyond.'
                 : 'برمجيات مخصصة مصمّمة للأداء والتوسع والقيمة طويلة الأمد — من الاكتشاف حتى الإطلاق وما بعده.',
@@ -94,7 +94,8 @@ class SeoService
 
         $resolvedTitle = $overrideTitle ?? ($pageTitles[$pageKey] ?? $siteName);
         $title = $meta?->$titleField
-            ?? (str_contains($resolvedTitle, $siteName) ? $resolvedTitle : $resolvedTitle.' | '.$siteName);
+            ?? (preg_match('/\|\s*(Quartz|كوارتز)$/u', $resolvedTitle) ? $resolvedTitle : $resolvedTitle.' | '.$siteName);
+        $title = self::localizeBrand($title, $locale);
         $description = $meta?->$descField
             ?: ($overrideDescription ?: ($descriptionDefaults[$pageKey] ?? ''));
 
@@ -133,10 +134,11 @@ class SeoService
         $postTitleField = 'title_'.$locale;
         $postExcerptField = 'excerpt_'.$locale;
 
-        $siteName = config('app.name', 'Quartz');
+        $siteName = $locale === 'ar' ? 'كوارتز' : 'Quartz';
         $baseUrl = rtrim(config('app.url'), '/');
 
         $title = $post->$titleField ?? $post->$postTitleField.' | '.$siteName;
+        $title = self::localizeBrand($title, $locale);
         $description = $post->$descField ?? $post->$postExcerptField ?? '';
 
         $postUrl = $baseUrl.'/'.$locale.'/blog/'.$post->slug;
@@ -167,10 +169,11 @@ class SeoService
         $itemTitleField = 'title_'.$locale;
         $itemDescField = 'description_'.$locale;
 
-        $siteName = config('app.name', 'Quartz');
+        $siteName = $locale === 'ar' ? 'كوارتز' : 'Quartz';
         $baseUrl = rtrim(config('app.url'), '/');
 
         $title = $item->$titleField ?? $item->$itemTitleField.' | '.$siteName;
+        $title = self::localizeBrand($title, $locale);
         $description = $item->$descField ?? $item->$itemDescField ?? '';
 
         $itemUrl = $baseUrl.'/'.$locale.'/portfolio/'.$item->slug;
@@ -188,5 +191,10 @@ class SeoService
                 'ar' => $baseUrl.'/ar/portfolio/'.$item->slug,
             ],
         ];
+    }
+
+    private static function localizeBrand(string $title, string $locale): string
+    {
+        return preg_replace('/\s*\|\s*(Quartz|كوارتز)$/u', ' | '.($locale === 'ar' ? 'كوارتز' : 'Quartz'), $title);
     }
 }

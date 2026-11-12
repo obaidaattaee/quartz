@@ -190,7 +190,7 @@ export default function PublicLayout({
                               }
                     }
                 >
-                    <Breadcrumb>
+                    <Breadcrumb aria-label={t('breadcrumb.label')}>
                         <BreadcrumbList>
                             <BreadcrumbItem>
                                 <BreadcrumbLink asChild>

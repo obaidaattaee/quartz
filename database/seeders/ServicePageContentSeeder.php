@@ -90,13 +90,13 @@ class ServicePageContentSeeder extends Seeder
                 'title' => 'Software Development',
                 'tagline' => 'Software shaped around how your business actually runs.',
                 'subtitle' => 'Custom web platforms, internal systems and mobile apps, designed with your team, built in agreed stages and handed over with full ownership.',
-                'audience' => 'For founders and operations leads whose spreadsheets, off-the-shelf tools or ageing systems can no longer keep up.',
+                'audience' => 'For business owners and operations leads whose spreadsheets, off-the-shelf tools or ageing systems can no longer keep up.',
                 'problem' => 'Most growing companies reach a point where the tools that got them here start slowing them down. Work moves between spreadsheets and apps that don’t talk to each other, and every change takes longer than it should.',
                 'pains' => [
                     ['Your team runs the business on spreadsheets and WhatsApp groups.', 'One system with roles, approvals and a single source of truth, in Arabic and English.'],
                     ['Off-the-shelf software forces you to change how you work.', 'Software built around your process, with only the features you actually use.'],
                     ['Your current system is slow, fragile, and only one person understands it.', 'We stabilise it, document it, and modernise it in stages without stopping operations.'],
-                    ['Your ERP, CRM, e-invoicing and website each live on their own.', 'Clean APIs and integrations with your ERP, CRM and ZATCA e-invoicing.'],
+                    ['Your ERP, CRM, e-invoicing and website each live on their own.', 'Documented APIs connecting your ERP, CRM and e-invoicing systems.'],
                 ],
                 'approach' => 'One team owns your project end to end. You review working software at agreed milestones and can adjust priorities between stages.',
                 'steps' => [
@@ -116,7 +116,7 @@ class ServicePageContentSeeder extends Seeder
                 'engagements' => [
                     ['Product diagnostic', 'Fixed scope, agreed up front', 'We map the workflows, users and systems and give you a written plan: scope, architecture, schedule and a capped estimate, agreed before signing. The plan is yours, whoever builds it.', 'You know the problem, not yet the solution.'],
                     ['Project build', 'Scoped to your project', 'A defined first release built in agreed stages. After the diagnostic, scope, schedule and cost ceiling are agreed in a written plan before signing.', 'A clear first version you want to launch.'],
-                    ['Monthly retainer', 'Ongoing, on a monthly retainer', 'New features, fixes, hosting and monitoring from the team that built it. Priorities can change every month.', 'Live products that keep growing.'],
+                    ['Monthly retainer', 'Ongoing, on a monthly retainer', 'New features, fixes, hosting and monitoring from the team that built it. Priorities can change every month.', 'Products that keep growing.'],
                 ],
                 'faqs' => [
                     ['Who owns the code?', 'You do. The repository, cloud accounts and admin access are in your name from the start, and everything is handed over with documentation.'],
@@ -137,7 +137,7 @@ class ServicePageContentSeeder extends Seeder
                     ['فريقك يدير العمل عبر جداول Excel ومجموعات واتساب.', 'نظام واحد بصلاحيات واعتمادات ومصدر بيانات موحّد، بالعربية والإنجليزية.'],
                     ['البرامج الجاهزة تفرض عليك تغيير طريقة عملك.', 'برنامج مصمّم حول إجراءاتك، بالميزات التي تحتاجها فعلاً ولا شيء غيرها.'],
                     ['نظامك الحالي بطيء وهشّ، ولا يفهمه إلا شخص واحد.', 'نثبّته ونوثّقه، ثم نحدّثه على مراحل دون أن يتوقف العمل.'],
-                    ['نظام ERP وإدارة العملاء والفوترة الإلكترونية والموقع، كلٌّ في جزيرة منفصلة.', 'واجهات API وتكاملات نظيفة مع نظام ERP وإدارة العملاء والفوترة الإلكترونية لهيئة الزكاة والضريبة والجمارك.'],
+                    ['نظام ERP وإدارة العملاء والفوترة الإلكترونية والموقع، كلٌّ في جزيرة منفصلة.', 'نربط نظام ERP وإدارة العملاء والفوترة الإلكترونية عبر واجهات API موثّقة.'],
                 ],
                 'approach' => 'يتولّى مشروعك فريق واحد من البداية إلى النهاية. تراجع برنامجاً يعمل عند محطات متّفق عليها، ويمكنك تعديل الأولويات بين المراحل.',
                 'steps' => [
@@ -180,7 +180,7 @@ class ServicePageContentSeeder extends Seeder
             'tools' => ['n8n', 'Make', 'Zapier', 'Power Automate', 'Python', 'Google Workspace', 'Microsoft 365', 'Odoo', 'Zoho', 'HubSpot', 'OpenAI API', 'REST APIs and webhooks'],
             'en' => [
                 'title' => 'Automation',
-                'tagline' => 'Let your systems do the copying, so your team can do the work.',
+                'tagline' => 'Move orders and invoices between systems without repeated data entry.',
                 'subtitle' => 'We connect your ERP, CRM, spreadsheets and inboxes so orders, invoices, approvals and reports move on their own, with a person in the loop where judgement matters.',
                 'audience' => 'For operations, finance and sales teams who spend time re-entering data, chasing approvals or rebuilding the same report.',
                 'problem' => 'Manual work hides inside every growing company: copying orders into the ERP, matching invoices, sending the same reminder. It is slow, it causes errors, and it grows with every new customer.',
@@ -229,7 +229,7 @@ class ServicePageContentSeeder extends Seeder
                     ['فريقك يُدخل البيانات نفسها في نظامين أو ثلاثة.', 'أنظمة تتزامن تلقائياً، مع تحقّق ينبّهك إلى أي اختلاف بدل أن يخفيه.'],
                     ['الموافقات تتعطّل بين البريد الإلكتروني ورسائل واتساب.', 'مسارات اعتماد بمسؤول واضح وتذكيرات تلقائية وسجلّ تدقيق.'],
                     ['تقارير نهاية الشهر تستنزف الفريق بالنسخ واللصق.', 'تقارير ولوحات متابعة تُبنى تلقائياً من البيانات الحية.'],
-                    ['الفواتير وأوامر الشراء تصل ملفات PDF يقرؤها موظف يدوياً.', 'استقبال آلي للمستندات يستخرج الحقول ويتحقق منها، ولا يرجع إلى الموظف إلا عند الشك.'],
+                    ['تصل الفواتير وأوامر الشراء في ملفات PDF، ويقرأها الموظفون لإدخال بياناتها يدوياً.', 'استقبال آلي للمستندات يستخرج الحقول ويتحقق منها، ولا يرجع إلى الموظف إلا عند الشك.'],
                 ],
                 'approach' => 'نبدأ بالعمل لا بالأداة: نراقب كيف تُنجز المهمة اليوم، ونقيس الوقت الذي تستغرقه، ثم نؤتمت الخطوات المتكررة. لكل مسار سجلّات وتنبيهات وبديل يدوي عند الحاجة.',
                 'steps' => [
@@ -303,7 +303,7 @@ class ServicePageContentSeeder extends Seeder
                     ['Care plan', 'Ongoing, on a monthly retainer', 'Updates, security patches, uptime monitoring and a set number of change hours each month.', 'Sites whose content changes often.'],
                 ],
                 'faqs' => [
-                    ['Can you redesign our site without losing search rankings?', 'Yes. We map every old URL to its new one, keep your metadata, and watch Search Console after launch to catch issues early.'],
+                    ['How do you protect search visibility during a redesign?', 'We plan redirects, preserve metadata and monitor Search Console after launch to reduce the risk of losing visibility.'],
                     ['Will our team be able to edit the content?', 'Yes. Pages, posts, images and SEO fields are editable from an admin panel in both languages, and we train your team at handover.'],
                     ['Do you use WordPress?', 'When it is the right fit for a content site, yes. Portals and web apps we build with Laravel or Next.js. We recommend based on who will maintain the site later.'],
                     ['How do we agree the website scope?', 'After the website review, we agree pages, user journeys, integrations, scope and schedule in a written plan before signing.'],
@@ -343,7 +343,7 @@ class ServicePageContentSeeder extends Seeder
                     ['خطة رعاية شهرية', 'مستمر، بعقد دعم شهري', 'تحديثات وترقيعات أمنية ومراقبة لتوفّر الموقع، مع عدد محدد من ساعات التعديل كل شهر.', 'مواقع يتغيّر محتواها باستمرار.'],
                 ],
                 'faqs' => [
-                    ['هل يمكن إعادة تصميم موقعنا دون خسارة ترتيبه في محركات البحث؟', 'نعم. نربط كل رابط قديم برابطه الجديد، ونحافظ على البيانات الوصفية، ونتابع Search Console بعد الإطلاق لاكتشاف أي مشكلة مبكراً.'],
+                    ['كيف تحافظون على ظهور الموقع عند إعادة تصميمه؟', 'نخطّط لتحويل الروابط والحفاظ على البيانات الوصفية، ونتابع Search Console بعد الإطلاق لتقليل مخاطر تراجع الظهور.'],
                     ['هل سيتمكن فريقنا من تعديل المحتوى؟', 'نعم. الصفحات والمقالات والصور وحقول الظهور في محركات البحث قابلة للتعديل من لوحة التحكم باللغتين، وندرّب فريقك عند التسليم.'],
                     ['هل تستخدمون ووردبريس؟', 'نعم، حين يكون الأنسب لموقع محتوى. أما البوابات وتطبيقات الويب فنبنيها بـ Laravel أو Next.js، وتعتمد توصيتنا على من سيتولّى صيانة الموقع لاحقاً.'],
                     ['كيف نتفق على نطاق الموقع؟', 'بعد مراجعة الموقع، نتفق على الصفحات ورحلات المستخدم والتكاملات والنطاق والجدول في خطة مكتوبة قبل التوقيع.'],
@@ -362,12 +362,12 @@ class ServicePageContentSeeder extends Seeder
             'tools' => ['React Native', 'Expo', 'Flutter', 'Swift', 'Kotlin', 'Firebase', 'Sentry', 'TestFlight', 'Google Play Console'],
             'en' => [
                 'title' => 'Mobile Apps',
-                'tagline' => 'Mobile apps your customers keep, not delete.',
+                'tagline' => 'Mobile apps built around the tasks your customers and teams need to complete.',
                 'subtitle' => 'iOS and Android apps for customers, field teams and operations, built from one codebase where possible, in Arabic and English, and taken through store review for you.',
                 'audience' => 'For businesses launching a customer app, replacing paper and WhatsApp for field staff, or rescuing an app that crashes and collects poor reviews.',
                 'problem' => 'Mobile projects tend to stumble in the same places: two separate apps that drift apart, a store rejection on launch day, and nobody watching crashes after release.',
                 'pains' => [
-                    ['Building two apps doubles the cost and the bugs.', 'One React Native or Flutter codebase for iOS and Android, with native code only where it matters.'],
+                    ['Maintaining separate iOS and Android codebases adds development and maintenance work.', 'One React Native or Flutter codebase for iOS and Android, with native code only where it matters.'],
                     ['Field teams still use paper forms and photos sent over WhatsApp.', 'An app with offline forms, photos and location that syncs when the signal returns.'],
                     ['The app was rejected by the store, or launched and nobody used it.', 'We handle store listings, privacy labels and review, and set up analytics from the start.'],
                     ['Crashes and one-star reviews, with no idea why.', 'Crash reporting, performance monitoring and a release routine that fixes the biggest issues first.'],
@@ -403,12 +403,12 @@ class ServicePageContentSeeder extends Seeder
             ],
             'ar' => [
                 'title' => 'تطبيقات الجوال',
-                'tagline' => 'تطبيقات جوال يحتفظ بها عملاؤك، لا يحذفونها.',
+                'tagline' => 'تطبيقات جوال تساعد عملاءك وفرقك على إنجاز مهامهم.',
                 'subtitle' => 'تطبيقات iOS وAndroid لعملائك وفرقك الميدانية وعملياتك، من قاعدة شيفرة واحدة حين يمكن، بالعربية والإنجليزية، ونتولّى عنك مراجعة المتاجر.',
                 'audience' => 'للشركات التي تطلق تطبيقاً لعملائها، أو تستبدل الورق ومحادثات واتساب لفرقها الميدانية، أو تريد إنقاذ تطبيق كثير الأعطال وضعيف التقييم.',
                 'problem' => 'تتعثّر مشاريع الجوال غالباً في المواضع نفسها: تطبيقان منفصلان يبتعد أحدهما عن الآخر، ورفض من المتجر يوم الإطلاق، ولا أحد يراقب الأعطال بعد النشر.',
                 'pains' => [
-                    ['بناء تطبيقين منفصلين يضاعف التكلفة والأخطاء.', 'قاعدة شيفرة واحدة بـ React Native أو Flutter لنظامي iOS وAndroid، وشيفرة أصلية حيث يلزم فقط.'],
+                    ['بناء تطبيقين منفصلين يزيد جهد التطوير والصيانة.', 'قاعدة شيفرة واحدة بـ React Native أو Flutter لنظامي iOS وAndroid، وشيفرة أصلية حيث يلزم فقط.'],
                     ['فرقك الميدانية ما زالت تستخدم النماذج الورقية وصور واتساب.', 'تطبيق بنماذج تعمل دون اتصال، وصور وموقع جغرافي، ومزامنة عند عودة الشبكة.'],
                     ['رُفض التطبيق من المتجر، أو أُطلق ولم يستخدمه أحد.', 'نتولّى صفحات المتجر وبيانات الخصوصية والمراجعة، ونجهّز التحليلات منذ البداية.'],
                     ['أعطال وتقييمات بنجمة واحدة دون معرفة السبب.', 'تتبّع الأعطال ومراقبة الأداء، ودورة إصدارات تعالج أكثر المشكلات تأثيراً أولاً.'],
@@ -509,7 +509,7 @@ class ServicePageContentSeeder extends Seeder
                 'steps' => [
                     ['تقييم الجودة', '', 'نراجع منتجك واختباراتك الحالية وطريقة الإصدار، ونحدّد أخطر الثغرات.'],
                     ['خطة الاختبار', '', 'نتفق مع فريقك على الرحلات الحرجة والأجهزة والمتصفحات وبيانات الاختبار.'],
-                    ['الأتمتة', '', 'حزمة اختبارات انحدار للرحلات الحرجة، مربوطة بخط التكامل المستمر لديك.'],
+                    ['الأتمتة', '', 'حزمة اختبارات الانحدار للرحلات الحرجة، مربوطة بخط التكامل المستمر لديك.'],
                     ['دعم الإصدارات', '', 'تشغيل يدوي وآلي قبل كل إصدار، مع تقرير واضح بالموافقة على الإطلاق أو تأجيله.'],
                 ],
                 'deliverables' => [
@@ -522,7 +522,7 @@ class ServicePageContentSeeder extends Seeder
                 ],
                 'engagements' => [
                     ['تقييم الجودة', 'نطاق محدّد ومتّفق عليه مسبقاً', 'نختبر رحلاتك الحرجة ونراجع طريقة العمل، ونسلّمك قائمة بالأخطاء وخطة مرتّبة لسدّ الثغرات مع تقدير بسقف محدد.', 'أعطال متكررة، أو إطلاق قريب.'],
-                    ['بناء الاختبارات الآلية', 'حسب نطاق مشروعك', 'حزمة اختبارات انحدار لرحلاتك الأساسية، تعمل ضمن خط النشر وموثّقة لمطوّريك. بعد التشخيص، نتفق على النطاق والجدول في خطة مكتوبة قبل التوقيع.', 'فرق تُصدر باستمرار دون شبكة أمان.'],
+                    ['بناء الاختبارات الآلية', 'حسب نطاق مشروعك', 'حزمة اختبارات الانحدار لرحلاتك الأساسية، تعمل ضمن خط النشر وموثّقة لمطوّريك. بعد التشخيص، نتفق على النطاق والجدول في خطة مكتوبة قبل التوقيع.', 'فرق تُصدر باستمرار دون شبكة أمان.'],
                     ['عقد جودة شهري', 'مستمر، بعقد دعم شهري', 'اختبار كل إصدار، وصيانة الاختبارات مع تطوّر المنتج، وتقرير جودة شهري.', 'منتجات ذات دورة إصدارات منتظمة.'],
                 ],
                 'faqs' => [
@@ -546,17 +546,17 @@ class ServicePageContentSeeder extends Seeder
             'tools' => ['Burp Suite', 'OWASP ZAP', 'Nmap', 'Nessus', 'Semgrep', 'Trivy', 'OWASP ASVS', 'CIS Benchmarks', 'Cloudflare'],
             'en' => [
                 'title' => 'Cybersecurity',
-                'tagline' => 'Find where you’re exposed, and close it before someone else does.',
+                'tagline' => 'Find and fix security weaknesses before an attacker exploits them.',
                 'subtitle' => 'Security testing and hardening for web apps, APIs and cloud setups, with findings in plain language, fixes in priority order, and a retest to confirm they are closed.',
-                'audience' => 'For companies that handle customer or payment data, are preparing for a client’s security review, or are aligning with PDPL or NCA requirements.',
+                'audience' => 'For companies handling sensitive data, preparing for a client’s security review or working toward SOC 2 readiness and ISO 27001-aligned controls.',
                 'problem' => 'Most breaches start with something ordinary: an exposed admin panel, an outdated library, a leaked key, or a password reused across systems. Without regular testing, nobody knows these exist until it is too late.',
                 'pains' => [
                     ['A client or partner has asked for a penetration test report.', 'A scoped penetration test of your web app and APIs, with a report you can share.'],
                     ['You don’t know what is exposed to the internet.', 'An external attack-surface review: domains, open services, leaked credentials and misconfigurations.'],
                     ['Your cloud was set up in a hurry and never reviewed.', 'A cloud configuration review against CIS Benchmarks, with fixes applied or guided.'],
-                    ['Rules like PDPL or the NCA controls feel abstract.', 'A gap review that maps your systems to the controls that apply, with practical next steps.'],
+                    ['You need to map security requirements to practical controls.', 'A gap review that maps your systems to the controls that apply, with practical next steps.'],
                 ],
-                'approach' => 'We test the way attackers work, following established methods such as the OWASP Testing Guide, and report in two layers: a short summary for management and step-by-step fixes for your developers.',
+                'approach' => 'We test the way attackers work, using OWASP Top 10, ASVS and the OWASP Testing Guide, and report in two layers: a short summary for management and step-by-step fixes for your developers.',
                 'steps' => [
                     ['Scope', '', 'Systems in scope, test windows, accounts and rules of engagement, agreed in writing.'],
                     ['Test', '', 'Automated scanning plus manual testing of login, access control, business logic and APIs.'],
@@ -569,7 +569,7 @@ class ServicePageContentSeeder extends Seeder
                     'A retest and updated report once fixes are in',
                     'Cloud and server hardening checklist',
                     'Security checks added to your development pipeline',
-                    'Gap review against PDPL or NCA controls, where it applies',
+                    'Gap review against NIST CSF, ISO 27001-aligned controls and applicable NIS2 requirements',
                 ],
                 'engagements' => [
                     ['Security snapshot', 'Fixed scope, agreed up front', 'An external attack-surface review plus a focused test of your main application, with a prioritised fix list and a capped estimate for anything further.', 'You have never had a security review.'],
@@ -579,7 +579,7 @@ class ServicePageContentSeeder extends Seeder
                 'faqs' => [
                     ['Will testing affect our live system?', 'We agree test windows and limits in advance and test on a staging environment where possible. Anything risky is confirmed with you first.'],
                     ['Do you sign an NDA?', 'Yes, before we receive any access or data. Test data and credentials are deleted when the engagement ends.'],
-                    ['Will this make us PDPL or NCA compliant?', 'A test alone does not make you compliant. We show where your systems stand against the controls that apply and help close the technical gaps; formal certification is done by an accredited auditor.'],
+                    ['Does a security assessment establish compliance?', 'An assessment provides technical findings and evidence for your review. We help close gaps against the requirements that apply; compliance decisions and final sign-off remain with your team and advisers.'],
                     ['What do we receive at the end?', 'A report with an executive summary for management, detailed findings with evidence and fix steps for developers, and an updated version after the retest.'],
                     ['Can you fix the issues as well?', 'Yes. The same team builds software, so we can fix findings directly or pair with your developers, and then retest.'],
                 ],
@@ -587,17 +587,17 @@ class ServicePageContentSeeder extends Seeder
             ],
             'ar' => [
                 'title' => 'الأمن السيبراني',
-                'tagline' => 'اعرف أين تكمن ثغراتك، وأغلقها قبل أن يجدها غيرك.',
+                'tagline' => 'اكتشف الثغرات الأمنية وأصلحها قبل أن يستغلّها مهاجم.',
                 'subtitle' => 'اختبار أمني وتحصين لتطبيقات الويب وواجهات API والبيئات السحابية، بنتائج مكتوبة بلغة واضحة، وإصلاحات مرتّبة حسب الأولوية، وإعادة فحص للتأكد من إغلاقها.',
-                'audience' => 'للشركات التي تتعامل مع بيانات العملاء أو المدفوعات، أو تستعد لمراجعة أمنية يطلبها عميل، أو تعمل على مواءمة أنظمتها مع نظام حماية البيانات الشخصية أو ضوابط الهيئة الوطنية للأمن السيبراني.',
+                'audience' => 'للشركات التي تتعامل مع بيانات حساسة، أو تستعد لمراجعة أمنية يطلبها عميل، أو تعمل للاستعداد لتدقيق SOC 2 ومواءمة ضوابطها مع ISO 27001.',
                 'problem' => 'تبدأ معظم الاختراقات بشيء عادي: لوحة إدارة مكشوفة، أو مكتبة قديمة، أو مفتاح مسرّب، أو كلمة مرور مكرّرة بين الأنظمة. ومن دون فحص دوري، لا يعرف أحد بوجودها حتى فوات الأوان.',
                 'pains' => [
                     ['عميل أو شريك طلب منك تقرير اختبار اختراق.', 'اختبار اختراق محدد النطاق لتطبيقك وواجهاته البرمجية، مع تقرير يمكنك مشاركته.'],
                     ['لا تعرف ما المكشوف من أنظمتك على الإنترنت.', 'مراجعة لسطح الهجوم الخارجي: النطاقات والخدمات المفتوحة وبيانات الدخول المسرّبة والإعدادات الخاطئة.'],
                     ['بيئتك السحابية أُعدّت على عجل ولم تُراجع قط.', 'مراجعة لإعدادات السحابة وفق معايير CIS، مع تطبيق الإصلاحات أو الإرشاد إليها.'],
-                    ['متطلبات نظام حماية البيانات الشخصية أو ضوابط الهيئة الوطنية تبدو غامضة.', 'مراجعة فجوات تربط أنظمتك بالضوابط المنطبقة عليها، مع خطوات عملية واضحة.'],
+                    ['تحتاج إلى ربط متطلبات الأمن بضوابط عملية.', 'مراجعة فجوات تربط أنظمتك بالضوابط المنطبقة عليها، مع خطوات عملية واضحة.'],
                 ],
-                'approach' => 'نختبر بالطريقة التي يعمل بها المهاجمون، مستندين إلى منهجيات معتمدة مثل دليل OWASP للاختبار، ونكتب التقرير على مستويين: ملخص مختصر للإدارة، وخطوات إصلاح تفصيلية للمطوّرين.',
+                'approach' => 'نختبر بالطريقة التي يعمل بها المهاجمون، مستندين إلى OWASP Top 10 وASVS ودليل OWASP للاختبار، ونكتب التقرير على مستويين: ملخص مختصر للإدارة، وخطوات إصلاح تفصيلية للمطوّرين.',
                 'steps' => [
                     ['تحديد النطاق', '', 'نتفق كتابياً على الأنظمة المشمولة ونوافذ الاختبار والحسابات وقواعد العمل.'],
                     ['الاختبار', '', 'فحص آلي مع اختبار يدوي لتسجيل الدخول والصلاحيات ومنطق العمل وواجهات API.'],
@@ -610,7 +610,7 @@ class ServicePageContentSeeder extends Seeder
                     'إعادة فحص وتقرير محدّث بعد الإصلاح',
                     'قائمة تحصين للسحابة والخوادم',
                     'فحوصات أمنية مضافة إلى خط التطوير لديك',
-                    'مراجعة فجوات وفق نظام حماية البيانات الشخصية أو ضوابط الهيئة الوطنية، عند الحاجة',
+                    'مراجعة فجوات وفق NIST CSF وضوابط متوافقة مع ISO 27001 ومتطلبات NIS2 المنطبقة',
                 ],
                 'engagements' => [
                     ['فحص أمني أولي', 'نطاق محدّد ومتّفق عليه مسبقاً', 'مراجعة لسطح الهجوم الخارجي واختبار مركّز لتطبيقك الرئيسي، مع قائمة إصلاحات مرتّبة وتقدير بسقف محدد لأي عمل إضافي.', 'لم تُجرِ أي مراجعة أمنية من قبل.'],
@@ -618,9 +618,9 @@ class ServicePageContentSeeder extends Seeder
                     ['عقد أمني شهري', 'مستمر، بعقد دعم شهري', 'فحص شهري، ومراجعة أمنية للميزات الجديدة، ومتابعة للمكتبات المستخدمة، واختبار اختراق سنوي.', 'منتجات تتغيّر كل شهر.'],
                 ],
                 'faqs' => [
-                    ['هل يؤثّر الاختبار على نظامنا المباشر؟', 'نتفق مسبقاً على نوافذ الاختبار وحدوده، ونختبر على بيئة تجريبية متى أمكن. وأي خطوة فيها مخاطرة نؤكدها معك أولاً.'],
+                    ['هل يؤثّر الاختبار على النظام أثناء تشغيله؟', 'نتفق مسبقاً على نوافذ الاختبار وحدوده، ونختبر على بيئة تجريبية متى أمكن. وأي خطوة فيها مخاطرة نؤكدها معك أولاً.'],
                     ['هل توقّعون اتفاقية عدم إفصاح؟', 'نعم، قبل استلام أي صلاحية أو بيانات. وتُحذف بيانات الاختبار وبيانات الدخول عند انتهاء العمل.'],
-                    ['هل يجعلنا هذا ملتزمين بنظام حماية البيانات أو ضوابط الهيئة الوطنية؟', 'الاختبار وحده لا يحقق الالتزام. نوضّح موقع أنظمتك من الضوابط المنطبقة ونساعد في سدّ الفجوات التقنية، أما الاعتماد الرسمي فتتولّاه جهة تدقيق معتمدة.'],
+                    ['هل يثبت التقييم الأمني امتثالنا؟', 'يوفّر التقييم نتائج تقنية وأدلة للمراجعة. نساعد في سدّ الفجوات وفق المتطلبات المنطبقة، وتبقى قرارات الامتثال والاعتماد النهائي لدى فريقك ومستشاريك.'],
                     ['ماذا نستلم في النهاية؟', 'تقريراً يتضمن ملخصاً تنفيذياً للإدارة، ونتائج تفصيلية بالأدلة وخطوات الإصلاح للمطوّرين، ونسخة محدّثة بعد إعادة الفحص.'],
                     ['هل يمكنكم إصلاح الثغرات أيضاً؟', 'نعم. الفريق نفسه يبني البرمجيات، فنستطيع إصلاح الثغرات مباشرة أو العمل مع مطوّريك، ثم نعيد الفحص.'],
                 ],
