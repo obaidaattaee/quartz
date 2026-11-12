@@ -18,16 +18,18 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
+    /* Almarai follows every Latin font so Arabic glyphs never fall back to
+       a system font (Inter, Fraunces etc. have no Arabic coverage). */
     --font-sans:
-        'Instrument Sans Variable', ui-sans-serif, system-ui, sans-serif,
+        'Instrument Sans Variable', 'Almarai', ui-sans-serif, system-ui, sans-serif,
         'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
         'Noto Color Emoji';
 
     --font-display:
-        'Space Grotesk Variable', 'Instrument Sans Variable', ui-sans-serif, system-ui, sans-serif;
+        'Space Grotesk Variable', 'Instrument Sans Variable', 'Almarai', ui-sans-serif, system-ui, sans-serif;
 
     --font-arabic:
-        'Cairo Variable', 'Instrument Sans Variable', ui-sans-serif, system-ui, sans-serif;
+        'Almarai', 'Instrument Sans Variable', ui-sans-serif, system-ui, sans-serif;
 
     /* Type scale (D-09): 7 size steps with line-heights */
     --text-xs: 0.75rem;
@@ -366,15 +368,15 @@
     --color-ring: #e8a84a;
 
     --font-sans:
-        'Inter', ui-sans-serif, system-ui, sans-serif,
+        'Inter Variable', 'Inter', 'Almarai', ui-sans-serif, system-ui, sans-serif,
         'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
         'Noto Color Emoji';
     --font-display:
-        'Fraunces', 'Inter', ui-serif, Georgia, serif;
+        'Fraunces', 'Almarai', 'Inter Variable', ui-serif, Georgia, serif;
     --font-mono-brand:
-        'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+        'JetBrains Mono', 'Almarai', ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
     --font-arabic:
-        'Fraunces', 'Almarai', 'Inter', ui-sans-serif, system-ui, sans-serif;
+        'Almarai', 'Inter Variable', 'Inter', ui-sans-serif, system-ui, sans-serif;
 
     font-family: var(--font-sans);
     background-color: var(--q-bg);
@@ -535,7 +537,7 @@ html[data-public-theme='light'] .public-theme .q-logo-light { display: block; }
     animation-direction: reverse;
 }
 
-/* Public-only RTL typography — IBM Plex Sans Arabic takes over inside .public-theme */
+/* Public-only RTL typography — Almarai takes over inside .public-theme */
 .public-theme[dir="rtl"],
 [dir="rtl"] .public-theme {
     font-family: var(--font-arabic);
@@ -600,7 +602,7 @@ html *::after {
  * Landing (Direction B) shared section rhythm + Arabic label fixes
  * ---------------------------------------------------------------- */
 .public-theme {
-    --font-arabic-sans: 'Almarai', 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-arabic-sans: 'Almarai', 'Inter Variable', 'Inter', ui-sans-serif, system-ui, sans-serif;
 }
 
 /* Section shell: one padding scale for every homepage section. */

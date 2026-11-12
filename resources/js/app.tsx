@@ -1,5 +1,4 @@
 import '@fontsource-variable/instrument-sans';
-import '@fontsource-variable/cairo';
 import '@fontsource-variable/inter';
 import '@fontsource/almarai/arabic-300.css';
 import '@fontsource/almarai/arabic-400.css';

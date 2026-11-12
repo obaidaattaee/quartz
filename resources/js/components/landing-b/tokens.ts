@@ -11,9 +11,13 @@ export const B = {
     lineStrong: 'var(--q-line-strong)',
     accent: 'var(--q-accent)',
     accentSoft: 'var(--q-accent-soft)',
-    sans: "'Inter', system-ui, sans-serif",
-    serif: "'Fraunces', Georgia, serif",
-    mono: "'JetBrains Mono', ui-monospace, monospace",
+    // Latin fonts have no Arabic glyphs, so Almarai sits right after each
+    // one: Latin letters keep Inter/Fraunces/JetBrains, Arabic gets Almarai
+    // instead of whatever system font the visitor's OS happens to have.
+    // @fontsource-variable/inter registers the family as 'Inter Variable'.
+    sans: "'Inter Variable', 'Inter', 'Almarai', system-ui, sans-serif",
+    serif: "'Fraunces', 'Almarai', Georgia, serif",
+    mono: "'JetBrains Mono', 'Almarai', ui-monospace, monospace",
 } as const;
 
 export const monoStyle: React.CSSProperties = {
