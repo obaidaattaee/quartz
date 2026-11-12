@@ -31,8 +31,8 @@ The only proof numbers are **13+ live websites/products** and **500K+ users**.
 
 - [ ] Set `APP_URL=https://quartz-solutions.net`. Canonical tags, the sitemap and RSS links depend on it.
 - [ ] Set `ADMIN_SEED_PASSWORD`, and change the existing admin password (dev default: `password`).
-- [ ] Run the migrations, then these seeders: `ServicePageContentSeeder`, `IndustryContentSeeder`, `LandingContentSeeder`, `LegalPageSeeder`.
-- [ ] Update the home row in `seo_metadata` (Admin → SEO) to the worldwide description. It was changed directly in the dev DB only.
+- [ ] Run the migrations, then `php artisan db:seed --class=LaunchContentSyncSeeder --force`. It runs the four content seeders, hides the placeholder content, removes the duplicate FAQ and case-study rows, fixes the home SEO row and clears the placeholder contact and legal settings. Do not run `DatabaseSeeder` or `SiteSettingsSeeder` in production.
+- [ ] Redirect `www.quartz-solutions.net` to the apex domain.
 - [ ] Verify lead notifications: does a contact submission email someone, or does it only appear in Admin → Contact Leads?
 - [ ] Confirm Inertia SSR runs in production. Titles and meta tags are already rendered server-side in `app.blade.php`.
 
