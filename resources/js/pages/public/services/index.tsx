@@ -1,15 +1,23 @@
 import { Link, usePage } from '@inertiajs/react';
+import { ArrowRight } from 'lucide-react';
+import { Fragment, useId, useState } from 'react';
 import type { ReactNode } from 'react';
 
+import JsonLd from '@/components/json-ld';
 import SeoHead from '@/components/seo-head';
 import type { SeoData } from '@/components/seo-head';
+import ServiceVisual from '@/components/services/service-visual';
 import { useLocale } from '@/hooks/use-locale';
 import PublicLayout from '@/layouts/public-layout';
+import { cn } from '@/lib/utils';
+import type { ServiceSlug } from '@/types/service';
+import '@/components/services/services.css';
 
 type ServiceSummary = {
-    slug: string;
+    slug: ServiceSlug;
     title: string;
-    subtitle: string;
+    subtitle: string | null;
+    audience: string | null;
     deliverables: string[];
 };
 
@@ -18,215 +26,486 @@ type Props = {
     seo: SeoData;
 };
 
-const LEAD = ['development', 'automation'];
-const SPECIALISMS = ['web-development', 'mobile-apps'];
-const SUPPORTING = ['qa', 'cybersecurity'];
+const LEAD: ServiceSlug[] = ['development', 'automation'];
+const SPECIALISMS: ServiceSlug[] = ['web-development', 'mobile-apps'];
+const SUPPORTING: ServiceSlug[] = ['qa', 'cybersecurity'];
+
+// Problem -> service guide. Copy lives in lang/{en,ar}.json under
+// services.index.guide.{i}.*; only the target service is fixed here.
+const GUIDE: ServiceSlug[] = [
+    'automation',
+    'development',
+    'web-development',
+    'mobile-apps',
+    'qa',
+    'cybersecurity',
+];
+
+// Illustrative 12-week project: when each discipline is active.
+const GANTT: { key: string; from: number; to: number; soft?: boolean }[] = [
+    { key: 'build', from: 0, to: 12 },
+    { key: 'test', from: 1, to: 12, soft: true },
+    { key: 'secure', from: 1, to: 12, soft: true },
+    { key: 'automate', from: 6, to: 12 },
+];
+
+function Arrow({ size = 18 }: { size?: number }) {
+    return <ArrowRight size={size} className="sv-flip" aria-hidden="true" />;
+}
+
+// Buttons and the one open panel are siblings in a single grid, so the
+// panel can sit in its own column on desktop and directly under its
+// question on phones.
+function Guide({
+    bySlug,
+}: {
+    bySlug: (s: ServiceSlug) => ServiceSummary | undefined;
+}) {
+    const { locale, t } = useLocale();
+    const [active, setActive] = useState(0);
+    const baseId = useId();
+    const panelId = `${baseId}-panel`;
+
+    return (
+        <div
+            className="sv-guide"
+            role="group"
+            aria-label={t('services.index.guide.label')}
+        >
+            {GUIDE.map((slug, i) => {
+                const service = bySlug(slug);
+                const isActive = active === i;
+
+                return (
+                    <Fragment key={slug}>
+                        <button
+                            type="button"
+                            className="sv-guide-btn"
+                            aria-expanded={isActive}
+                            aria-controls={isActive ? panelId : undefined}
+                            onClick={() => setActive(i)}
+                        >
+                            <span>
+                                {t(`services.index.guide.${i}.problem`)}
+                            </span>
+                            <Arrow />
+                        </button>
+                        {isActive && service && (
+                            <div
+                                id={panelId}
+                                className="sv-guide-panel"
+                                aria-live="polite"
+                            >
+                                <div>
+                                    <span className="sv-label">
+                                        {t('services.index.guide.suggest')}
+                                    </span>
+                                    <p
+                                        className="sv-h3"
+                                        style={{ margin: '6px 0 0' }}
+                                    >
+                                        {service.title}
+                                    </p>
+                                </div>
+                                <dl>
+                                    <div>
+                                        <dt className="sv-label">
+                                            {t('services.index.guide.why')}
+                                        </dt>
+                                        <dd>
+                                            {t(`services.index.guide.${i}.why`)}
+                                        </dd>
+                                    </div>
+                                    <div>
+                                        <dt className="sv-label">
+                                            {t('services.index.guide.start')}
+                                        </dt>
+                                        <dd>
+                                            {t(
+                                                `services.index.guide.${i}.start`,
+                                            )}
+                                        </dd>
+                                    </div>
+                                </dl>
+                                <Link
+                                    href={`/${locale}/services/${slug}`}
+                                    className="sv-link"
+                                >
+                                    {t('services.index.guide.link', {
+                                        title: service.title,
+                                    })}
+                                    <Arrow size={16} />
+                                </Link>
+                            </div>
+                        )}
+                    </Fragment>
+                );
+            })}
+        </div>
+    );
+}
 
 export default function ServicesIndex() {
     const { services, seo } = usePage<Props>().props;
-    const { locale, isRTL, t } = useLocale();
-    const arrow = isRTL ? '←' : '→';
-    const bySlug = (slug: string) => services.find((s) => s.slug === slug);
+    const { locale, t } = useLocale();
+    const bySlug = (slug: ServiceSlug) => services.find((s) => s.slug === slug);
     const href = (slug: string) => `/${locale}/services/${slug}`;
+    const pick = (slugs: ServiceSlug[]) =>
+        slugs.map(bySlug).filter(Boolean) as ServiceSummary[];
 
-    const lead = LEAD.map(bySlug).filter(Boolean) as ServiceSummary[];
-    const specialisms = SPECIALISMS.map(bySlug).filter(
-        Boolean,
-    ) as ServiceSummary[];
-    const supporting = SUPPORTING.map(bySlug).filter(
-        Boolean,
-    ) as ServiceSummary[];
+    const lead = pick(LEAD);
+    const specialisms = pick(SPECIALISMS);
+    const supporting = pick(SUPPORTING);
+
+    const origin = typeof window !== 'undefined' ? window.location.origin : '';
+    const schema = {
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        name: t('nav.services'),
+        itemListElement: services.map((s, i) => ({
+            '@type': 'ListItem',
+            position: i + 1,
+            url: `${origin}${href(s.slug)}`,
+            name: s.title,
+        })),
+    };
 
     return (
         <>
             <SeoHead seo={seo} />
+            <JsonLd data={schema} />
 
-            <div className="q-svc">
-                <header className="q-svc-head">
-                    <h1>
-                        {isRTL ? (
-                            <>
-                                ما <em>نقدّمه</em>.
-                            </>
-                        ) : (
-                            <>
-                                What we <em>do</em>.
-                            </>
-                        )}
-                    </h1>
-                    <p>
-                        {isRTL
-                            ? 'نبني البرمجيات ونؤتمت العمليات التي تعتمد عليها أعمالك، ثم نختبرها ونؤمّنها بالفريق نفسه.'
-                            : 'We build the software and automate the work your business depends on, then test and secure it with the same team.'}
-                    </p>
-                </header>
+            <div className="sv">
+                {/* Hero */}
+                <section className="sv-wrap sv-hero" aria-labelledby="sv-title">
+                    <div className="sv-hero-copy">
+                        <h1 id="sv-title" className="sv-h1 is-long">
+                            {t('services.index.title')}
+                        </h1>
+                        <p className="sv-lead">{t('services.index.intro')}</p>
+                        <div className="sv-actions">
+                            <a href="#guide" className="sv-btn">
+                                {t('services.index.findCta')}
+                                <Arrow />
+                            </a>
+                            <Link
+                                href={`/${locale}/contact`}
+                                className="sv-link"
+                            >
+                                {t('nav.ctaShort')}
+                            </Link>
+                        </div>
+                    </div>
+                    <ServiceVisual
+                        kind="system"
+                        label={t('services.index.combine.title')}
+                    />
+                </section>
 
+                {/* Problem -> service guide */}
                 <section
-                    className="q-svc-lead"
-                    aria-label={isRTL ? 'الخدمات الرئيسية' : 'Lead services'}
+                    id="guide"
+                    className="sv-wrap sv-section"
+                    aria-labelledby="sv-guide"
                 >
-                    {lead.map((s, i) => (
-                        <article key={s.slug} className="q-lead-card">
-                            <span className="q-num">0{i + 1}</span>
-                            <h2>
-                                <Link href={href(s.slug)}>{s.title}</Link>
-                            </h2>
-                            <p className="q-sub">{s.subtitle}</p>
-                            <ul className="q-deliver">
-                                {s.deliverables.slice(0, 4).map((d) => (
-                                    <li key={d}>{d}</li>
-                                ))}
-                            </ul>
+                    <div className="sv-head">
+                        <h2 id="sv-guide" className="sv-h2">
+                            {t('services.index.guide.title')}
+                        </h2>
+                        <p className="sv-body">
+                            {t('services.index.guide.sub')}
+                        </p>
+                    </div>
+                    <Guide bySlug={bySlug} />
+                </section>
 
-                            {s.slug === 'development' &&
-                                specialisms.length > 0 && (
-                                    <div className="q-spec">
-                                        <span className="q-spec-label">
-                                            {isRTL ? 'تخصّصات' : 'Specialisms'}
+                {/* The four disciplines */}
+                <section
+                    className="sv-wrap sv-section"
+                    aria-labelledby="sv-disciplines"
+                >
+                    <div className="sv-head">
+                        <h2 id="sv-disciplines" className="sv-h2">
+                            {t('services.index.disciplines.title')}
+                        </h2>
+                        <p className="sv-body">
+                            {t('services.index.disciplines.sub')}
+                        </p>
+                    </div>
+
+                    <div className="sv-lead-grid">
+                        {lead.map((s) => (
+                            <article key={s.slug} className="sv-disc">
+                                <span className="sv-label sv-accent">
+                                    {t('services.index.lead')}
+                                </span>
+                                <h3 className="sv-h3">{s.title}</h3>
+                                {s.subtitle && (
+                                    <p className="sv-body">{s.subtitle}</p>
+                                )}
+                                {s.audience && (
+                                    <div className="sv-disc-for">
+                                        <span className="sv-label">
+                                            {t('services.index.for')}
                                         </span>
-                                        <div className="q-spec-links">
-                                            {specialisms.map((sp) => (
-                                                <Link
-                                                    key={sp.slug}
-                                                    href={href(sp.slug)}
-                                                >
-                                                    {sp.title}
-                                                </Link>
-                                            ))}
-                                        </div>
+                                        <p>{s.audience}</p>
                                     </div>
                                 )}
+                                {s.deliverables.length > 0 && (
+                                    <div>
+                                        <span
+                                            className="sv-label"
+                                            style={{ marginBlockEnd: 8 }}
+                                        >
+                                            {t('services.index.includes')}
+                                        </span>
+                                        <ul className="sv-ticks">
+                                            {s.deliverables
+                                                .slice(0, 4)
+                                                .map((d, i) => (
+                                                    <li key={`${i}-${d}`}>
+                                                        {d}
+                                                    </li>
+                                                ))}
+                                        </ul>
+                                    </div>
+                                )}
+                                {s.slug === 'development' &&
+                                    specialisms.length > 0 && (
+                                        <div>
+                                            <span
+                                                className="sv-label"
+                                                style={{ marginBlockEnd: 8 }}
+                                            >
+                                                {t(
+                                                    'services.index.specialisms',
+                                                )}
+                                            </span>
+                                            <div className="sv-spec">
+                                                {specialisms.map((sp) => (
+                                                    <Link
+                                                        key={sp.slug}
+                                                        href={href(sp.slug)}
+                                                    >
+                                                        {sp.title}
+                                                        {sp.subtitle && (
+                                                            <span>
+                                                                {shorten(
+                                                                    sp.subtitle,
+                                                                )}
+                                                            </span>
+                                                        )}
+                                                    </Link>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                <Link href={href(s.slug)} className="sv-link">
+                                    {t('services.index.explore', {
+                                        title: s.title,
+                                    })}
+                                    <Arrow size={16} />
+                                </Link>
+                            </article>
+                        ))}
+                    </div>
 
+                    <div className="sv-support-grid">
+                        {supporting.map((s) => (
                             <Link
+                                key={s.slug}
                                 href={href(s.slug)}
-                                className="q-explore"
-                                aria-hidden="true"
-                                tabIndex={-1}
+                                className="sv-support"
                             >
-                                {isRTL
-                                    ? 'استكشف الخدمة'
-                                    : 'Explore the service'}{' '}
-                                <span className="q-arrow">{arrow}</span>
+                                <div>
+                                    <span className="sv-label">
+                                        {t('services.index.supporting')}
+                                    </span>
+                                    <h3 className="sv-h3">{s.title}</h3>
+                                    {s.subtitle && (
+                                        <p className="sv-body">{s.subtitle}</p>
+                                    )}
+                                </div>
+                                <Arrow size={22} />
                             </Link>
-                        </article>
-                    ))}
+                        ))}
+                    </div>
                 </section>
 
+                {/* How they combine */}
                 <section
-                    className="q-svc-support"
-                    aria-label={
-                        isRTL ? 'الخدمات المساندة' : 'Supporting services'
-                    }
+                    className="sv-wrap sv-section"
+                    aria-labelledby="sv-combine"
                 >
-                    {supporting.map((s, i) => (
-                        <Link
-                            key={s.slug}
-                            href={href(s.slug)}
-                            className="q-support-row"
-                        >
-                            <span className="q-num">0{i + 3}</span>
-                            <span className="q-support-main">
-                                <span className="q-support-title">
-                                    {s.title}
+                    <div className="sv-head">
+                        <h2 id="sv-combine" className="sv-h2">
+                            {t('services.index.combine.title')}
+                        </h2>
+                        <p className="sv-body">
+                            {t('services.index.combine.sub')}
+                        </p>
+                    </div>
+                    <div className="sv-combine">
+                        <ul className="sv-points">
+                            {[0, 1, 2].map((i) => (
+                                <li key={i}>
+                                    {t(`services.index.combine.${i}`)}
+                                </li>
+                            ))}
+                        </ul>
+                        <figure className="sv-gantt">
+                            {GANTT.map((row) => (
+                                <div key={row.key} className="sv-gantt-row">
+                                    <span>
+                                        {t(`services.index.combine.${row.key}`)}
+                                    </span>
+                                    <span className="sv-gantt-track">
+                                        <span
+                                            className={cn(
+                                                'sv-gantt-bar',
+                                                row.soft && 'is-soft',
+                                            )}
+                                            style={{
+                                                insetInlineStart: `${(row.from / 12) * 100}%`,
+                                                insetInlineEnd: `${100 - (row.to / 12) * 100}%`,
+                                            }}
+                                        />
+                                    </span>
+                                </div>
+                            ))}
+                            <div className="sv-gantt-axis" aria-hidden="true">
+                                <span />
+                                <span>
+                                    <span>
+                                        {t('services.index.combine.week', {
+                                            n: '1',
+                                        })}
+                                    </span>
+                                    <span>
+                                        {t('services.index.combine.week', {
+                                            n: '12',
+                                        })}
+                                    </span>
                                 </span>
-                                <span className="q-sub">{s.subtitle}</span>
-                            </span>
-                            <span className="q-chips">
-                                {s.deliverables.slice(0, 3).map((d) => (
-                                    <span key={d}>{d}</span>
-                                ))}
-                            </span>
-                            <span className="q-arrow" aria-hidden="true">
-                                {arrow}
-                            </span>
-                        </Link>
-                    ))}
+                            </div>
+                            <figcaption>
+                                {t('services.page.illustrative')}
+                            </figcaption>
+                        </figure>
+                    </div>
                 </section>
 
-                <section className="q-svc-cta">
-                    <h2>
-                        {isRTL
-                            ? 'لست متأكداً من أين تبدأ؟'
-                            : 'Not sure where to start?'}
-                    </h2>
-                    <p>
-                        {isRTL
-                            ? 'أخبرنا بما تبنيه أو تريد أتمتته، وسنقترح الخطوة الأولى.'
-                            : 'Tell us what you are building or trying to automate, and we will suggest the first step.'}
-                    </p>
-                    <Link href={`/${locale}/contact`} className="q-cta-btn">
-                        {t('nav.ctaShort') || 'Book a Call'} {isRTL ? '↖' : '↗'}
-                    </Link>
+                {/* Shared process */}
+                <section
+                    className="sv-wrap sv-section"
+                    aria-labelledby="sv-process"
+                >
+                    <div className="sv-head">
+                        <h2 id="sv-process" className="sv-h2">
+                            {t('services.index.process.title')}
+                        </h2>
+                        <p className="sv-body">
+                            {t('services.index.process.sub')}
+                        </p>
+                    </div>
+                    <ol className="sv-steps">
+                        {[0, 1, 2, 3].map((i) => (
+                            <li key={i} className="sv-step">
+                                <span className="sv-step-dur">
+                                    {t(`services.index.process.${i}.duration`)}
+                                </span>
+                                <h3>
+                                    {t(`services.index.process.${i}.title`)}
+                                </h3>
+                                <p className="sv-body">
+                                    {t(`services.index.process.${i}.text`)}
+                                </p>
+                            </li>
+                        ))}
+                    </ol>
+                </section>
+
+                {/* Proof: the only two verified numbers */}
+                <section
+                    className="sv-wrap sv-section"
+                    aria-labelledby="sv-proof"
+                >
+                    <div className="sv-head">
+                        <h2 id="sv-proof" className="sv-h2">
+                            {t('services.index.proof.title')}
+                        </h2>
+                        <p className="sv-body">
+                            {t('services.index.proof.sub')}
+                        </p>
+                    </div>
+                    <div className="sv-proof">
+                        <div>
+                            <span className="sv-num">
+                                <bdi>
+                                    13<span className="sv-accent">+</span>
+                                </bdi>
+                            </span>
+                            <span className="sv-body">
+                                {t('services.index.proof.products')}
+                            </span>
+                        </div>
+                        <div>
+                            <span className="sv-num">
+                                <bdi>
+                                    500K<span className="sv-accent">+</span>
+                                </bdi>
+                            </span>
+                            <span className="sv-body">
+                                {t('services.index.proof.users')}
+                            </span>
+                        </div>
+                        <div>
+                            <Link
+                                href={`/${locale}/portfolio`}
+                                className="sv-link"
+                            >
+                                {t('services.index.proof.link')}
+                                <Arrow size={16} />
+                            </Link>
+                        </div>
+                    </div>
+                </section>
+
+                {/* CTA */}
+                <section
+                    className="sv-wrap sv-section"
+                    aria-labelledby="sv-cta"
+                >
+                    <div className="sv-cta">
+                        <div className="sv-cta-copy">
+                            <h2 id="sv-cta" className="sv-h2">
+                                {t('services.index.cta.title')}
+                            </h2>
+                            <p className="sv-lead">
+                                {t('services.index.cta.sub')}
+                            </p>
+                        </div>
+                        <div className="sv-cta-side">
+                            <Link
+                                href={`/${locale}/contact`}
+                                className="sv-btn"
+                            >
+                                {t('services.index.cta.button')}
+                                <Arrow />
+                            </Link>
+                        </div>
+                    </div>
                 </section>
             </div>
-
-            <style>{`
-                .q-svc { max-width: 1240px; margin: 0 auto; padding: clamp(40px, 7vw, 96px) clamp(16px, 4vw, 48px) clamp(64px, 9vw, 120px); }
-                .q-svc-head { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 24px 64px; align-items: end; padding-bottom: clamp(32px, 5vw, 56px); border-bottom: 1px solid var(--q-line); }
-                .q-svc-head h1 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(48px, 7vw, 104px); line-height: 0.98; letter-spacing: -0.04em; color: var(--q-cream); }
-                .q-svc-head h1 em { font-style: italic; font-weight: 300; color: var(--q-accent); }
-                .q-svc-head p { margin: 0; max-width: 32rem; font-size: clamp(17px, 1.5vw, 20px); line-height: 1.55; color: var(--q-dim); }
-                [dir='rtl'] .q-svc-head h1 { letter-spacing: 0; line-height: 1.3; font-family: var(--font-arabic); }
-                [dir='rtl'] .q-svc-head h1 em { font-style: normal; font-weight: 700; }
-
-                .q-num { font: 500 12px/1 var(--font-mono-brand); letter-spacing: .14em; color: var(--q-accent); }
-
-                .q-svc-lead { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--q-line); border: 1px solid var(--q-line); margin-top: clamp(32px, 5vw, 56px); }
-                .q-lead-card { position: relative; display: flex; flex-direction: column; gap: 18px; padding: clamp(24px, 3.4vw, 44px); background: var(--q-bg); transition: background-color 200ms ease; }
-                .q-lead-card:hover { background: var(--q-bg-elev); }
-                .q-lead-card h2 { margin: 6px 0 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(32px, 3.4vw, 48px); line-height: 1.05; letter-spacing: -0.03em; }
-                [dir='rtl'] .q-lead-card h2 { letter-spacing: 0; font-family: var(--font-arabic); font-weight: 700; }
-                .q-lead-card h2 a { color: var(--q-cream); text-decoration: none; }
-                .q-lead-card h2 a::after { content: ''; position: absolute; inset: 0; }
-                .q-lead-card h2 a:focus-visible { outline: none; }
-                .q-lead-card:focus-within { outline: 2px solid var(--q-accent); outline-offset: -2px; }
-                .q-sub { color: var(--q-dim); font-size: 16px; line-height: 1.55; margin: 0; max-width: 36rem; }
-                .q-deliver { list-style: none; margin: 4px 0 0; padding: 0; border-top: 1px solid var(--q-line); }
-                .q-deliver li { display: flex; gap: 12px; align-items: baseline; padding: 12px 0; border-bottom: 1px solid var(--q-line); font-size: 15px; color: var(--q-cream); }
-                .q-deliver li::before { content: ''; flex: none; width: 6px; height: 6px; background: var(--q-accent); transform: translateY(-2px); }
-                .q-spec { position: relative; z-index: 1; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
-                .q-spec-label { font: 500 11px/1 var(--font-mono-brand); letter-spacing: .14em; text-transform: uppercase; color: var(--q-dim); }
-                [dir='rtl'] .q-spec-label { font: 500 13px/1.4 var(--font-arabic-sans); letter-spacing: normal; text-transform: none; }
-                .q-spec-links { display: flex; flex-wrap: wrap; gap: 8px; }
-                .q-spec-links a { font-size: 14px; color: var(--q-cream); text-decoration: none; border: 1px solid var(--q-line-strong); padding: 8px 12px; transition: border-color 150ms ease, color 150ms ease; }
-                .q-spec-links a:hover, .q-spec-links a:focus-visible { border-color: var(--q-accent); color: var(--q-accent); outline: none; }
-                .q-explore { margin-top: auto; padding-top: 8px; font-size: 14px; font-weight: 500; color: var(--q-cream); text-decoration: underline; text-underline-offset: 4px; text-decoration-color: var(--q-accent); }
-                .q-arrow { display: inline-block; color: var(--q-accent); transition: transform 180ms ease; }
-                .q-lead-card:hover .q-arrow, .q-support-row:hover .q-arrow { transform: translateX(4px); }
-                [dir='rtl'] .q-lead-card:hover .q-arrow, [dir='rtl'] .q-support-row:hover .q-arrow { transform: translateX(-4px); }
-
-                .q-svc-support { margin-top: clamp(32px, 5vw, 56px); border-top: 1px solid var(--q-line); }
-                .q-support-row { display: grid; grid-template-columns: 56px minmax(0, 1.3fr) minmax(0, 1fr) 32px; gap: 24px; align-items: center; padding: clamp(20px, 2.6vw, 32px) 8px; border-bottom: 1px solid var(--q-line); color: inherit; text-decoration: none; transition: background-color 200ms ease, padding 200ms ease; }
-                .q-support-row:hover, .q-support-row:focus-visible { background: var(--q-bg-elev); padding-inline-start: 16px; outline: none; }
-                .q-support-main { display: grid; gap: 6px; }
-                .q-support-title { font-family: var(--font-display); font-size: clamp(24px, 2.4vw, 32px); line-height: 1.1; letter-spacing: -0.02em; color: var(--q-cream); }
-                [dir='rtl'] .q-support-title { letter-spacing: 0; font-family: var(--font-arabic); font-weight: 700; }
-                .q-chips { display: flex; flex-wrap: wrap; gap: 6px; }
-                .q-chips span { font-size: 13px; color: var(--q-dim); border: 1px solid var(--q-line); padding: 6px 10px; }
-                .q-support-row .q-arrow { font-size: 20px; justify-self: end; }
-
-                .q-svc-cta { margin-top: clamp(48px, 7vw, 96px); padding: clamp(28px, 4vw, 56px); border: 1px solid var(--q-line); background: var(--q-bg-elev); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px 32px; align-items: center; }
-                .q-svc-cta h2 { margin: 0; grid-column: 1; font-family: var(--font-display); font-weight: 400; font-size: clamp(28px, 3vw, 40px); letter-spacing: -0.02em; color: var(--q-cream); }
-                [dir='rtl'] .q-svc-cta h2 { letter-spacing: 0; font-family: var(--font-arabic); font-weight: 700; }
-                .q-svc-cta p { margin: 0; grid-column: 1; color: var(--q-dim); max-width: 36rem; }
-                .q-cta-btn { grid-column: 2; grid-row: 1 / span 2; background: var(--q-accent); color: var(--q-bg); padding: 18px 28px; font-size: 14px; font-weight: 500; text-decoration: none; white-space: nowrap; }
-                .q-cta-btn:focus-visible { outline: 2px solid var(--q-cream); outline-offset: 3px; }
-
-                @media (max-width: 900px) {
-                    .q-svc-head { grid-template-columns: 1fr; }
-                    .q-svc-lead { grid-template-columns: 1fr; }
-                    .q-support-row { grid-template-columns: 40px minmax(0, 1fr) 24px; }
-                    .q-chips { grid-column: 2; }
-                    .q-support-row .q-arrow { grid-row: 1; grid-column: 3; }
-                    .q-svc-cta { grid-template-columns: 1fr; }
-                    .q-cta-btn { grid-column: 1; grid-row: auto; justify-self: start; }
-                }
-                @media (prefers-reduced-motion: reduce) {
-                    .q-lead-card, .q-arrow, .q-support-row, .q-spec-links a { transition: none; }
-                }
-            `}</style>
         </>
     );
+}
+
+// First clause of a subtitle, for the compact specialism links.
+function shorten(text: string): string {
+    const cut = text.split(/[,،]/)[0];
+
+    return cut.length < text.length ? cut : text;
 }
 
 function ServicesLayout({ children }: { children: ReactNode }) {

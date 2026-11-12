@@ -1,7 +1,8 @@
-import { useForm } from '@inertiajs/react';
+import { useForm, usePage } from '@inertiajs/react';
 import { useId, useState } from 'react';
 
 import { useLocale } from '@/hooks/use-locale';
+import { serviceFromUrl } from '@/lib/contact-service';
 import { B, monoStyle } from './tokens';
 
 type Service =
@@ -103,10 +104,12 @@ export default function LandingContact() {
     const scopeLabelId = useId();
     const messageId = useId();
 
+    const { url } = usePage();
+
     const form = useForm<FormData>({
         name: '',
         email: '',
-        service: 'development',
+        service: serviceFromUrl(url) ?? 'development',
         message: '',
         _honeypot: '',
     });

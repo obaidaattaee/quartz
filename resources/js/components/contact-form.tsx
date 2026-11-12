@@ -1,4 +1,4 @@
-import { useForm } from '@inertiajs/react';
+import { useForm, usePage } from '@inertiajs/react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,6 +11,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { useLocale } from '@/hooks/use-locale';
+import { serviceFromUrl } from '@/lib/contact-service';
 
 function RequiredMark({ label }: { label: string }) {
     return (
@@ -26,15 +27,20 @@ function RequiredMark({ label }: { label: string }) {
 export default function ContactForm() {
     const { locale, t } = useLocale();
 
+    // ?service=qa (or a sub-service such as web-development) preselects
+    // the matching option; unknown values are ignored.
+    // The contact page resolves it server-side (preselectedService);
+    // elsewhere the form falls back to reading the URL.
+    const { url, props } = usePage<{ preselectedService?: string | null }>();
     const initialService =
-        new URLSearchParams(window.location.search).get('service') ?? '';
+        props.preselectedService ?? serviceFromUrl(url) ?? '';
 
     const { data, setData, post, processing, errors, reset, wasSuccessful } =
         useForm({
             name: '',
             email: '',
             phone: '',
-            service: initialService || '',
+            service: initialService as string,
             message: '',
             _honeypot: '',
         });
